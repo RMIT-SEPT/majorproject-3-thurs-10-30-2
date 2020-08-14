@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 
+
+
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserServiceTest {
@@ -21,7 +23,7 @@ public class UserServiceTest {
     @BeforeAll
     public void setup() {
         user = new User();
-        user.setName("Test User");
+        user.setName("test user");
         user.setEmail("test@email.com");
     }
 
@@ -38,5 +40,12 @@ public class UserServiceTest {
 
         Assertions.assertThrows(EmptyResultDataAccessException.class, () -> userService.delete(newUser.getId()),
                 "Deleting a user which doesn't exist should throw org.springframework.dao.EmptyResultDataAccessException.");
+    }
+    @Test
+    void False_TestFails_IfUserNameIsInvalidLength(){
+        user.setName("no"); //invalid User name length
+        User newUser = userService.saveOrUpdateUser(user);
+        //fails as User cannot be created with name less than length 3
+        Assertions.assertFalse(newUser.getName().isEmpty(),"Creating a User with a name length less than 3 should fail");
     }
 }
