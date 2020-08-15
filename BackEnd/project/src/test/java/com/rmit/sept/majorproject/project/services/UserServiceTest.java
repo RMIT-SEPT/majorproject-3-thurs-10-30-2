@@ -48,4 +48,10 @@ public class UserServiceTest {
         //fails as User cannot be created with name less than length 3
         Assertions.assertFalse(newUser.getName().isEmpty(),"Creating a User with a name length less than 3 should fail");
     }
+    @Test
+    void updateUser_returnsUpdatedUser_UserExists() {
+        userService.saveOrUpdateUser(user);
+        user.setName("updated");
+        Assertions.assertTrue( userService.saveOrUpdateUser(user) != null);
+    }
 }
