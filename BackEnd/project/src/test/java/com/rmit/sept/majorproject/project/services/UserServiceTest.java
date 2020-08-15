@@ -67,7 +67,9 @@ public class UserServiceTest {
     void saveorupdateusers_returnsNull_UserHasInvalidEmail(){
         user.setEmail("email.com");
         // Fails as user must have an @ symbol in their email address
-        Assertions.assertNull(userService.saveOrUpdateUser(user));
+        Assertions.assertThrows(javax.validation.ConstraintViolationException.class, () -> {
+            userService.saveOrUpdateUser(user);        }
+        );
     }
 
     @Test
