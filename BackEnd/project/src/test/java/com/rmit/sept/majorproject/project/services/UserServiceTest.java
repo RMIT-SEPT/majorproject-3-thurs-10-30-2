@@ -54,4 +54,9 @@ public class UserServiceTest {
         user.setName("updated");
         Assertions.assertTrue( userService.saveOrUpdateUser(user) != null);
     }
+    @Test
+    void updateUser_returnsNull_UserDoesNotExists() {
+        user.setName("updated");
+        Assertions.assertNull( userService.saveOrUpdateUser(user));
+    }
 }
