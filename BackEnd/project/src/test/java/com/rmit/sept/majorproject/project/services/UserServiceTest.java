@@ -45,11 +45,11 @@ public class UserServiceTest {
                 "Deleting a user which doesn't exist should throw org.springframework.dao.EmptyResultDataAccessException.");
     }
     @Test
-    void False_TestFails_IfUserNameIsInvalidLength(){
+    void saveUser_returnsNull_IfUserNameIsInvalidLength(){
         user.setName("no"); //invalid User name length
         User newUser = userService.saveOrUpdateUser(user);
         //fails as User cannot be created with name less than length 3
-        Assertions.assertFalse(newUser.getName().isEmpty(),"Creating a User with a name length less than 3 should fail");
+        Assertions.assertNull(newUser);
     }
     @Test
     void updateUser_returnsUpdatedUser_UserExists() {
