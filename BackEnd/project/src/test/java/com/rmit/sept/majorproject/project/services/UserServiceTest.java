@@ -1,10 +1,7 @@
 package com.rmit.sept.majorproject.project.services;
 
 import com.rmit.sept.majorproject.project.model.User;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -23,6 +20,12 @@ public class UserServiceTest {
     @BeforeAll
     public void setup() {
         user = new User();
+        user.setName("test user");
+        user.setEmail("test@email.com");
+    }
+
+    @BeforeEach
+    void beforeTestSetup(){
         user.setName("test user");
         user.setEmail("test@email.com");
     }
@@ -47,5 +50,19 @@ public class UserServiceTest {
         User newUser = userService.saveOrUpdateUser(user);
         //fails as User cannot be created with name less than length 3
         Assertions.assertFalse(newUser.getName().isEmpty(),"Creating a User with a name length less than 3 should fail");
+    }
+
+    @Test
+    void saveorupdateusers_returnsNull_UserHasInvalidEmail(){
+        user.setEmail("email.com");
+        // Fails as user must have an @ symbol in their email address
+        Assertions.assertNull(userService.saveOrUpdateUser(user));
+    }
+
+    @Test
+    void saveorupdateusers_returnsNull_UserPasswordIsInvalidLength(){
+        user.setPassword("12345");
+        // Fails as user have a password 6 or more characters.
+        Assertions.assertNull(userService.saveOrUpdateUser(user));
     }
 }
