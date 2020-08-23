@@ -22,6 +22,10 @@ public class Booking {
     @JsonFormat(pattern="yyyy-MM-dd-HH-mm")
     private Date endTime;
 
+    public Booking(){
+
+    }
+
     public Long getBookingId() {
         return bookingId;
     }
@@ -65,6 +69,7 @@ public class Booking {
     public Date getEndTime(){
         return endTime;
     }
+
     public void setEndTime(Date endTime){
         this.endTime = endTime;
     }
