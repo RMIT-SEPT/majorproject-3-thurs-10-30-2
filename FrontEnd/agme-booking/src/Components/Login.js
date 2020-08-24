@@ -4,9 +4,6 @@ import Button from 'react-bootstrap/Button'
 
 
 class Login extends React.Component {
-    constructor(props) {
-        super(props);
-    };
 
     render() {
         return (
@@ -15,16 +12,16 @@ class Login extends React.Component {
                     Log In
                 </h1>
                 <Form>
-                    <Form.Group controlId="formBasicEmail">
+                    <Form.Group controlId="formLoginEmail">
                         <Form.Label>Email</Form.Label>
                         <Form.Control type="email" placeholder="Enter email" />
                     </Form.Group>
 
-                    <Form.Group controlId="formBasicPassword">
+                    <Form.Group controlId="formLoginPassword">
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" placeholder="Password" />
                     </Form.Group>
-                    <Form.Group controlId="formBasicCheckbox">
+                    <Form.Group controlId="formRememberCheckbox">
                         <Form.Check type="checkbox" label="Remember me" />
                     </Form.Group>
                     <Button variant="primary" type="submit">

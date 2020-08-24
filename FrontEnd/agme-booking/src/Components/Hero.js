@@ -1,33 +1,32 @@
 import React, { useState } from 'react'
-import Button from 'react-bootstrap/Button'
-import Header from './Header'
 import HomepageControls from './HomepageControls'
 import Login from './Login'
 import SignUp from './SignUp'
+import { useTransition, animated } from 'react-spring'
 
 function Hero() {
-    const [showForm, setForm] = useState(0)
+    const [formsIndex, setForm] = useState(0)
 
-    let form
+    const forms = [
+        ({ style }) => <animated.div style={{ ...style }}><HomepageControls setForm={setForm} /></animated.div >,
+        ({ style }) => <animated.div style={{ ...style }}><Login setForm={setForm} /></animated.div >,
+        ({ style }) => <animated.div style={{ ...style }}><SignUp setForm={setForm} /></animated.div >
+    ]
 
-    if (showForm == 0) {
-        form = <HomepageControls setForm={setForm}/>
-
-    }
-    if (showForm == 1) {
-        form = <Login setForm={setForm}/>
-    }
-    if (showForm == 2) {
-        form = <SignUp setForm={setForm}/>
-    }
-    if (showForm == 3) {
-
-    }
+    const transitions = useTransition(formsIndex, p => p, {
+        from: { position: 'absolute', opacity: 0 },
+        enter: { opacity: 1, transform: 'translateX(0%)' },
+        leave: { opacity: 0, transform: 'translateX(-50%)' },
+    })
 
     return (
         <div id="hero">
             <div className="absolute-center">
-                {form}
+                {transitions.map(({ item, props, key }) => {
+                    const Form = forms[item]
+                    return <Form key={key} style={props} />
+                }
+                )}
             </div>
         </div>
     )

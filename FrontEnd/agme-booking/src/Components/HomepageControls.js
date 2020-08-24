@@ -1,12 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Button from 'react-bootstrap/Button'
-import { render } from 'react-dom'
+
 
 class HomepageControls extends React.Component {
-    constructor(props) {
-        super(props);
-        };
-        
+
     render() {
         return(
             <div id="homepage-controls">
