@@ -24,9 +24,9 @@ class Login extends React.Component {
                     <Form.Group controlId="formRememberCheckbox">
                         <Form.Check type="checkbox" label="Remember me" />
                     </Form.Group>
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary" type="submit" >
                         Submit
-                </Button>
+                    </Button>
                 </Form>
                 <Button variant="light" onClick={() => this.props.setForm(0)}>Back</Button>{' '}
             </div>
