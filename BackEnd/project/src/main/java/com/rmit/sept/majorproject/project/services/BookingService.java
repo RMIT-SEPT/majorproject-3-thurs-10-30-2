@@ -3,9 +3,11 @@ package com.rmit.sept.majorproject.project.services;
 import com.rmit.sept.majorproject.project.Repositories.BookingRepository;
 import com.rmit.sept.majorproject.project.model.Booking;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
@@ -18,7 +20,6 @@ public class BookingService {
         return booking.get();
     }
     public Booking createBooking(Booking booking){
-        //TODO create booking logic
         return bookingRepository.save(booking);
     }
 
@@ -26,8 +27,9 @@ public class BookingService {
         bookingRepository.deleteById(bookingId);
     }
 
-    public Booking updateBooking(Long bookingId, Booking booking){
-        //TODO update logic
+    public Booking updateBooking(Long id, Booking booking){
+        Booking selectedBooking = findBookingById(booking.getId());
+
         return bookingRepository.save(booking);
     }
 }

@@ -1,8 +1,10 @@
 package com.rmit.sept.majorproject.project.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 
@@ -10,28 +12,31 @@ import java.util.Date;
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long bookingId;
-
+    private Long id;
+    @NotNull
     private int duration;
-    @ManyToOne(optional=false)
+
+    @JsonIgnore
+    @OneToOne(optional=false)
     User customer;
-    @ManyToOne(optional=false)
+
+    @JsonIgnore
+    @OneToOne(optional=false)
     User worker;
+
     @JsonFormat(pattern ="yyyy-MM-dd-HH-mm")
-    private Date startTime;
-    @JsonFormat(pattern="yyyy-MM-dd-HH-mm")
-    private Date endTime;
+    private Date dateTime;
 
     public Booking(){
 
     }
 
-    public Long getBookingId() {
-        return bookingId;
+    public Long getId() {
+        return id;
     }
 
-    public void setBookingId(Long bookingId) {
-        this.bookingId = bookingId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getDuration() {
@@ -59,18 +64,10 @@ public class Booking {
     }
 
     public Date getStartTime() {
-        return startTime;
+        return dateTime;
     }
 
     public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime(){
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime){
-        this.endTime = endTime;
+        this.dateTime = startTime;
     }
 }
