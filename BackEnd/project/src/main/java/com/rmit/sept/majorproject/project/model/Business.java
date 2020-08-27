@@ -16,12 +16,12 @@ public class Business {
     private Long id;
     @NotNull
     private String name;
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek dayOfWeek;
-    @JsonFormat(pattern = "HH:mm")
-    private LocalTime startTime;
-    @JsonFormat(pattern = "HH:mm")
-    private LocalTime endTime;
+//    @Enumerated(EnumType.STRING)
+//    private DayOfWeek dayOfWeek;
+//    @JsonFormat(pattern = "HH:mm")
+//    private LocalTime startTime;
+//    @JsonFormat(pattern = "HH:mm")
+//    private LocalTime endTime;
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date created_At;
     @JsonFormat(pattern = "yyyy-mm-dd")
@@ -35,17 +35,17 @@ public class Business {
 
     public void setName(String name) { this.name = name; }
 
-    public DayOfWeek getDayOfWeek() { return dayOfWeek; }
-
-    public void setDayOfWeek(DayOfWeek dayOfWeek) { this.dayOfWeek = dayOfWeek; }
-
-    public LocalTime getStartTime() { return startTime; }
-
-    public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
-
-    public LocalTime getEndTime() { return endTime; }
-
-    public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
+//    public DayOfWeek getDayOfWeek() { return dayOfWeek; }
+//
+//    public void setDayOfWeek(DayOfWeek dayOfWeek) { this.dayOfWeek = dayOfWeek; }
+//
+//    public LocalTime getStartTime() { return startTime; }
+//
+//    public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
+//
+//    public LocalTime getEndTime() { return endTime; }
+//
+//    public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
 
     @PrePersist
     protected void onCreate(){
