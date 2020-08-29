@@ -16,16 +16,22 @@ public class Booking {
     @NotNull
     private int duration;
 
-    @JsonIgnore
-    @OneToOne(optional=false)
-    User customer;
+//    @JsonIgnore
+//    @OneToOne(optional=false)
+//    User customer;
+//
+//    @JsonIgnore
+//    @OneToOne(optional=false)
+//    User worker;
 
-    @JsonIgnore
-    @OneToOne(optional=false)
-    User worker;
+    @JsonFormat(pattern ="yyyy-MM-dd:HH-mm")
+    private Date startTime;
 
-    @JsonFormat(pattern ="yyyy-MM-dd-HH-mm")
-    private Date dateTime;
+    @JsonFormat(pattern="yyyy-MM-dd:HH-mm")
+    private Date endTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date created_At;
 
     public Booking(){
 
@@ -47,27 +53,40 @@ public class Booking {
         this.duration = duration;
     }
 
-    public User getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(User customer) {
-        this.customer = customer;
-    }
-
-    public User getWorker() {
-        return worker;
-    }
-
-    public void setWorker(User worker) {
-        this.worker = worker;
-    }
+//    public User getCustomer() { return customer; }
+//
+//    public void setCustomer(User customer) { this.customer = customer; }
+//
+//    public User getWorker() {
+//        return worker;
+//    }
+//
+//    public void setWorker(User worker) {
+//        this.worker = worker;
+//    }
 
     public Date getStartTime() {
-        return dateTime;
+        return startTime;
     }
 
     public void setStartTime(Date startTime) {
-        this.dateTime = startTime;
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime(){return endTime;}
+
+    public void setEndTime(Date endTime){ this.endTime = endTime; }
+
+    public Date getCreated_At() {
+        return created_At;
+    }
+
+    public void setCreated_At(Date created_At) {
+        this.created_At = created_At;
+    }
+
+    @PrePersist
+    protected void onCreate(){
+        this.created_At = new Date();
     }
 }
