@@ -1,0 +1,33 @@
+#booking-form {
+    h1 {
+        margin-bottom: 2rem;
+    }
+}
+
+#booking-refinement {
+    display: flex;
+    width: 100%;
+}
+
+#booking-availability {
+    margin-top: 2rem;
+    h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+}
+
+#availability-cards {
+    width: 100%;
+    .card {
+        margin-bottom: 1rem;
+        cursor: pointer;
+        flex-direction: row;
+        .card-body {
+            width: 33%;
+        }
+        .card-body:nth-child(-n + 2) {
+            border-right: 1px solid rgba(0, 0, 0, 0.125);
+        }
+    }
+}
