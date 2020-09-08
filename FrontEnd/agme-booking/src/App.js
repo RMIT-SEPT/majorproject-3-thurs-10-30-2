@@ -2,7 +2,7 @@ import React from 'react';
 import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './Components/Header'
-import Hero from './Components/Hero';
+import Hero from './Components/Homepage/Hero';
 import Dashboard from './Components/Dashboard/Dashboard';
 
 import {
