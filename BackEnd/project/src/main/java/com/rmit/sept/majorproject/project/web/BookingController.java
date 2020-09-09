@@ -32,9 +32,9 @@ public class BookingController {
         bookingService.cancelBooking(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @PutMapping("{id")
-    public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody @Valid Booking booking){
-        Booking updatedBooking = bookingService.updateBooking(id, booking);
+    @PutMapping("")
+    public ResponseEntity<Booking> updateBooking(@RequestBody @Valid Booking booking){
+        Booking updatedBooking = bookingService.updateBooking(booking);
         return new ResponseEntity<>(updatedBooking, HttpStatus.OK);
     }
 

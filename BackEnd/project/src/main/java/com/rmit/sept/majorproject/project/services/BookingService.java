@@ -31,13 +31,14 @@ public class BookingService {
     }
 
     public void cancelBooking(Long bookingId){
-        bookingRepository.deleteById(bookingId);
+        Booking booking = findBookingById(bookingId);
+        bookingRepository.deleteById(booking.getId());
     }
 
-    public Booking updateBooking(Long id, Booking booking){
+    public Booking updateBooking(Booking booking){
         Booking selectedBooking = findBookingById(booking.getId());
 
-        return bookingRepository.save(booking);
+        return bookingRepository.save(selectedBooking);
     }
     public Date currentDateTime(){
         Date now = new Date();

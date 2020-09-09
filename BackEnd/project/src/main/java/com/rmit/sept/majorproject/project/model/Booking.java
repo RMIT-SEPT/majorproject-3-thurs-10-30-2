@@ -19,10 +19,12 @@ public class Booking {
 //    @JsonIgnore
 //    @OneToOne(optional=false)
 //    User customer;
-//
+//    User.AccountType customer = User.AccountType.CUSTOMER;
+
 //    @JsonIgnore
 //    @OneToOne(optional=false)
 //    User worker;
+//    User.AccountType worker = User.AccountType.WORKER;
 
     @JsonFormat(pattern ="yyyy-MM-dd:HH-mm")
     private Date startTime;
