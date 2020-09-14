@@ -20,7 +20,7 @@ public class Business {
     private Date created_At;
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date updated_At;
-    @OneToMany(orphanRemoval = true)
+    @OneToMany( cascade = {CascadeType.ALL}, orphanRemoval = true)
     @JoinColumn(name = "business_id")
     private List<BusinessHours> businessHours = new ArrayList<>();
 

@@ -49,7 +49,6 @@ public class BusinessController {
 //        }
 //
         Business business1 = businessService.saveOrUpdateBusiness(business); //tmp user
-        BusinessHours businessHours1 = businessHoursService.saveOrUpdateBusinessHours(businessHours);
 
         return new ResponseEntity<>(business, HttpStatus.CREATED);
     }
