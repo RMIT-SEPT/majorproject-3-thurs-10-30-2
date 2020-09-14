@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface BusinessHoursRepository extends CrudRepository<BusinessHours, Long> {
 
-    List<BusinessHours> findByBusiness(Business business, Sort sort);
+    //List<BusinessHours> findByBusiness(Business business, Sort sort);
 
 }

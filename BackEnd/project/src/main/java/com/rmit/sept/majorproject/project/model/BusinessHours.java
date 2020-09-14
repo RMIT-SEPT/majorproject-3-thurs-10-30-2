@@ -11,9 +11,9 @@ public class BusinessHours {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="business_id", nullable = false)
-    private Business business;
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name="business_id", nullable = false)
+//    private Business business;
     @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek;
     @JsonFormat(pattern = "HH:mm")
@@ -21,9 +21,9 @@ public class BusinessHours {
     @JsonFormat(pattern = "HH:mm")
     private LocalTime endTime;
 
-    public Business getBusiness() { return business; }
-
-    public void setBusiness(Business business) { this.business = business; }
+//    public Business getBusiness() { return business; }
+//
+//    public void setBusiness(Business business) { this.business = business; }
 
     public DayOfWeek getDayOfWeek() { return dayOfWeek; }
 

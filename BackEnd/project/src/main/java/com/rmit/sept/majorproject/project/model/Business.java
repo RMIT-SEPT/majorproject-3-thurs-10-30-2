@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class Business {
     private Date created_At;
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date updated_At;
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "business_id")
+    private List<BusinessHours> businessHours = new ArrayList<>();
 
     public Long getId() { return id; }
 
@@ -28,8 +32,13 @@ public class Business {
 
     public void setName(String name) { this.name = name; }
 
-    @OneToMany(mappedBy = "business", orphanRemoval = true)
-    private List<BusinessHours> businessHours;
+    public List<BusinessHours> getBusinessHours() {
+        return businessHours;
+    }
+
+    public void setBusinessHours(BusinessHours businessHours) {
+        this.businessHours.add(businessHours);
+    }
 
     @PrePersist
     protected void onCreate(){

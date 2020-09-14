@@ -1,6 +1,12 @@
 package com.rmit.sept.majorproject.project.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.rmit.sept.majorproject.project.model.Business;
+import com.rmit.sept.majorproject.project.model.BusinessHours;
+import com.rmit.sept.majorproject.project.services.BusinessHoursService;
 import com.rmit.sept.majorproject.project.services.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,14 +24,33 @@ public class BusinessController {
 
     @Autowired
     private BusinessService businessService;
+    private BusinessHoursService businessHoursService;
 
     @PostMapping("")
-    public ResponseEntity<?> createNewBusiness(@Valid @RequestBody Business business, BindingResult result){
-        if(result.hasErrors()) {
-            return new ResponseEntity<>(result.getFieldErrors(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> createNewBusiness(@RequestBody String string){
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        JsonNode node = null;
+        try {
+            node = mapper.readTree(string);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
 
+        Business business = mapper.convertValue(node.get("business"), Business.class);
+        BusinessHours businessHours = mapper.convertValue(node.get("business_hours"), BusinessHours.class);
+        business.setBusinessHours(businessHours);
+        //businessHours.setBusiness(business);
+
+
+//        if(result.hasErrors()) {
+//            return new ResponseEntity<>(result.getFieldErrors(), HttpStatus.BAD_REQUEST);
+//        }
+//
         Business business1 = businessService.saveOrUpdateBusiness(business); //tmp user
+        BusinessHours businessHours1 = businessHoursService.saveOrUpdateBusinessHours(businessHours);
+
         return new ResponseEntity<>(business, HttpStatus.CREATED);
     }
 
