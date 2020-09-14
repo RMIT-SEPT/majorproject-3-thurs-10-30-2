@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 /*
    Post requests should be of the format
   {
@@ -36,6 +38,29 @@ public class BusinessController {
 
     @Autowired
     private BusinessService businessService;
+
+    @GetMapping("")
+    ResponseEntity<?> all() {
+
+        List<Business> allBusinesses = businessService.all();
+        if(allBusinesses.isEmpty()){
+            return new ResponseEntity<>("No Businesses Found",HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(allBusinesses,HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @GetMapping("/{id}")
+    ResponseEntity<?> one(@PathVariable Long id) {
+
+        if(businessService.findById(id) != null){
+            return new ResponseEntity<>(businessService.findById(id),HttpStatus.ACCEPTED);
+        }
+        else{
+            return new ResponseEntity<>("ID Does Not Exist",HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PostMapping("")
     public ResponseEntity<?> createNewBusiness(@RequestBody BusinessHolder holder, BindingResult result){
