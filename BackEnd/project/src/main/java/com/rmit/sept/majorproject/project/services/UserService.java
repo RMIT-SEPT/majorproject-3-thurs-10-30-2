@@ -12,9 +12,14 @@ public class UserService {
 
     public User saveOrUpdateUser(User user){
         //TODO: implement save and update logic
+        if(user.getName().length() > 2) {
+            return userRepository.save(user);
+        }
+        return null;
+    }
 
-        //returns saved updated user.
-        return userRepository.save(user);
+    public void delete(Long id) {
+        userRepository.deleteById(id);
     }
 
 }
