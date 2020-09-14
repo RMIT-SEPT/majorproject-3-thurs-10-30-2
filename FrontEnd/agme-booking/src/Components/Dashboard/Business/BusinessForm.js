@@ -44,7 +44,7 @@ class BusinessForm extends React.Component {
 
     handleSubmit() {
         axios({
-            method: 'post',
+            method: "POST",
             url: 'http://localhost:8080/api/Business',
             headers: {},
             data: {
@@ -53,6 +53,8 @@ class BusinessForm extends React.Component {
                 },
                 "businessHours": this.state.opening_hours
             }
+        }).then(function (response) {
+            console.log(response);
         });
     }
 
@@ -70,7 +72,7 @@ class BusinessForm extends React.Component {
         var dayRows = [];
         this.state.opening_hours.forEach(element => {
             dayRows.push(
-                <tr>
+                <tr key={element.dayOfWeek}>
                     <td>{element.dayOfWeek}</td>
                     <td>{element.startTime} - {element.endTime}</td>
                 </tr>

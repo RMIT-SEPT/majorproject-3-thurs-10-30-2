@@ -32,21 +32,13 @@ class BookingForm extends React.Component {
                 { startTime: 15, endTime: 16 }
             ]
         };
-        const timesAlt = [
-            { startTime: 10, endTime: 11, employee: 'Anna' },
-            { startTime: 10, endTime: 11, employee: 'Donna' },
-            { startTime: 12, endTime: 13, employee: 'Anna' },
-            { startTime: 12, endTime: 13, employee: 'Donna' },
-            { startTime: 15, endTime: 16, employee: 'Anna' },
-            { startTime: 15, endTime: 16, employee: 'Donna' }
-        ];
 
         const employees = Object.keys(times).map(key =>
             <option key={key} value={key}>{key}</option>)
 
         const slots = []
 
-        if (this.state.employee == 'Any') {
+        if (this.state.employee === 'Any') {
             Object.keys(times).map(key =>
                 slots.push(<AvailabilityCard empName={key} times={times[key]} />))
         }
