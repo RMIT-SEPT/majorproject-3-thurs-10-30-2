@@ -46,7 +46,7 @@ public class BusinessController {
         if(allBusinesses.isEmpty()){
             return new ResponseEntity<>("No Businesses Found",HttpStatus.NOT_FOUND);
         }else {
-            return new ResponseEntity<>(allBusinesses,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(allBusinesses,HttpStatus.ACCEPTED);
         }
 
     }
