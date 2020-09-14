@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
-import {
-    Button
-} from 'react-bootstrap'
-import { useTransition, animated } from 'react-spring'
+import BusinessForm from './Business/BusinessForm';
 import BookingForm from './User/BookingForm'
 import CreateBookingButton from './User/CreateBookingButton';
 
@@ -12,7 +9,8 @@ function Dashboard() {
     const [bookingForm, setForm] = useState(0);
     const forms = [
         <CreateBookingButton setForm={setForm} />,
-        <BookingForm setForm={setForm} />
+        <BookingForm setForm={setForm} />,
+        <BusinessForm setForm={setForm} />
     ];
 
     return (
@@ -25,6 +23,7 @@ function Dashboard() {
                         forms[bookingForm]
                     }
                 </div>
+                <BusinessForm />
                 <div className="col-lg-2">
                 </div>
             </div>

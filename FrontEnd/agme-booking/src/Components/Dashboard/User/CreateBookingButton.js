@@ -10,7 +10,14 @@ class CreateBookingButton extends React.Component {
                 <Button variant="success" type="submit" onClick={() => this.props.setForm(1)}>
                     <h3 className="m-0">
                         Create booking
-                </h3>
+                    </h3>
+                </Button>
+                <br></br>
+                <br></br>
+                <Button variant="success" type="submit" onClick={() => this.props.setForm(3)}>
+                    <h3 className="m-0">
+                        Create business
+                    </h3>
                 </Button>
             </div>
         )
