@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalTime;
-import java.time.DayOfWeek;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Business {
@@ -16,12 +15,6 @@ public class Business {
     private Long id;
     @NotNull
     private String name;
-//    @Enumerated(EnumType.STRING)
-//    private DayOfWeek dayOfWeek;
-//    @JsonFormat(pattern = "HH:mm")
-//    private LocalTime startTime;
-//    @JsonFormat(pattern = "HH:mm")
-//    private LocalTime endTime;
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date created_At;
     @JsonFormat(pattern = "yyyy-mm-dd")
@@ -35,17 +28,8 @@ public class Business {
 
     public void setName(String name) { this.name = name; }
 
-//    public DayOfWeek getDayOfWeek() { return dayOfWeek; }
-//
-//    public void setDayOfWeek(DayOfWeek dayOfWeek) { this.dayOfWeek = dayOfWeek; }
-//
-//    public LocalTime getStartTime() { return startTime; }
-//
-//    public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
-//
-//    public LocalTime getEndTime() { return endTime; }
-//
-//    public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
+    @OneToMany(mappedBy = "business", orphanRemoval = true)
+    private List<BusinessHours> businessHours;
 
     @PrePersist
     protected void onCreate(){
