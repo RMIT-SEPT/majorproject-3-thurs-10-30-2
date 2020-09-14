@@ -1,22 +1,34 @@
 package com.rmit.sept.majorproject.project.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.rmit.sept.majorproject.project.model.Business;
+import com.rmit.sept.majorproject.project.model.BusinessHolder;
 import com.rmit.sept.majorproject.project.model.BusinessHours;
-import com.rmit.sept.majorproject.project.services.BusinessHoursService;
 import com.rmit.sept.majorproject.project.services.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
+/*
+   Post requests should be of the format
+  {
+    "business": {
+        "name": "Test"
+    },
+    "businessHours": [
+        {
+            "dayOfWeek": "MONDAY",
+            "startTime": "09:00",
+            "endTime": "17:00"
+        },
+        {
+            "dayOfWeek": "TUESDAY",
+            "startTime": "09:00",
+            "endTime": "17:00"
+        }
+    ]
+}
+*/
 
 @RestController
 @RequestMapping("/api/Business")
@@ -24,33 +36,25 @@ public class BusinessController {
 
     @Autowired
     private BusinessService businessService;
-    private BusinessHoursService businessHoursService;
 
     @PostMapping("")
-    public ResponseEntity<?> createNewBusiness(@RequestBody String string){
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        JsonNode node = null;
-        try {
-            node = mapper.readTree(string);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+    public ResponseEntity<?> createNewBusiness(@RequestBody BusinessHolder holder, BindingResult result){
+        for (BusinessHours hours: holder.getBusinessHours()) {
+            holder.getBusiness().setBusinessHours(hours);
         }
+        Business business1 = businessService.saveOrUpdateBusiness(holder.getBusiness()); //tmp user
 
-        Business business = mapper.convertValue(node.get("business"), Business.class);
-        BusinessHours businessHours = mapper.convertValue(node.get("business_hours"), BusinessHours.class);
-        business.setBusinessHours(businessHours);
-        //businessHours.setBusiness(business);
+        return new ResponseEntity<>(business1, HttpStatus.CREATED);
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateBusiness(@RequestBody BusinessHolder holder, @PathVariable Long id){
+        for (BusinessHours hours: holder.getBusinessHours()) {
+            holder.getBusiness().setBusinessHours(hours);
+        }
+        Business business1 = businessService.saveOrUpdateBusiness(holder.getBusiness()); //tmp user
 
-//        if(result.hasErrors()) {
-//            return new ResponseEntity<>(result.getFieldErrors(), HttpStatus.BAD_REQUEST);
-//        }
-//
-        Business business1 = businessService.saveOrUpdateBusiness(business); //tmp user
-
-        return new ResponseEntity<>(business, HttpStatus.CREATED);
+        return new ResponseEntity<>(business1, HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}")
