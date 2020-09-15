@@ -25,8 +25,7 @@ public class UserController {
         if(result.hasErrors()) {
             return new ResponseEntity<List<FieldError>>(result.getFieldErrors(), HttpStatus.BAD_REQUEST);
         }
-
-        User user1 = userService.saveOrUpdateUser(user); //tmp user
+        userService.saveOrUpdateUser(user);
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 
