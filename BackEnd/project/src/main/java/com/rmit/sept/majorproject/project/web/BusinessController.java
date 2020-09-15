@@ -77,6 +77,7 @@ public class BusinessController {
         for (BusinessHours hours: holder.getBusinessHours()) {
             holder.getBusiness().setBusinessHours(hours);
         }
+        holder.getBusiness().setId(id);
         Business business1 = businessService.saveOrUpdateBusiness(holder.getBusiness()); //tmp user
 
         return new ResponseEntity<>(business1, HttpStatus.CREATED);
