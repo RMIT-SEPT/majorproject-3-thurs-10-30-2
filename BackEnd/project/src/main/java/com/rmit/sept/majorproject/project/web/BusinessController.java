@@ -3,6 +3,7 @@ package com.rmit.sept.majorproject.project.web;
 import com.rmit.sept.majorproject.project.model.Business;
 import com.rmit.sept.majorproject.project.model.BusinessHolder;
 import com.rmit.sept.majorproject.project.model.BusinessHours;
+import com.rmit.sept.majorproject.project.services.BusinessHoursService;
 import com.rmit.sept.majorproject.project.services.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,7 @@ public class BusinessController {
 
     @Autowired
     private BusinessService businessService;
+    private BusinessHoursService businessHoursService;
 
     @GetMapping("")
     ResponseEntity<?> all() {
@@ -74,11 +76,13 @@ public class BusinessController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateBusiness(@RequestBody BusinessHolder holder, @PathVariable Long id){
+        Business oldBusiness = businessService.findById(id);
+        oldBusiness.setName(holder.getBusiness().getName());
+        oldBusiness.removeAllBusinessHours();
         for (BusinessHours hours: holder.getBusinessHours()) {
-            holder.getBusiness().setBusinessHours(hours);
+            oldBusiness.setBusinessHours(hours);
         }
-        holder.getBusiness().setId(id);
-        Business business1 = businessService.saveOrUpdateBusiness(holder.getBusiness()); //tmp user
+        Business business1 = businessService.saveOrUpdateBusiness(oldBusiness);
 
         return new ResponseEntity<>(business1, HttpStatus.CREATED);
     }
