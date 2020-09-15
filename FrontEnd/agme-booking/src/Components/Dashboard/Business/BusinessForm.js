@@ -54,6 +54,9 @@ class BusinessForm extends React.Component {
                 "businessHours": this.state.opening_hours
             }
         }).then(function (response) {
+            if (response.status === 201) {
+                
+            }
             console.log(response);
         });
     }
