@@ -9,7 +9,7 @@ class AvailabilityCard extends React.Component {
         const slots = []
         for (var i = 0; i < this.props.times.length; i++) {
             slots.push(
-                <Card>
+                <Card key={this.props.times[i].startTime+this.props.times[i].endTime+this.props.empName}>
                     <Card.Body>Service</Card.Body>
                     <Card.Body> {this.props.times[i].startTime} - {this.props.times[i].endTime}</Card.Body>
                     <Card.Body>{this.props.empName}</Card.Body>
