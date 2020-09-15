@@ -10,6 +10,12 @@ import javax.validation.constraints.Size;
 
 @Entity
 public class User {
+
+    enum AccountType{
+        ADMIN,
+        CUSTOMER,
+        WORKER }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,6 +26,11 @@ public class User {
     private String email;
     //password constraint?
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
+
+
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date created_At;
     @JsonFormat(pattern = "yyyy-mm-dd")
@@ -75,6 +86,10 @@ public class User {
     public void setUpdated_At(Date updated_At) {
         this.updated_At = updated_At;
     }
+
+    public AccountType getAccountType(){ return accountType; }
+
+    public void setAccountType(AccountType accountType) { this.accountType = accountType; }
 
     @PrePersist
     protected void onCreate(){
