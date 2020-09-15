@@ -16,7 +16,7 @@ function Dashboard() {
     const forms = [
         <CreateBookingButton setForm={setForm} />,
         <BookingForm setForm={setForm} />,
-        <BusinessForm />
+        <BusinessForm setForm={setForm} />
     ];
 
     return (

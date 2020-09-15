@@ -55,7 +55,7 @@ class BusinessForm extends React.Component {
             }
         }).then(function (response) {
             if (response.status === 201) {
-                
+
             }
             console.log(response);
         });
@@ -105,6 +105,9 @@ class BusinessForm extends React.Component {
                 {form}
                 <Button variant="success" onClick={this.handleSubmit}>
                     Submit
+                </Button>
+                <Button variant="danger" type="submit" onClick={() => this.props.setForm(0)}>
+                    <h4 className="mb-0">Cancel</h4>
                 </Button>
             </div>
         );
