@@ -3,7 +3,6 @@ package com.rmit.sept.majorproject.project.web;
 import com.rmit.sept.majorproject.project.model.Business;
 import com.rmit.sept.majorproject.project.model.BusinessHolder;
 import com.rmit.sept.majorproject.project.model.BusinessHours;
-import com.rmit.sept.majorproject.project.services.BusinessHoursService;
 import com.rmit.sept.majorproject.project.services.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +38,6 @@ public class BusinessController {
 
     @Autowired
     private BusinessService businessService;
-    private BusinessHoursService businessHoursService;
 
     @GetMapping("")
     ResponseEntity<?> all() {
