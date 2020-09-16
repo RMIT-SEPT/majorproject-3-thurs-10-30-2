@@ -28,7 +28,8 @@ public class UserServiceTest {
     @Test
     void delete_DoesNotThrow_IfUserExists() {
         User newUser = userService.saveOrUpdateUser(user);
-        userService.delete(newUser.getId());
+        Assertions.assertDoesNotThrow(() -> userService.delete(newUser.getId()),
+                "Deleting an existing user should succeed.");
     }
 
     @Test
