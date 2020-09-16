@@ -19,7 +19,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Size (min = 3, max = 15, message = "Please enter 3-15 characters")
+    @Size(min = 3, max = 15, message = "Please enter 3-15 characters")
     @NotBlank(message = "User name is required")
     private String name;
     @Email(message = "Email is required")

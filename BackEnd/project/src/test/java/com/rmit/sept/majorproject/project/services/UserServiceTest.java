@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-
+import javax.validation.ConstraintViolationException;
 
 
 @SpringBootTest
@@ -17,15 +17,10 @@ public class UserServiceTest {
     private UserService userService;
     private User user;
 
-    @BeforeAll
-    public void setup() {
-        user = new User();
-        user.setName("test user");
-        user.setEmail("test@email.com");
-    }
-
     @BeforeEach
     void beforeTestSetup(){
+        // Create a user with valid data
+        user = new User();
         user.setName("test user");
         user.setEmail("test@email.com");
     }
@@ -44,19 +39,30 @@ public class UserServiceTest {
         Assertions.assertThrows(EmptyResultDataAccessException.class, () -> userService.delete(newUser.getId()),
                 "Deleting a user which doesn't exist should throw org.springframework.dao.EmptyResultDataAccessException.");
     }
+
     @Test
-    void saveUser_returnsNull_IfUserNameIsInvalidLength(){
-        user.setName("no"); //invalid User name length
-        User newUser = userService.saveOrUpdateUser(user);
-        //fails as User cannot be created with name less than length 3
-        Assertions.assertNull(newUser);
+    void saveUser_ThrowsException_IfNameIsTooShort() {
+        user.setName("12");     // Current constraint min is 3
+
+        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
+                "Username with length 2 is too short, javax.validation.ConstraintViolationException should be thrown.");
     }
+
+    @Test
+    void saveUser_ThrowsException_IfNameIsTooLong() {
+        user.setName("1234567890123456");   // Current constraint max is 15
+
+        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
+                "Username with length 16 is too long, javax.validation.ConstraintViolationException should be thrown.");
+    }
+
     @Test
     void updateUser_returnsUpdatedUser_UserExists() {
         userService.saveOrUpdateUser(user);
         user.setName("updated");
         Assertions.assertNotNull(userService.saveOrUpdateUser(user));
     }
+
     @Test
     void updateUser_returnsNull_UserDoesNotExists() {
         user.setName("updated");
