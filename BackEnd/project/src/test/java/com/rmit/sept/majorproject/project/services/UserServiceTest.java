@@ -13,6 +13,9 @@ import javax.validation.ConstraintViolationException;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserServiceTest {
 
+    private final String GOOD_USER_NAME = "test user";
+    private final String GOOD_USER_EMAIL = "test@email.com";
+
     @Autowired
     private UserService userService;
     private User user;
@@ -21,8 +24,8 @@ public class UserServiceTest {
     void beforeTestSetup(){
         // Create a user with valid data
         user = new User();
-        user.setName("test user");
-        user.setEmail("test@email.com");
+        user.setName(GOOD_USER_NAME);
+        user.setEmail(GOOD_USER_EMAIL);
     }
 
     @Test
@@ -42,7 +45,15 @@ public class UserServiceTest {
     }
 
     @Test
-    void saveUser_ThrowsException_IfNameIsTooShort() {
+    void saveOrUpdateUser_Succeeds_IfAllDataIsValid() {
+        User newUser = userService.saveOrUpdateUser(user);
+        Assertions.assertTrue(newUser.getName().equals(GOOD_USER_NAME) &&
+                                    newUser.getEmail().equals(GOOD_USER_EMAIL),
+                "Returned user data should match what was saved.");
+    }
+
+    @Test
+    void saveOrUpdateUser_ThrowsException_IfNameIsTooShort() {
         user.setName("12");     // Current constraint min is 3
 
         Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
@@ -50,7 +61,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void saveUser_ThrowsException_IfNameIsTooLong() {
+    void saveOrUpdateUser_ThrowsException_IfNameIsTooLong() {
         user.setName("1234567890123456");   // Current constraint max is 15
 
         Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
@@ -58,7 +69,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void saveUser_ThrowsException_IfNameIsBlank() {
+    void saveOrUpdateUser_ThrowsException_IfNameIsBlank() {
         user.setName("");
 
         Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
