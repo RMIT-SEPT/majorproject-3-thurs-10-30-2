@@ -46,7 +46,7 @@ public class UserServiceTest {
         user.setName("12");     // Current constraint min is 3
 
         Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
-                "Username with length 2 is too short, javax.validation.ConstraintViolationException should be thrown.");
+                "User name with length 2 is too short, javax.validation.ConstraintViolationException should be thrown.");
     }
 
     @Test
@@ -54,7 +54,15 @@ public class UserServiceTest {
         user.setName("1234567890123456");   // Current constraint max is 15
 
         Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
-                "Username with length 16 is too long, javax.validation.ConstraintViolationException should be thrown.");
+                "User name with length 16 is too long, javax.validation.ConstraintViolationException should be thrown.");
+    }
+
+    @Test
+    void saveUser_ThrowsException_IfNameIsBlank() {
+        user.setName("");
+
+        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
+                "Blank name for user should throw javax.validation.ConstraintViolationException should be thrown.");
     }
 
     @Test
