@@ -87,4 +87,11 @@ public class BusinessServiceTest {
         Assertions.assertNull(test);
     }
 
+    @Test
+    void updateBusinessName_changesBusinessName_ifBusinessExists() {
+        business.setName("Updated name");
+        Business updatedBusiness = businessService.saveOrUpdateBusiness(business);
+        Assertions.assertEquals(business.getName(), updatedBusiness.getName());
+    }
+
 }
