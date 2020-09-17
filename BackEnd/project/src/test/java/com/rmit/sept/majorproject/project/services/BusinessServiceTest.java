@@ -5,6 +5,7 @@ import com.rmit.sept.majorproject.project.model.BusinessHours;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.TransactionSystemException;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -30,10 +31,10 @@ public class BusinessServiceTest {
     }
 
     @Test
-    void addBusiness_ReturnsNull_IfNameIsNull() {
+    void addBusiness_ReturnsException_IfNameIsBlank() {
         business.setName("");
-        Business test = businessService.saveOrUpdateBusiness(business);
-        Assertions.assertNull(test,"Should be Null if Name is empty");
+        Assertions.assertThrows(TransactionSystemException.class, () -> businessService.saveOrUpdateBusiness(business),
+                "Throws exception because name is blank");
     }
 
     @Test
