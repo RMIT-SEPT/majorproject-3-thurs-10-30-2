@@ -16,16 +16,16 @@ public class BookingService {
     public Booking findBookingById(Long id){
         Optional<Booking> booking = bookingRepository.findById(id);
         if(!booking.isPresent()){
-            throw new IllegalArgumentException("Booking could not be found");
+            return null;
         }
         return booking.get();
     }
     public Booking createBooking(Booking booking){
         if(booking.getStartTime().before(currentDateTime())){
-            throw new IllegalArgumentException("Invalid start time.");
+            return null;
         }
         if(booking.getEndTime().before(booking.getStartTime())){
-            throw new IllegalArgumentException("Invalid end time.");
+            return null;
         }
         return bookingRepository.save(booking);
     }
@@ -36,9 +36,8 @@ public class BookingService {
     }
 
     public Booking updateBooking(Booking booking){
-        Booking selectedBooking = findBookingById(booking.getId());
 
-        return bookingRepository.save(selectedBooking);
+        return bookingRepository.save(booking);
     }
     public Date currentDateTime(){
         Date now = new Date();
