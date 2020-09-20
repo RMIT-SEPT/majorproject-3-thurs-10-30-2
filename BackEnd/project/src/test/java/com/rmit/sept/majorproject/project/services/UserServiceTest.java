@@ -22,12 +22,14 @@ public class UserServiceTest {
         user = new User();
         user.setName("test user");
         user.setEmail("test@email.com");
+        user.setPassword("$tr0NgPa$SWoRD");
     }
 
     @BeforeEach
     void beforeTestSetup(){
         user.setName("test user");
         user.setEmail("test@email.com");
+        user.setPassword("$tr0NgPa$SWoRD");
     }
 
     @Test
@@ -57,18 +59,12 @@ public class UserServiceTest {
         user.setName("updated");
         Assertions.assertNotNull(userService.saveOrUpdateUser(user));
     }
-    @Test
-    void updateUser_returnsNull_UserDoesNotExists() {
-        user.setName("updated");
-        Assertions.assertNull( userService.saveOrUpdateUser(user));
-    }
 
     @Test
     void saveorupdateusers_returnsNull_UserHasInvalidEmail(){
         user.setEmail("email.com");
         // Fails as user must have an @ symbol in their email address
-        Assertions.assertThrows(javax.validation.ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user)
-        );
+        Assertions.assertNull(userService.saveOrUpdateUser(user));
     }
 
     @Test
