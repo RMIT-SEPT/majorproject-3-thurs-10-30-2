@@ -2,6 +2,7 @@ package com.rmit.sept.majorproject.project.services;
 
 import com.rmit.sept.majorproject.project.Repositories.BusinessRepository;
 import com.rmit.sept.majorproject.project.model.Business;
+import com.rmit.sept.majorproject.project.model.BusinessHours;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,11 @@ public class BusinessService {
     private BusinessRepository businessRepository;
 
     public Business saveOrUpdateBusiness(Business business){
-        return businessRepository.save(business);
+
+        if(!(business.getName().isEmpty()) && hoursCheck(business) && dupe_Name(business)){
+            return businessRepository.save(business);
+        }
+        return null;
     }
 
     public List<Business> all(){
@@ -42,6 +47,29 @@ public class BusinessService {
 
     public void delete(Long id) {
         businessRepository.deleteById(id);
+    }
+
+    private boolean hoursCheck(Business business){
+        List<BusinessHours> hours = business.getBusinessHours();
+        if(!(hours.isEmpty())){
+            for(BusinessHours hoursTemp : hours) {
+                if (!(hoursTemp.getStartTime().isBefore(hoursTemp.getEndTime()))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean dupe_Name(Business business){
+        List<Business> all = all();
+
+        for(Business businessTemp : all) {
+            if (business.getName().equals(businessTemp.getName())) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
