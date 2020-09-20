@@ -31,10 +31,10 @@ public class BusinessServiceTest {
     }
 
     @Test
-    void addBusiness_ReturnsException_IfNameIsBlank() {
+    void addBusiness_ReturnsNull_IfNameIsBlank() {
         business.setName("");
-        Assertions.assertThrows(TransactionSystemException.class, () -> businessService.saveOrUpdateBusiness(business),
-                "Throws exception because name is blank");
+        Assertions.assertNull(businessService.saveOrUpdateBusiness(business),
+                "Returns Null because name is blank");
     }
 
     @Test
