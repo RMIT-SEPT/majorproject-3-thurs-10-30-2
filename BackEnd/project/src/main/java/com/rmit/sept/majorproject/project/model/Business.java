@@ -40,6 +40,10 @@ public class Business {
         this.businessHours.add(businessHours);
     }
 
+    public void removeAllBusinessHours() {
+        this.businessHours.clear();
+    }
+
     @PrePersist
     protected void onCreate(){
         this.created_At = new Date();

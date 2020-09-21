@@ -31,6 +31,7 @@ import java.util.List;
     ]
 }
 */
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/Business")
@@ -74,10 +75,13 @@ public class BusinessController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateBusiness(@RequestBody BusinessHolder holder, @PathVariable Long id){
+        Business oldBusiness = businessService.findById(id);
+        oldBusiness.setName(holder.getBusiness().getName());
+        oldBusiness.removeAllBusinessHours();
         for (BusinessHours hours: holder.getBusinessHours()) {
-            holder.getBusiness().setBusinessHours(hours);
+            oldBusiness.setBusinessHours(hours);
         }
-        Business business1 = businessService.saveOrUpdateBusiness(holder.getBusiness()); //tmp user
+        Business business1 = businessService.saveOrUpdateBusiness(oldBusiness);
 
         return new ResponseEntity<>(business1, HttpStatus.CREATED);
     }
