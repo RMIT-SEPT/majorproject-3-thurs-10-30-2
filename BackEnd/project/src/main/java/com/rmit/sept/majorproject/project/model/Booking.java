@@ -13,18 +13,19 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+
+    @NotNull(message = "Duration cannot be null.")
     private int duration;
 
-    //    @JsonIgnore
-//    @OneToOne(optional=false)
-    @NotNull
-    private User.AccountType customer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
+    @NotNull(message = "Customer cannot be null.")
+    private User customer;
 
-    //    @JsonIgnore
-//    @OneToOne(optional=false)
-    @NotNull
-    private User.AccountType worker;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "worker_id")
+    @NotNull(message = "Worker cannot be null.")
+    private User worker;
 
     @JsonFormat(pattern = "yyyy-MM-dd:HH-mm")
     private Date startTime;
@@ -57,20 +58,20 @@ public class Booking {
         this.duration = duration;
     }
 
-    public User.AccountType getCustomer() {
+    public User getCustomer() {
         return customer;
     }
 
     public void setCustomer(User customer) {
-        this.customer = User.AccountType.CUSTOMER;
+        this.customer = customer;
     }
 
-    public User.AccountType getWorker() {
+    public User getWorker() {
         return worker;
     }
 
-    public void setWorker(User worker) {
-        this.worker = User.AccountType.WORKER;
+    public void setWorkerId(User worker) {
+        this.worker = worker;
     }
 
     public Date getStartTime() {

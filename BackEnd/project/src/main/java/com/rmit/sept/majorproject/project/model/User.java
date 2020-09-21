@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -20,6 +21,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany(
+            mappedBy = "customer",
+            fetch = FetchType.LAZY
+    )
+    private Set<Booking> bookingsAsCustomer;
+
+    @OneToMany(
+            mappedBy = "worker",
+            fetch = FetchType.LAZY
+    )
+    private Set<Booking> bookingsAsWorker;
+
     @Size(min = 3, max = 15, message = "Please enter 3-15 characters")
     @NotBlank(message = "User name is required")
     private String name;
@@ -32,6 +45,8 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
+
+
 
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date created_At;
