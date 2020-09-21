@@ -14,20 +14,20 @@ class Login extends React.Component {
                 <Form>
                     <Form.Group controlId="formLoginEmail">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" />
+                        <Form.Control type="email" placeholder="Enter email" value="admin@agme.com.au" />
                     </Form.Group>
 
                     <Form.Group controlId="formLoginPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" />
+                        <Form.Control type="password" placeholder="Password" value="abc123" />
                     </Form.Group>
                     <Form.Group controlId="formRememberCheckbox">
                         <Form.Check type="checkbox" label="Remember me" />
                     </Form.Group>
-                    <Button variant="primary" type="submit" >
-                        Submit
-                    </Button>
                 </Form>
+                <Button variant="primary" type="submit" onClick={() => window.location.href = '/dashboard'}>
+                    Submit
+                </Button>
                 <Button variant="light" onClick={() => this.props.setForm(0)}>Back</Button>{' '}
             </div>
         );
