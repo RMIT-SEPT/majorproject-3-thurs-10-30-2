@@ -1,0 +1,38 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+
+version: '3.7'
+
+# Define services
+services:
+  # backend service
+  springboot-docker-compose-app-container:
+    image: springboot-docker-compose-app:1
+    build:
+      context: ./BackEnd/project
+      dockerfile: Dockerfile
+    volumes:
+      - /data/springboot-docker-compose-app
+    ports:
+      - "8080:8080"  
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+      - backend
+      - frontend
+
+  # Frontend Service 
+  react-client:
+    build: 
+        context: ./FrontEnd/agme-booking
+        dockerfile: Dockerfile
+    stdin_open: true    
+    ports:
+        - "3000:3000"
+    volumes:
+        - /app/node_modules
+        - .:/app   
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+        - backend
+        - frontend
+# Networks to be created to facilitate communication between containers
+networks:
+  backend:
+  frontend:    
