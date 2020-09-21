@@ -1,9 +1,9 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './Components/Header'
-import Hero from './Components/Hero';
-import Dashboard from './Components/Dashboard';
+import Hero from './Components/Homepage/Hero';
+import Dashboard from './Components/Dashboard/Dashboard';
 
 import {
   BrowserRouter as Router,
@@ -18,10 +18,10 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Hero/>
+            <Hero />
           </Route>
           <Route path="/dashboard">
-            <Dashboard/>
+            <Dashboard />
           </Route>
         </Switch>
       </Router>

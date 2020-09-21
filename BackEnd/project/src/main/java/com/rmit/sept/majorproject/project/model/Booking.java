@@ -16,26 +16,28 @@ public class Booking {
     @NotNull
     private int duration;
 
-//    @JsonIgnore
+    //    @JsonIgnore
 //    @OneToOne(optional=false)
-//    User customer;
-//    User.AccountType customer = User.AccountType.CUSTOMER;
+    @NotNull
+    private User.AccountType customer;
 
-//    @JsonIgnore
+    //    @JsonIgnore
 //    @OneToOne(optional=false)
-//    User worker;
-//    User.AccountType worker = User.AccountType.WORKER;
+    @NotNull
+    private User.AccountType worker;
 
-    @JsonFormat(pattern ="yyyy-MM-dd:HH-mm")
+    @JsonFormat(pattern = "yyyy-MM-dd:HH-mm")
     private Date startTime;
 
-    @JsonFormat(pattern="yyyy-MM-dd:HH-mm")
+    @JsonFormat(pattern = "yyyy-MM-dd:HH-mm")
     private Date endTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date created_At;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date updated_At;
 
-    public Booking(){
+    public Booking() {
 
     }
 
@@ -55,17 +57,21 @@ public class Booking {
         this.duration = duration;
     }
 
-//    public User getCustomer() { return customer; }
-//
-//    public void setCustomer(User customer) { this.customer = customer; }
-//
-//    public User getWorker() {
-//        return worker;
-//    }
-//
-//    public void setWorker(User worker) {
-//        this.worker = worker;
-//    }
+    public User.AccountType getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(User customer) {
+        this.customer = User.AccountType.CUSTOMER;
+    }
+
+    public User.AccountType getWorker() {
+        return worker;
+    }
+
+    public void setWorker(User worker) {
+        this.worker = User.AccountType.WORKER;
+    }
 
     public Date getStartTime() {
         return startTime;
@@ -75,9 +81,13 @@ public class Booking {
         this.startTime = startTime;
     }
 
-    public Date getEndTime(){return endTime;}
+    public Date getEndTime() {
+        return endTime;
+    }
 
-    public void setEndTime(Date endTime){ this.endTime = endTime; }
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public Date getCreated_At() {
         return created_At;
@@ -87,8 +97,22 @@ public class Booking {
         this.created_At = created_At;
     }
 
+    public Date getUpdated_At() {
+        return updated_At;
+    }
+
+    public void setUpdated_At(Date updated_At) {
+        this.updated_At = updated_At;
+    }
+
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         this.created_At = new Date();
     }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updated_At = new Date();
+    }
+
 }

@@ -5,12 +5,23 @@ import com.rmit.sept.majorproject.project.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User saveOrUpdateUser(User user){
+    public User saveOrUpdateUser(User user) {
+
+        // TODO: This validation needs to be moved to the model
+        // Email Regex
+        // String regex = "(.+)@(.+)$";
+        // Pattern pattern = Pattern.compile(regex);
+        // Matcher matcher = pattern.matcher(user.getEmail());
+        // if(matcher.matches()) 
+      
         return userRepository.save(user);
     }
 

@@ -15,6 +15,7 @@ public class UserServiceTest {
 
     private final String GOOD_USER_NAME = "test user";
     private final String GOOD_USER_EMAIL = "test@email.com";
+    private final String GOOD_PASSWORD = "$tr0NgPa$SWoRD";
 
     @Autowired
     private UserService userService;
@@ -26,6 +27,7 @@ public class UserServiceTest {
         user = new User();
         user.setName(GOOD_USER_NAME);
         user.setEmail(GOOD_USER_EMAIL);
+        user.setPassword(GOOD_PASSWORD);
     }
 
     @Test
@@ -84,17 +86,10 @@ public class UserServiceTest {
     }
 
     @Test
-    void updateUser_returnsNull_UserDoesNotExists() {
-        user.setName("updated");
-        Assertions.assertNull( userService.saveOrUpdateUser(user));
-    }
-
-    @Test
     void saveorupdateusers_returnsNull_UserHasInvalidEmail(){
         user.setEmail("email.com");
         // Fails as user must have an @ symbol in their email address
-        Assertions.assertThrows(javax.validation.ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user)
-        );
+        Assertions.assertNull(userService.saveOrUpdateUser(user));
     }
 
     @Test

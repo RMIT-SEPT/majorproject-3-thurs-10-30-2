@@ -1,5 +1,14 @@
+@import "stylesheets/Calendar.scss";
+@import "stylesheets/Booking.scss";
+
 .navbar {
   height: 5vh;
+}
+
+@media only screen and (max-width: 850px) {
+  .navbar {
+    height: 16vw;
+  }
 }
 
 #hero {
@@ -47,4 +56,10 @@
 
 .header-spacer {
   margin-top: 8vh;
+}
+
+@media only screen and (max-width: 850px) {
+  .header-spacer {
+    margin-top: 20vw;
+  }
 }
