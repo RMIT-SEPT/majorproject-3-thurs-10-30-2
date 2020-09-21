@@ -5,7 +5,7 @@ FROM node:13.12.0-alpine
 WORKDIR /app
 
 # install app dependencies
-COPY package.json /app
+COPY package*.json /app/
 RUN npm install
 
 # add app
