@@ -50,7 +50,7 @@ public class UserServiceTest {
     void saveOrUpdateUser_Succeeds_IfAllDataIsValid() {
         User newUser = userService.saveOrUpdateUser(user);
         Assertions.assertTrue(newUser.getName().equals(GOOD_USER_NAME) &&
-                                    newUser.getEmail().equals(GOOD_USER_EMAIL),
+                        newUser.getEmail().equals(GOOD_USER_EMAIL),
                 "Returned user data should match what was saved.");
     }
 
@@ -75,7 +75,7 @@ public class UserServiceTest {
         user.setName("");
 
         Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
-                "Blank name for user should throw javax.validation.ConstraintViolationException should be thrown.");
+                "Blank name for user should throw javax.validation.ConstraintViolationException.");
     }
 
     @Test
@@ -86,16 +86,18 @@ public class UserServiceTest {
     }
 
     @Test
-    void saveorupdateusers_returnsNull_UserHasInvalidEmail(){
+    void saveOrUpdateUser_ThrowsException_IfEmailIsInvalid(){
         user.setEmail("email.com");
         // Fails as user must have an @ symbol in their email address
-        Assertions.assertNull(userService.saveOrUpdateUser(user));
+        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
+                "Invalid email should throw javax.validation.ConstraintViolationException.");
     }
 
     @Test
-    void saveorupdateusers_returnsNull_UserPasswordIsInvalidLength(){
+    void saveOrUpdateUser_ThrowsException_IfPasswordIsInvalidLength(){
         user.setPassword("12345");
         // Fails as user have a password 6 or more characters.
-        Assertions.assertNull(userService.saveOrUpdateUser(user));
+        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
+                "Short password should throw javax.validation.ConstraintViolationException.");
     }
 }

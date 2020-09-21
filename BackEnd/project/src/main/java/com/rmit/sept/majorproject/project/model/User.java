@@ -19,17 +19,19 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Size(min = 3, max = 15, message = "Please enter 3-15 characters")
     @NotBlank(message = "User name is required")
     private String name;
-    @Email(message = "Email is required")
+
+    @Email(message = "Valid email is required")
     private String email;
-    //password constraint?
+
+    @Size(min = 6, message = "Please enter a minimum of 6 characters")
     private String password;
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
-
 
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date created_At;
