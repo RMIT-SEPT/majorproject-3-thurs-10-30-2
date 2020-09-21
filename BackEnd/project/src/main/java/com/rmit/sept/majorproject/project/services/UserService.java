@@ -13,17 +13,16 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User saveOrUpdateUser(User user){
+    public User saveOrUpdateUser(User user) {
 
+        // TODO: This validation needs to be moved to the model
         // Email Regex
-        String regex = "(.+)@(.+)$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(user.getEmail());
-
-        if(user.getName().length() > 2 && user.getPassword().length() >= 8 && matcher.matches()) {
-            return userRepository.save(user);
-        }
-        return null;
+        // String regex = "(.+)@(.+)$";
+        // Pattern pattern = Pattern.compile(regex);
+        // Matcher matcher = pattern.matcher(user.getEmail());
+        // if(matcher.matches()) 
+      
+        return userRepository.save(user);
     }
 
     public void delete(Long id) {

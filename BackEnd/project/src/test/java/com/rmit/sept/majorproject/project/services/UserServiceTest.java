@@ -6,36 +6,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-
+import javax.validation.ConstraintViolationException;
 
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserServiceTest {
 
+    private final String GOOD_USER_NAME = "test user";
+    private final String GOOD_USER_EMAIL = "test@email.com";
+    private final String GOOD_PASSWORD = "$tr0NgPa$SWoRD";
+
     @Autowired
     private UserService userService;
     private User user;
 
-    @BeforeAll
-    public void setup() {
-        user = new User();
-        user.setName("test user");
-        user.setEmail("test@email.com");
-        user.setPassword("$tr0NgPa$SWoRD");
-    }
-
     @BeforeEach
     void beforeTestSetup(){
-        user.setName("test user");
-        user.setEmail("test@email.com");
-        user.setPassword("$tr0NgPa$SWoRD");
+        // Create a user with valid data
+        user = new User();
+        user.setName(GOOD_USER_NAME);
+        user.setEmail(GOOD_USER_EMAIL);
+        user.setPassword(GOOD_PASSWORD);
     }
 
     @Test
     void delete_DoesNotThrow_IfUserExists() {
         User newUser = userService.saveOrUpdateUser(user);
-        userService.delete(newUser.getId());
+        Assertions.assertDoesNotThrow(() -> userService.delete(newUser.getId()),
+                "Deleting an existing user should succeed.");
     }
 
     @Test
@@ -46,13 +45,39 @@ public class UserServiceTest {
         Assertions.assertThrows(EmptyResultDataAccessException.class, () -> userService.delete(newUser.getId()),
                 "Deleting a user which doesn't exist should throw org.springframework.dao.EmptyResultDataAccessException.");
     }
+
     @Test
-    void saveUser_returnsNull_IfUserNameIsInvalidLength(){
-        user.setName("no"); //invalid User name length
+    void saveOrUpdateUser_Succeeds_IfAllDataIsValid() {
         User newUser = userService.saveOrUpdateUser(user);
-        //fails as User cannot be created with name less than length 3
-        Assertions.assertNull(newUser);
+        Assertions.assertTrue(newUser.getName().equals(GOOD_USER_NAME) &&
+                                    newUser.getEmail().equals(GOOD_USER_EMAIL),
+                "Returned user data should match what was saved.");
     }
+
+    @Test
+    void saveOrUpdateUser_ThrowsException_IfNameIsTooShort() {
+        user.setName("12");     // Current constraint min is 3
+
+        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
+                "User name with length 2 is too short, javax.validation.ConstraintViolationException should be thrown.");
+    }
+
+    @Test
+    void saveOrUpdateUser_ThrowsException_IfNameIsTooLong() {
+        user.setName("1234567890123456");   // Current constraint max is 15
+
+        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
+                "User name with length 16 is too long, javax.validation.ConstraintViolationException should be thrown.");
+    }
+
+    @Test
+    void saveOrUpdateUser_ThrowsException_IfNameIsBlank() {
+        user.setName("");
+
+        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
+                "Blank name for user should throw javax.validation.ConstraintViolationException should be thrown.");
+    }
+
     @Test
     void updateUser_returnsUpdatedUser_UserExists() {
         userService.saveOrUpdateUser(user);
