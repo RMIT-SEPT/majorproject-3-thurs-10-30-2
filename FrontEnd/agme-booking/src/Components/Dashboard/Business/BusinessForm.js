@@ -55,7 +55,7 @@ class BusinessForm extends React.Component {
             }
         }).then(function (response) {
             if (response.status === 201) {
-
+                window.location.href = '/dashboard/businesses';
             }
             console.log(response);
         });
