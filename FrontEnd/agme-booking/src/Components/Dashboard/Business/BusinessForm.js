@@ -45,7 +45,7 @@ class BusinessForm extends React.Component {
     handleSubmit() {
         axios({
             method: "POST",
-            url: 'http://localhost:8080/api/Business',
+            url: 'http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/Business',
             headers: {},
             data: {
                 "business": {
