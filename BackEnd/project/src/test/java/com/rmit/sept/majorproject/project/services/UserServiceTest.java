@@ -25,7 +25,7 @@ public class UserServiceTest {
     void beforeTestSetup(){
         // Create a user with valid data
         user = new User();
-        user.setName(GOOD_USER_NAME);
+        user.setUsername(GOOD_USER_NAME);
         user.setEmail(GOOD_USER_EMAIL);
         user.setPassword(GOOD_PASSWORD);
     }
@@ -49,14 +49,14 @@ public class UserServiceTest {
     @Test
     void saveOrUpdateUser_Succeeds_IfAllDataIsValid() {
         User newUser = userService.saveOrUpdateUser(user);
-        Assertions.assertTrue(newUser.getName().equals(GOOD_USER_NAME) &&
+        Assertions.assertTrue(newUser.getUsername().equals(GOOD_USER_NAME) &&
                         newUser.getEmail().equals(GOOD_USER_EMAIL),
                 "Returned user data should match what was saved.");
     }
 
     @Test
     void saveOrUpdateUser_ThrowsException_IfNameIsTooShort() {
-        user.setName("12");     // Current constraint min is 3
+        user.setUsername("12");     // Current constraint min is 3
 
         Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
                 "User name with length 2 is too short, javax.validation.ConstraintViolationException should be thrown.");
@@ -64,7 +64,7 @@ public class UserServiceTest {
 
     @Test
     void saveOrUpdateUser_ThrowsException_IfNameIsTooLong() {
-        user.setName("1234567890123456");   // Current constraint max is 15
+        user.setUsername("1234567890123456");   // Current constraint max is 15
 
         Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
                 "User name with length 16 is too long, javax.validation.ConstraintViolationException should be thrown.");
@@ -72,7 +72,7 @@ public class UserServiceTest {
 
     @Test
     void saveOrUpdateUser_ThrowsException_IfNameIsBlank() {
-        user.setName("");
+        user.setUsername("");
 
         Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
                 "Blank name for user should throw javax.validation.ConstraintViolationException.");
@@ -81,7 +81,7 @@ public class UserServiceTest {
     @Test
     void updateUser_returnsUpdatedUser_UserExists() {
         userService.saveOrUpdateUser(user);
-        user.setName("updated");
+        user.setUsername("updated");
         Assertions.assertNotNull(userService.saveOrUpdateUser(user));
     }
 
