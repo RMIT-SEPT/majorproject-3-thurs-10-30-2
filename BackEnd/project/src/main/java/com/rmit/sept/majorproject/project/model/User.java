@@ -25,6 +25,29 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Please enter your full name")
+    private String fullName;
+
+    @Email(message = "Username needs to be a valid email")
+    @NotBlank(message = "Username is required")
+    @Column(unique = true)
+    private String username;
+
+    @NotBlank(message = "Password is required")
+    private String password;
+
+    @Transient
+    private String confirmPassword;
+
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
+
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date created_At;
+
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date updated_At;
+
     @OneToMany(
             mappedBy = "customer",
             fetch = FetchType.LAZY
@@ -37,26 +60,6 @@ public class User implements UserDetails {
     )
     private Set<Booking> bookingsAsWorker;
 
-    @Size(min = 3, max = 15, message = "Please enter 3-15 characters")
-    @NotBlank(message = "User name is required")
-    private String username;
-
-    @Email(message = "Valid email is required")
-    private String email;
-
-    @Size(min = 6, message = "Please enter a minimum of 6 characters")
-    private String password;
-
-    @Enumerated(EnumType.STRING)
-    private AccountType accountType;
-
-
-
-    @JsonFormat(pattern = "yyyy-mm-dd")
-    private Date created_At;
-    @JsonFormat(pattern = "yyyy-mm-dd")
-    private Date updated_At;
-
     public User() {
     }
 
@@ -68,21 +71,23 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public String getFullName() { return fullName; }
 
-    public String getEmail() {
-        return email;
-    }
+    public void setFullName(String fullName) { this.fullName = fullName; }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) { this.username = username; }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getConfirmPassword() { return confirmPassword; }
+
+    public void setConfirmPassword(String confirmPassword) { this.confirmPassword = confirmPassword; }
 
     public Date getCreated_At() {
         return created_At;
@@ -120,10 +125,6 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     @Override

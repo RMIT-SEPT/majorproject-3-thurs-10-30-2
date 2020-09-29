@@ -2,31 +2,86 @@ package com.rmit.sept.majorproject.project.web;
 
 
 import com.rmit.sept.majorproject.project.model.User;
+import com.rmit.sept.majorproject.project.payload.JWTLoginSucessReponse;
+import com.rmit.sept.majorproject.project.payload.LoginRequest;
+import com.rmit.sept.majorproject.project.security.JwtTokenProvider;
+import com.rmit.sept.majorproject.project.services.MapValidationErrorService;
 import com.rmit.sept.majorproject.project.services.UserService;
+import com.rmit.sept.majorproject.project.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+
+import static com.rmit.sept.majorproject.project.security.SecurityConstants.TOKEN_PREFIX;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
+    private MapValidationErrorService mapValidationErrorService;
+
+    @Autowired
     private UserService userService;
 
-    @PostMapping("")
-    public ResponseEntity<?> createNewUser(@Valid @RequestBody User user, BindingResult result){
-        if(result.hasErrors()) {
-            return new ResponseEntity<List<FieldError>>(result.getFieldErrors(), HttpStatus.BAD_REQUEST);
+    @Autowired
+    private UserValidator userValidator;
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody User user, BindingResult bindingResult) {
+        ResponseEntity<?> result = null;
+
+        userValidator.validate(user, bindingResult);
+
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationErrorService(bindingResult);
+
+        if (errorMap != null) {
+            result = errorMap;
+        } else {
+            User newUser = userService.saveOrUpdateUser(user);
+            result = new ResponseEntity<User>(newUser, HttpStatus.CREATED);
         }
-        userService.saveOrUpdateUser(user);
-        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+
+        return result;
+    }
+
+    @Autowired
+    private JwtTokenProvider tokenProvider;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticate(@Valid @RequestBody LoginRequest loginRequest, BindingResult bindingResult) {
+        ResponseEntity<?> result = null;
+
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationErrorService(bindingResult);
+
+        if (errorMap != null) {
+            result = errorMap;
+        } else {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()
+                    )
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
+
+            result = ResponseEntity.ok(new JWTLoginSucessReponse(true, jwt));
+        }
+
+        return result;
     }
 
     @DeleteMapping("{id}")

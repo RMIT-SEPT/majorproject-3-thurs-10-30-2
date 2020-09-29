@@ -1,8 +1,10 @@
 package com.rmit.sept.majorproject.project.services;
 
 import com.rmit.sept.majorproject.project.Repositories.UserRepository;
+import com.rmit.sept.majorproject.project.exceptions.UsernameAlreadyExistsException;
 import com.rmit.sept.majorproject.project.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -11,7 +13,12 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public User saveOrUpdateUser(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setConfirmPassword("");
         return userRepository.save(user);
     }
 

@@ -13,8 +13,8 @@ import javax.validation.ConstraintViolationException;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserServiceTest {
 
-    private final String GOOD_USER_NAME = "test user";
-    private final String GOOD_USER_EMAIL = "test@email.com";
+    private final String GOOD_FULL_NAME = "Bob Smith";
+    private final String GOOD_USERNAME = "test@email.com";
     private final String GOOD_PASSWORD = "$tr0NgPa$SWoRD";
 
     @Autowired
@@ -23,10 +23,17 @@ public class UserServiceTest {
 
     @BeforeEach
     void beforeTestSetup(){
+        // Delete user if it has been saved by a test
+        try {
+            userService.delete(user.getId());
+        } catch (Exception e) {
+            // Do nothing, we just want to delete this user in the event it had been previously saved.
+        }
+
         // Create a user with valid data
         user = new User();
-        user.setUsername(GOOD_USER_NAME);
-        user.setEmail(GOOD_USER_EMAIL);
+        user.setFullName(GOOD_FULL_NAME);
+        user.setUsername(GOOD_USERNAME);
         user.setPassword(GOOD_PASSWORD);
     }
 
@@ -49,8 +56,8 @@ public class UserServiceTest {
     @Test
     void saveOrUpdateUser_Succeeds_IfAllDataIsValid() {
         User newUser = userService.saveOrUpdateUser(user);
-        Assertions.assertTrue(newUser.getUsername().equals(GOOD_USER_NAME) &&
-                        newUser.getEmail().equals(GOOD_USER_EMAIL),
+        Assertions.assertTrue(newUser.getUsername().equals(GOOD_USERNAME) &&
+                newUser.getFullName().equals(GOOD_FULL_NAME),
                 "Returned user data should match what was saved.");
     }
 
@@ -79,25 +86,17 @@ public class UserServiceTest {
     }
 
     @Test
-    void updateUser_returnsUpdatedUser_UserExists() {
+    void saveOrUpdateUser_returnsUpdatedUser_IfUserExists() {
+        String newName = "New Fullname";
+
+        // Save current
         userService.saveOrUpdateUser(user);
-        user.setUsername("updated");
-        Assertions.assertNotNull(userService.saveOrUpdateUser(user));
+
+        // Change name and update
+        user.setFullName(newName);
+        userService.saveOrUpdateUser(user);
+
+        Assertions.assertEquals(user.getFullName(), newName);
     }
 
-    @Test
-    void saveOrUpdateUser_ThrowsException_IfEmailIsInvalid(){
-        user.setEmail("email.com");
-        // Fails as user must have an @ symbol in their email address
-        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
-                "Invalid email should throw javax.validation.ConstraintViolationException.");
-    }
-
-    @Test
-    void saveOrUpdateUser_ThrowsException_IfPasswordIsInvalidLength(){
-        user.setPassword("12345");
-        // Fails as user have a password 6 or more characters.
-        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
-                "Short password should throw javax.validation.ConstraintViolationException.");
-    }
 }

@@ -38,13 +38,13 @@ public class BookingServiceTest {
         customer = new User();
         worker = new User();
 
-        customer.setUsername("Bob");
-        customer.setEmail("bob@bob.com");
+        customer.setFullName("Bob");
+        customer.setUsername("bob@bob.com");
         customer.setPassword("fwedsf34gf34fge");
         userService.saveOrUpdateUser(customer);
 
-        worker.setUsername("Alice");
-        worker.setEmail("alice@alice.com");
+        worker.setFullName("Alice");
+        worker.setUsername("alice@alice.com");
         worker.setPassword("fwedsf34gf34fge");
         userService.saveOrUpdateUser(worker);
     }
