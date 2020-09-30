@@ -17,9 +17,14 @@ public class UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public User saveOrUpdateUser(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setConfirmPassword("");
-        return userRepository.save(user);
+        try {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user.setConfirmPassword("");
+            return userRepository.save(user);
+        } catch (Exception e) {
+            throw new UsernameAlreadyExistsException("Username " + user.getUsername() + " already exists.");
+        }
+
     }
 
     public void delete(Long id) {
