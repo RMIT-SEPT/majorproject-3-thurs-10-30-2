@@ -53,7 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorisedHandler)
+        http.cors()
+                .and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorisedHandler)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().headers().frameOptions().sameOrigin()
                 .and().authorizeRequests()

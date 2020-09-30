@@ -37,17 +37,17 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody User user, BindingResult bindingResult) {
-        ResponseEntity<?> result = null;
+        ResponseEntity<?> result;
 
         userValidator.validate(user, bindingResult);
 
-        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationErrorService(bindingResult);
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationErrorService(bindingResult);
 
         if (errorMap != null) {
             result = errorMap;
         } else {
             User newUser = userService.saveOrUpdateUser(user);
-            result = new ResponseEntity<User>(newUser, HttpStatus.CREATED);
+            result = new ResponseEntity<>(newUser, HttpStatus.CREATED);
         }
 
         return result;
@@ -61,9 +61,9 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@Valid @RequestBody LoginRequest loginRequest, BindingResult bindingResult) {
-        ResponseEntity<?> result = null;
+        ResponseEntity<?> result;
 
-        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationErrorService(bindingResult);
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationErrorService(bindingResult);
 
         if (errorMap != null) {
             result = errorMap;

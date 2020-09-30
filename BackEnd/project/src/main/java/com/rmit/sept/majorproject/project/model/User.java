@@ -75,6 +75,10 @@ public class User implements UserDetails {
 
     public void setFullName(String fullName) { this.fullName = fullName; }
 
+    public String getUsername() {
+        return username;
+    }
+
     public void setUsername(String username) { this.username = username; }
 
     public String getPassword() {
@@ -125,12 +129,6 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
-    }
-
-    @Override
-    @JsonIgnore
-    public String getUsername() {
-        return username;
     }
 
     @Override
