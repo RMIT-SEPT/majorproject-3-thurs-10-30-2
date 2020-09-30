@@ -1,7 +1,7 @@
 package com.rmit.sept.majorproject.project.security;
 
 public class SecurityConstants {
-    public static final String H2_URL = "h2-console/**";
+    public static final String H2_URL = "/h2-console/**";
     public static final String HEADER_STRING = "Authorization";
 
     // TODO: Determine if this key needs to be of some particular format
