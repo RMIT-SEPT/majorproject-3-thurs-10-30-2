@@ -8,14 +8,14 @@ import org.springframework.dao.EmptyResultDataAccessException;
 
 import javax.validation.ConstraintViolationException;
 
+import static com.rmit.sept.majorproject.project.sharedtestdata.TestingConstants.*;
+
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserServiceTest {
 
-    private final String GOOD_FULL_NAME = "Bob Smith";
-    private final String GOOD_USERNAME = "test@email.com";
-    private final String GOOD_PASSWORD = "$tr0NgPa$SWoRD";
+
 
     @Autowired
     private UserService userService;
