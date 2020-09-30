@@ -1,24 +1,67 @@
 import React from 'react'
+import axios from 'axios';
 import {
-    Form, Button
+    Form, Button, Dropdown
 } from 'react-bootstrap'
 import Calendar from 'react-calendar'
 import AvailabilityCard from './AvailabilityCard'
 
-
 class BookingForm extends React.Component {
-    state = {
-        date: new Date(),
-        employee: 'Any'
+    constructor(props) {
+        super(props);
+        this.state = {
+            business: '',
+            businesses: [],
+            date: new Date(),
+            duration: ' ',
+            employee: 'Any'
+        }
+        // to display available businesses.
+        axios.get('http://localhost:8080/api/Business')
+            .then((response) => {
+                this.setState({ businesses: response.data })
+            });
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
-
     onChange = date => this.setState({ date })
 
     handleChange = name => event => {
         this.setState({ [name]: event.target.value });
     }
+    changeBusinessValue(text) {
+        this.setState({ business: text })
+    }
 
+    handleSubmit() {
+        axios({
+            method: "POST",
+            // url: 'http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/bookings',
+            url: 'http://localhost:8080/api/bookings',
+            headers: {},
+            data: {
+                "booking": {
+                    "duration": this.state.duration
+                    //customer
+                    //worker(employee)
+                    //startTime
+                    //endTime
+                },
+
+            }
+        }).then(function (response) {
+            if (response.status === 201) {
+                window.location.href = '/dashboard/bookings';
+            }
+            console.log(response);
+        });
+    }
     render() {
+        var businessesList = [];
+        this.state.businesses.forEach(element => {
+            businessesList.push(
+                element.name
+            )
+        });
 
         const times = {
             Donna: [
@@ -33,11 +76,12 @@ class BookingForm extends React.Component {
             ]
         };
 
+
         const employees = Object.keys(times).map(key =>
             <option key={key} value={key}>{key}</option>)
-
         const slots = []
 
+        //pushes the available times for an employee.
         if (this.state.employee === 'Any') {
             Object.keys(times).map(key =>
                 slots.push(<AvailabilityCard empName={key} times={times[key]} />))
@@ -48,9 +92,18 @@ class BookingForm extends React.Component {
 
         return (
             <div id="booking-form">
-                <h1 className="text-center">
-                    Business Name
-                </h1>
+                {/* For selecting a business in bookings form */}
+                {/* <Dropdown>
+                    <Dropdown.Toggle variant="success" id="dropdown">
+                        {this.state.business}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        {this.state.businesses.map((business) => {
+                            return <Dropdown.Item value={business.value}><div onClick={(e) => this.changeBusinessValue(e.target.textContent)}>{business.name}</div></Dropdown.Item>
+                        })}
+                    </Dropdown.Menu>
+                </Dropdown> */}
                 <Calendar
                     onChange={this.onChange}
                     value={this.state.date}
@@ -68,7 +121,7 @@ class BookingForm extends React.Component {
                     </h2>
                     <div className="row">
                         <Form id="booking-refinement">
-                            <div className="col-sm-6">
+                            {/* <div className="col-sm-6">
                                 <Form.Group controlId="exampleForm.SelectCustomSizeSm">
                                     <Form.Label>Service</Form.Label>
                                     <Form.Control as="select" size="sm" custom>
@@ -76,6 +129,15 @@ class BookingForm extends React.Component {
                                         <option>Foo</option>
                                         <option>Bar</option>
                                         <option>Baz</option>
+                                    </Form.Control>
+                                </Form.Group>
+                            </div> */}
+                            <div className='col-sm-6'>
+                                <Form.Group controlId="exampleForm.SelectCustomSizeLg">
+                                    <Form.Label>Available Times</Form.Label>
+                                    <Form.Control as="select" size="sm" custom onChange={this.handleChange('employee')}>
+                                        <option key="Any" value="Any">select a time</option>
+                                      
                                     </Form.Control>
                                 </Form.Group>
                             </div>
@@ -93,7 +155,7 @@ class BookingForm extends React.Component {
                     </div>
                 </div>
                 <div className="text-center mt-4">
-                    <Button variant="success" type="submit" className="mr-4">
+                    <Button variant="success" onClick={this.handleSubmit}>
                         <h4 className="mb-0">Book</h4>
                     </Button>
                     <Button variant="danger" type="submit" onClick={() => this.props.setForm(0)}>

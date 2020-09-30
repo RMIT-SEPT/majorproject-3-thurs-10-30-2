@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/bookings")
 public class BookingController {
@@ -21,6 +23,16 @@ public class BookingController {
     public ResponseEntity<Booking> getBooking(@PathVariable Long id){
         Booking booking = bookingService.findBookingById(id);
         return new ResponseEntity<>(booking, HttpStatus.OK);
+    }
+    @GetMapping("")
+    public ResponseEntity<?> all(){
+        List<Booking> allBookings = bookingService.all();
+        if(allBookings.isEmpty()){
+            return new ResponseEntity<>("No Bookings found.", HttpStatus.NOT_FOUND);
+        }
+        else{
+            return new ResponseEntity<>(allBookings, HttpStatus.ACCEPTED);
+        }
     }
     @PostMapping("")
     public ResponseEntity<Booking> createBooking(@Valid @RequestBody Booking booking){

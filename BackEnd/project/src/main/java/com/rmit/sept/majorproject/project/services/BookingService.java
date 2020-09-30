@@ -2,10 +2,13 @@ package com.rmit.sept.majorproject.project.services;
 
 import com.rmit.sept.majorproject.project.Repositories.BookingRepository;
 import com.rmit.sept.majorproject.project.model.Booking;
+import com.rmit.sept.majorproject.project.model.Business;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +22,16 @@ public class BookingService {
             return null;
         }
         return booking.get();
+    }
+    public List<Booking> all(){
+
+        List<Booking> bookings = new ArrayList<>();
+        Iterable<Booking> iterable = bookingRepository.findAll();
+
+        for(Booking b : iterable){
+            bookings.add(b);
+        }
+        return bookings;
     }
     public Booking createBooking(Booking booking){
         if(booking.getStartTime().before(currentDateTime())){
