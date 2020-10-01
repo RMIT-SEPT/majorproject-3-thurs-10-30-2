@@ -1,7 +1,7 @@
 package com.rmit.sept.majorproject.project.web;
 
 
-import com.rmit.sept.majorproject.project.model.User;
+import com.rmit.sept.majorproject.project.model.*;
 import com.rmit.sept.majorproject.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +27,16 @@ public class UserController {
         }
         userService.saveOrUpdateUser(user);
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/worker")
+    public ResponseEntity<?> createNewUser(@RequestBody WorkerHolder holder, BindingResult result){
+        for (WorkerHours hours: holder.getWorkerHours()) {
+            holder.getUser().setWorkerHours(hours);
+        }
+        User user1 = userService.saveOrUpdateUser(holder.getUser()); //tmp user
+
+        return new ResponseEntity<>(user1, HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}")

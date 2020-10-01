@@ -3,10 +3,13 @@ package com.rmit.sept.majorproject.project.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -33,6 +36,10 @@ public class User {
     )
     private Set<Booking> bookingsAsWorker;
 
+    @OneToMany( cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<WorkerHours> workerHours = new ArrayList<>();
+
     @Size(min = 3, max = 15, message = "Please enter 3-15 characters")
     @NotBlank(message = "User name is required")
     private String name;
@@ -44,9 +51,8 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private AccountType accountType;
-
-
 
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date created_At;
@@ -107,6 +113,18 @@ public class User {
     public AccountType getAccountType(){ return accountType; }
 
     public void setAccountType(AccountType accountType) { this.accountType = accountType; }
+
+    public List<WorkerHours> getWorkerHours() {
+        return workerHours;
+    }
+
+    public void setWorkerHours(WorkerHours workerHours) {
+        this.workerHours.add(workerHours);
+    }
+
+    public void removeAllBusinessHours() {
+        this.workerHours.clear();
+    }
 
     @PrePersist
     protected void onCreate(){
