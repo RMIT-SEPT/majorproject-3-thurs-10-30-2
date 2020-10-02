@@ -2,7 +2,6 @@ package com.rmit.sept.majorproject.project.services;
 
 import com.rmit.sept.majorproject.project.Repositories.BookingRepository;
 import com.rmit.sept.majorproject.project.model.Booking;
-import com.rmit.sept.majorproject.project.model.Business;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

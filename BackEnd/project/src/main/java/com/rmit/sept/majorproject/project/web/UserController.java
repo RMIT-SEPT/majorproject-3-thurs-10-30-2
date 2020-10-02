@@ -1,6 +1,7 @@
 package com.rmit.sept.majorproject.project.web;
 
 
+import com.rmit.sept.majorproject.project.model.Booking;
 import com.rmit.sept.majorproject.project.model.User;
 import com.rmit.sept.majorproject.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,19 @@ public class UserController {
         userService.saveOrUpdateUser(user);
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
-
+    @GetMapping("{id}")
+    public ResponseEntity<?> getWorkerBookings(@RequestBody User worker,@PathVariable Long id){
+        List<Booking> workerBookings = userService.getBookingsAsWorker(id,worker);
+        if(workerBookings.isEmpty()){
+            return new ResponseEntity<>("No Bookings found.", HttpStatus.NOT_FOUND);
+        }
+        else{
+            return new ResponseEntity<>(workerBookings, HttpStatus.ACCEPTED);
+        }
+    }
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        // TODO: Implement security checks before proceeding with deletion.
+
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }

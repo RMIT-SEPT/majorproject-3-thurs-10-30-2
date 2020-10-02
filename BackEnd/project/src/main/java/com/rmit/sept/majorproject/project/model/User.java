@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -31,7 +32,7 @@ public class User {
             mappedBy = "worker",
             fetch = FetchType.LAZY
     )
-    private Set<Booking> bookingsAsWorker;
+    private List<Booking> bookingsAsWorker;
 
     @Size(min = 3, max = 15, message = "Please enter 3-15 characters")
     @NotBlank(message = "User name is required")
@@ -62,6 +63,13 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<Booking> getWorkerBookings(){
+        return bookingsAsWorker;
+    }
+    public void setBookingsAsWorker(Booking booking){
+        this.bookingsAsWorker.add(booking);
     }
 
     public String getName() {
