@@ -39,6 +39,17 @@ public class UserController {
         return new ResponseEntity<>(user1, HttpStatus.CREATED);
     }
 
+    @GetMapping("/worker/{id}")
+    ResponseEntity<?> one(@PathVariable Long id) {
+
+        if(userService.findById(id) != null){
+            return new ResponseEntity<>(userService.findById(id),HttpStatus.ACCEPTED);
+        }
+        else{
+            return new ResponseEntity<>("ID Does Not Exist",HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         // TODO: Implement security checks before proceeding with deletion.
