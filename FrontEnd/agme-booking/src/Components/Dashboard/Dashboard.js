@@ -8,15 +8,17 @@ import {
     Route
 } from "react-router-dom"
 import BusinessIndex from './Business/BusinessIndex';
+import WorkerDash from './Worker/WorkerDash';
 
 
 function Dashboard() {
 
-    const [bookingForm, setForm] = useState(0);
+    const [bookingForm, setForm] = useState(3);
     const forms = [
         <CreateBookingButton setForm={setForm} />,
         <BookingForm setForm={setForm} />,
-        <BusinessForm setForm={setForm} />
+        <BusinessForm setForm={setForm} />,
+        <WorkerDash setForm={setForm} />
     ];
 
     return (
