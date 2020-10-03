@@ -6,6 +6,7 @@ import com.rmit.sept.majorproject.project.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,13 +23,15 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public List<Booking> getBookingsAsWorker(Long id, User accountType) {
-        List<Booking> workerBookings = accountType.getWorkerBookings();
-        if (userRepository.findById(id).equals(accountType.getId())) {
-                return workerBookings;
+    public User findById(Long id) {
+
+        User user;
+
+        if (userRepository.findById(id).isPresent()) {
+            user = userRepository.findById(id).get();
+        } else {
+            user = null;
         }
-        else {
-            return null;
-        }
+        return user;
     }
 }

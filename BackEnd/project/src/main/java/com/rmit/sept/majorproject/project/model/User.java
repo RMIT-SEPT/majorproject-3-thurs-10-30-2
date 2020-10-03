@@ -26,7 +26,7 @@ public class User {
             mappedBy = "customer",
             fetch = FetchType.LAZY
     )
-    private Set<Booking> bookingsAsCustomer;
+    private List<Booking> bookingsAsCustomer;
 
     @OneToMany(
             mappedBy = "worker",
@@ -65,12 +65,12 @@ public class User {
         this.id = id;
     }
 
-    public List<Booking> getWorkerBookings(){
-        return bookingsAsWorker;
-    }
-    public void setBookingsAsWorker(Booking booking){
-        this.bookingsAsWorker.add(booking);
-    }
+//    public List<Booking> getWorkerBookings(){
+//        return bookingsAsWorker;
+//    }
+//    public void setBookingsAsWorker(Booking booking){
+//        this.bookingsAsWorker.add(booking);
+//    }
 
     public String getName() {
         return name;
