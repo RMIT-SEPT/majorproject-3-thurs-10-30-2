@@ -5,11 +5,12 @@ import {
 } from 'react-bootstrap'
 import Calendar from 'react-calendar'
 import AvailabilityCard from './AvailabilityCard'
-
+import BookingIndex from './BookingIndex'
 class BookingForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            name: null,
             business: '',
             businesses: [],
             date: new Date(),
@@ -17,11 +18,12 @@ class BookingForm extends React.Component {
             employee: 'Any'
         }
         // to display available businesses.
-        axios.get('http://localhost:8080/api/Business')
-            .then((response) => {
-                this.setState({ businesses: response.data })
-            });
-        this.handleSubmit = this.handleSubmit.bind(this);
+        // axios.get('http://localhost:8080/api/Business')
+        //     .then((response) => {
+        //         this.setState({ businesses: response.data })
+        //     });
+        // this.handleSubmit = this.handleSubmit.bind(this);
+    
     }
     onChange = date => this.setState({ date })
 
@@ -76,7 +78,6 @@ class BookingForm extends React.Component {
             ]
         };
 
-
         const employees = Object.keys(times).map(key =>
             <option key={key} value={key}>{key}</option>)
         const slots = []
@@ -92,18 +93,7 @@ class BookingForm extends React.Component {
 
         return (
             <div id="booking-form">
-                {/* For selecting a business in bookings form */}
-                {/* <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown">
-                        {this.state.business}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                        {this.state.businesses.map((business) => {
-                            return <Dropdown.Item value={business.value}><div onClick={(e) => this.changeBusinessValue(e.target.textContent)}>{business.name}</div></Dropdown.Item>
-                        })}
-                    </Dropdown.Menu>
-                </Dropdown> */}
+                business Name
                 <Calendar
                     onChange={this.onChange}
                     value={this.state.date}
