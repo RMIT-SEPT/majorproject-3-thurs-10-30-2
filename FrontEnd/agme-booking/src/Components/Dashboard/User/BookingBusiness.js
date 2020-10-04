@@ -4,16 +4,16 @@ import {
     Card,
 } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
-class BookingIndex extends React.Component {
+class BookingBusiness extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            bookings: [],
+            businesses: [],
         }
         // axios.get('http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/Business')
-        axios.get('http://localhost:8080/api/bookings')
+        axios.get('http://localhost:8080/api/Business')
             .then((response) => {
-                this.setState({ bookings: response.data })
+                this.setState({ businesses: response.data })
             });   
         this.selectedBusiness = this.selectedBusiness.bind(this);  
     }
@@ -22,22 +22,23 @@ class BookingIndex extends React.Component {
     }
     
     render() {
-        var allBookings = [];
+        var bussinessCards = [];
         this.state.businesses.forEach(element => {
-            allBookings.push(
+            bussinessCards.push(
                 <Card>
-                    {element.name}
+                    <Card.Body>{element.name}{" "}
+                    <Link onClick={this.selectedBusiness(element.name)} to={`/dashboard/bookingform/${element.name}`}>Book</Link></Card.Body>              
                 </Card>
                 
             )
         });
         return (
-            <div id="booking-list">
-                <h2>Bookings</h2>
-                {allBookings}                
+            <div id="businesses-list">
+                <h2>Select a business</h2>
+                {bussinessCards}                
             </div>
         )
     }
 }
 
-export default BookingIndex
+export default BookingBusiness
