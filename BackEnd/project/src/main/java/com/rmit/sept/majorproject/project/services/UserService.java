@@ -34,4 +34,14 @@ public class UserService {
         }
         return user;
     }
+    public List<User> getAll(){
+
+        List<User> users = new ArrayList<>();
+        Iterable<User> iterable = userRepository.findAll();
+
+        for(User u : iterable){
+            users.add(u);
+        }
+        return users;
+    }
 }

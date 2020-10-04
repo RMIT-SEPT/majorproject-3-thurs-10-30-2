@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Entity
 public class User {
 
-    enum AccountType{
+    public enum AccountType{
         ADMIN,
         CUSTOMER,
         WORKER }

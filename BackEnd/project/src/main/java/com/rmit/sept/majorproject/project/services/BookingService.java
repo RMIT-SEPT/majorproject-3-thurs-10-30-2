@@ -2,6 +2,7 @@ package com.rmit.sept.majorproject.project.services;
 
 import com.rmit.sept.majorproject.project.Repositories.BookingRepository;
 import com.rmit.sept.majorproject.project.model.Booking;
+import com.rmit.sept.majorproject.project.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,15 +34,11 @@ public class BookingService {
         return bookings;
     }
     public Booking createBooking(Booking booking){
-        if(booking.getStartTime().before(currentDateTime())){
-            return null;
-        }
-        if(booking.getEndTime().before(booking.getStartTime())){
+        if(!(timeCheck(booking) && dupe_id(booking) && accountTypeCheck(booking))){
             return null;
         }
         return bookingRepository.save(booking);
     }
-
     public void cancelBooking(Long bookingId){
         Booking booking = findBookingById(bookingId);
         bookingRepository.deleteById(booking.getId());
@@ -54,5 +51,23 @@ public class BookingService {
     public Date currentDateTime(){
         Date now = new Date();
         return now;
+    }
+    public boolean timeCheck(Booking booking){
+        if(booking.getStartTime().before(currentDateTime()) || booking.getEndTime().before(booking.getStartTime())){
+            return false;
+        }
+        return true;
+    }
+    public boolean dupe_id(Booking booking){
+        if(booking.getCustomer().getId().equals(booking.getWorker().getId())) {
+            return false;
+        }
+        return true;
+    }
+    public boolean accountTypeCheck(Booking booking){
+        if(booking.getCustomer().getAccountType() != User.AccountType.CUSTOMER || booking.getWorker().getAccountType() != User.AccountType.WORKER){
+            return false;
+        }
+        return true;
     }
 }

@@ -19,10 +19,14 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @GetMapping("{id}")
-    public ResponseEntity<Booking> getBooking(@PathVariable Long id){
-        Booking booking = bookingService.findBookingById(id);
-        return new ResponseEntity<>(booking, HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getBooking(@PathVariable Long id){
+        if(bookingService.findBookingById(id) != null){
+            return new ResponseEntity<>(bookingService.findBookingById(id), HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("ID Does Not Exist",HttpStatus.NOT_FOUND);
+        }
     }
     @GetMapping("")
     public ResponseEntity<?> all(){
@@ -39,7 +43,7 @@ public class BookingController {
         Booking createdBooking = bookingService.createBooking(booking);
         return new ResponseEntity<>(createdBooking, HttpStatus.CREATED);
     }
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> cancelBooking(@PathVariable Long id){
         bookingService.cancelBooking(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

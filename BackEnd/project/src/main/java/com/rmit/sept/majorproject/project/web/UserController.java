@@ -1,7 +1,5 @@
 package com.rmit.sept.majorproject.project.web;
 
-
-import com.rmit.sept.majorproject.project.model.Booking;
 import com.rmit.sept.majorproject.project.model.User;
 import com.rmit.sept.majorproject.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +28,23 @@ public class UserController {
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+        if(userService.findById(id) != null) {
             return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("ID Does Not Exist",HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("")
+    public ResponseEntity<?> all() {
+        List<User> allUsers = userService.getAll();
+        if(allUsers.isEmpty()){
+            return new ResponseEntity<>("No users Found",HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(allUsers,HttpStatus.ACCEPTED);
+        }
+
     }
 
     @DeleteMapping("{id}")
