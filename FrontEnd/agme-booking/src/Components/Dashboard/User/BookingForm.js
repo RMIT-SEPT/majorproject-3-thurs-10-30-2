@@ -56,9 +56,6 @@ class BookingForm extends React.Component {
         this.setState({ ...this.state.worker, selectedWorker});
         console.log(selectedWorker.name);
     }
-    changeBusinessValue(text) {
-        this.setState({ business: text })
-    }
     handleStartTime(event) {
         var timeStart = event.target.value;
         this.setState({
