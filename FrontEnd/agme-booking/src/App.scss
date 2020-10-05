@@ -1,6 +1,7 @@
 @import "stylesheets/Calendar.scss";
 @import "stylesheets/Booking.scss";
 
+
 .navbar {
   height: 5vh;
 }
@@ -62,4 +63,67 @@
   .header-spacer {
     margin-top: 20vw;
   }
+}
+
+.business-form {
+  table {
+    border-collapse: collapse;
+    width: 60%;
+    margin: 2rem 0;
+
+    th {
+      padding-left: 10px;
+    }
+
+    th:last-child {
+      border-left: 1px solid #000;
+      padding-left: 10px;
+    }
+
+    td {
+      border-left: 1px solid #000;
+      border-right: 1px solid #000;
+      padding-left: 10px;
+    }
+
+    td:first-child {
+      border-left: none;
+    }
+
+    td:last-child {
+      border-right: none;
+    }
+  }
+  #opening-hours-form {
+    select,
+    input {
+      height: 30px;
+      margin: 0;
+      padding: 0;
+      border: 1px solid gray;
+      background-color: white;
+      padding: 5px;
+    }
+    .add-hours {
+      display: flex;
+      margin-bottom: 1rem;
+      select {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        border-right: 0;
+      }
+      :last-child {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-left: 0;
+      }
+    }
+  }
+}
+
+.dashboard {
+  border-radius: 2%;
+  min-height: 80vh;
+  background-color: white;
+  box-shadow: 0px 10px 20px 1px #88888857;
 }

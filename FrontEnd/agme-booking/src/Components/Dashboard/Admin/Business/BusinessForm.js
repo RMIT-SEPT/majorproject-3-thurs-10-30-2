@@ -43,22 +43,32 @@ class BusinessForm extends React.Component {
     }
 
     handleSubmit() {
-        axios({
-            method: "POST",
-            url: 'http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/Business',
-            headers: {},
-            data: {
-                "business": {
-                    "name": this.state.name
-                },
-                "businessHours": this.state.opening_hours
+        if (this.state.name !== "" && this.state.opening_hours.length > 0) {
+            axios({
+                method: "POST",
+                url: 'http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/Business',
+                headers: {},
+                data: {
+                    "business": {
+                        "name": this.state.name
+                    },
+                    "businessHours": this.state.opening_hours
+                }
+            }).then(function (response) {
+                if (response.status === 201) {
+                    window.location.href = '/dashboard/businesses';
+                }
+                console.log(response);
+            });
+        }
+        else {
+            if (this.state.name === "") {
+                alert("Business name missing")
             }
-        }).then(function (response) {
-            if (response.status === 201) {
-                window.location.href = '/dashboard/businesses';
+            else {
+                alert("Please add business hours")
             }
-            console.log(response);
-        });
+        }
     }
 
     newOpeningHours(day) {
@@ -88,9 +98,11 @@ class BusinessForm extends React.Component {
         };
 
         return (
-            <div>
+            <div className="business-form">
                 <h1>Register new business</h1>
-                <input type="text" name="name" onChange={this.handleInputChange}></input>
+                <label>Business Name</label>
+                <br />
+                <input required type="text" name="name" onChange={this.handleInputChange}></input>
                 <table>
                     <thead>
                         <tr>

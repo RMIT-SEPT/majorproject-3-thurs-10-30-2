@@ -14,8 +14,8 @@ import {
 
 function Header() {
     return (
-        <Navbar fixed="top" bg="light" expand="lg" className="pr-4 pl-4">
-            <Navbar.Brand href="/"> AGME Bookings</Navbar.Brand>
+        <Navbar fixed="top" bg="dark" expand="lg" className="pr-4 pl-4">
+            <Navbar.Brand href="/" className="text-light"> AGME Bookings</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                 <Form inline>
