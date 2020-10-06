@@ -6,6 +6,12 @@ import Button from 'react-bootstrap/Button'
 class Login extends React.Component {
 
     render() {
+
+        function login() {
+            window.location.href = '/admin'
+            //TODO implement login code
+        }
+
         return (
             <div className="overlay-form">
                 <h1 className="text-center">
@@ -25,7 +31,7 @@ class Login extends React.Component {
                         <Form.Check type="checkbox" label="Remember me" />
                     </Form.Group>
                 </Form>
-                <Button variant="primary" type="submit" onClick={() => window.location.href = '/dashboard'}>
+                <Button variant="primary" type="submit" onClick={() => login()}>
                     Submit
                 </Button>
                 <Button variant="light" onClick={() => this.props.setForm(0)}>Back</Button>{' '}
