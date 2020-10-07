@@ -7,6 +7,6 @@ public class SecurityConstants {
     // TODO: Determine if this key needs to be of some particular format
     public static final String SECRET = "somesecretkeyfromsomewhere...";
     public static final String SIGN_UP_URLS = "/api/users/**";
-    public static final long TOKEN_EXPIRATION_TIME = 480_000;
+    public static final long TOKEN_EXPIRATION_TIME = 1800_000;
     public static final String TOKEN_PREFIX= "Bearer ";
 }
