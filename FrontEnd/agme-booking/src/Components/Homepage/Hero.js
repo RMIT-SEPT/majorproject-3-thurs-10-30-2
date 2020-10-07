@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import HomepageControls from './HomepageControls'
 import Login from './Login'
 import SignUp from './SignUp'
+import Register from "./Register"
 import { useTransition, animated } from 'react-spring'
 
 function Hero() {
@@ -10,7 +11,8 @@ function Hero() {
     const forms = [
         ({ style }) => <animated.div style={{ ...style }}><HomepageControls setForm={setForm} /></animated.div >,
         ({ style }) => <animated.div style={{ ...style }}><Login setForm={setForm} /></animated.div >,
-        ({ style }) => <animated.div style={{ ...style }}><SignUp setForm={setForm} /></animated.div >
+        ({ style }) => <animated.div style={{ ...style }}><SignUp setForm={setForm} /></animated.div >,
+        ({ style }) => <animated.div style={{ ...style }}><Register setForm={setForm} /></animated.div >
     ]
 
     const transitions = useTransition(formsIndex, p => p, {

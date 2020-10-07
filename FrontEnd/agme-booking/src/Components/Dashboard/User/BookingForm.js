@@ -47,7 +47,7 @@ class BookingForm extends React.Component {
         }
 
         return (
-            <div id="booking-form">
+            <div id="booking-form" className="my-4">
                 <h1 className="text-center">
                     Business Name
                 </h1>
