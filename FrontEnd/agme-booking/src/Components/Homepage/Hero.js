@@ -9,10 +9,10 @@ function Hero() {
     const [formsIndex, setForm] = useState(0)
 
     const forms = [
-        ({ style }) => <animated.div style={{ ...style }}><HomepageControls setForm={setForm} /></animated.div >,
-        ({ style }) => <animated.div style={{ ...style }}><Login setForm={setForm} /></animated.div >,
-        ({ style }) => <animated.div style={{ ...style }}><SignUp setForm={setForm} /></animated.div >,
-        ({ style }) => <animated.div style={{ ...style }}><Register setForm={setForm} /></animated.div >
+        <HomepageControls setForm={setForm} />,
+        <Login setForm={setForm} />,
+        <SignUp setForm={setForm} />,
+        <Register setForm={setForm} />
     ]
 
     const transitions = useTransition(formsIndex, p => p, {
@@ -24,11 +24,7 @@ function Hero() {
     return (
         <div id="hero">
             <div className="absolute-center">
-                {transitions.map(({ item, props, key }) => {
-                    const Form = forms[item]
-                    return <Form key={key} style={props} />
-                }
-                )}
+                {forms[formsIndex]}
             </div>
         </div>
     )
