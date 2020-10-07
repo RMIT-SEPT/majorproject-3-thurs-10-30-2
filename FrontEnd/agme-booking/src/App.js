@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './Components/Header'
 import Hero from './Components/Homepage/Hero';
 import Dashboard from './Components/Dashboard/Dashboard';
+import AdminView from './Components/Dashboard/AdminView';
+
 
 import {
   BrowserRouter as Router,
@@ -22,6 +24,9 @@ function App() {
           </Route>
           <Route path="/dashboard">
             <Dashboard />
+          </Route>
+          <Route path="/admin">
+            <AdminView />
           </Route>
         </Switch>
       </Router>
