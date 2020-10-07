@@ -10,6 +10,7 @@ import {
   Switch,
   Route
 } from "react-router-dom"
+import WorkerDash from './Components/Dashboard/Worker/WorkerDash';
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
           </Route>
           <Route path="/dashboard">
             <Dashboard />
+          </Route>
+          <Route path="/worker">
+            <WorkerDash />
           </Route>
         </Switch>
       </Router>
