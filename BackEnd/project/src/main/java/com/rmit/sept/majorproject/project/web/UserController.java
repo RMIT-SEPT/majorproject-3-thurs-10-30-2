@@ -18,7 +18,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
+
+import java.util.Optional;
 
 import static com.rmit.sept.majorproject.project.security.SecurityConstants.TOKEN_PREFIX;
 
@@ -34,6 +37,18 @@ public class UserController {
 
     @Autowired
     private UserValidator userValidator;
+
+    @GetMapping("{id}")
+    public ResponseEntity<?> getUser(@PathVariable Long id) {
+        ResponseEntity<?> result = new ResponseEntity<>("User not found.", HttpStatus.NOT_FOUND);
+        Optional<User> user = userService.get(id);
+
+        if (user.isPresent()) {
+            result = ResponseEntity.ok(user);
+        }
+
+        return result;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody User user, BindingResult bindingResult) {
