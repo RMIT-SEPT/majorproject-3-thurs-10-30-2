@@ -14,6 +14,7 @@ class AuthService {
         });
         console.log(response);
         if (response.status === 200) {
+            localStorage.setItem("token", response.data.token)
             var data = jwt_decode(response.data.token.split(" ")[1]);
             console.log(data);
             localStorage.setItem("user", JSON.stringify(data));
