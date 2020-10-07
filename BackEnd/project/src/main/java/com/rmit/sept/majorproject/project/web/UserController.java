@@ -1,6 +1,5 @@
 package com.rmit.sept.majorproject.project.web;
 
-
 import com.rmit.sept.majorproject.project.model.Booking;
 import com.rmit.sept.majorproject.project.model.User;
 import com.rmit.sept.majorproject.project.payload.JWTLoginSucessReponse;
@@ -24,11 +23,13 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+
 import static com.rmit.sept.majorproject.project.security.SecurityConstants.TOKEN_PREFIX;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/api/users")
+
 public class UserController {
 
     @Autowired
@@ -48,6 +49,15 @@ public class UserController {
         if (user.isPresent()) {
             user.get().setPassword("");
             result = ResponseEntity.ok(user);
+        }
+
+        return result;
+    }
+
+    @PostMapping("")
+    public ResponseEntity<?> createNewUser(@Valid @RequestBody User user, BindingResult result) {
+        if (result.hasErrors()) {
+            return new ResponseEntity<List<FieldError>>(result.getFieldErrors(), HttpStatus.BAD_REQUEST);
         }
 
         return result;
@@ -125,9 +135,28 @@ public class UserController {
         return result;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+        if(userService.findById(id) != null) {
+            return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("ID Does Not Exist",HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("")
+    public ResponseEntity<?> all() {
+        List<User> allUsers = userService.getAll();
+        if(allUsers.isEmpty()){
+            return new ResponseEntity<>("No users Found",HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(allUsers,HttpStatus.ACCEPTED);
+        }
+
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        // TODO: Implement security checks before proceeding with deletion.
+
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
