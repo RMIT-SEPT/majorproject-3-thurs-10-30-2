@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import BusinessForm from './Business/BusinessForm';
 import BookingBusiness from './User/BookingBusiness'
+import BookingForm from './User/BookingForm'
 import CreateBookingButton from './User/CreateBookingButton';
 import {
     BrowserRouter as Router,
     Switch,
     Route
 } from "react-router-dom"
-import BusinessIndex from './Business/BusinessIndex';
+import BusinessIndex from './Admin/Business/BusinessIndex';
 import BookingForm from './User/BookingForm';
 function Dashboard() {
 
@@ -19,7 +20,7 @@ function Dashboard() {
     ];
 
     return (
-        <div className="header-spacer container">
+        <div className="header-spacer container dashboard">
             <div className="row">
                 <div className="col-lg-2">
                 </div>
