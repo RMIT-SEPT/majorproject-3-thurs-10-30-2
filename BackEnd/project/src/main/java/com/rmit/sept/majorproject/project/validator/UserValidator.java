@@ -16,6 +16,11 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object o, Errors errors) {
+        if (!(o instanceof User)) {
+            errors.reject("Invalid user.");
+            return;
+        }
+
         User user = (User) o;
 
         if (user.getPassword().length() < MIN_PASSWORD_LENGTH) {
