@@ -17,7 +17,7 @@ import java.util.Set;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "bookingsAsCustomer", "bookingsAsWorker"})
 public class User implements UserDetails {
 
-    enum AccountType{
+    public enum AccountType {
         ADMIN,
         CUSTOMER,
         WORKER }
