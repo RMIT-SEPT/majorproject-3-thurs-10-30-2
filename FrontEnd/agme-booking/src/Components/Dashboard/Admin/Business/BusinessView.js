@@ -9,9 +9,9 @@ class BusinessCard extends React.Component {
         }
 
         this.state.employees = [
-            { name: "Anna", id: 1 },
-            { name: "Donna", id: 2 },
-            { name: "Chris", id: 3 }
+            { name: "Anna", id: 1, days: ["Monday"], hours: [{dayOfWeek: "Monday", startTime: "09:00", endTime: "17:00"}] },
+            { name: "Donna", id: 2, days: ["Monday"], hours: [{dayOfWeek: "Monday", startTime: "09:00", endTime: "17:00"}] },
+            { name: "Chris", id: 3, days: ["Monday"], hours: [{dayOfWeek: "Monday", startTime: "09:00", endTime: "17:00"}] }
         ]
     }
 
@@ -26,8 +26,8 @@ class BusinessCard extends React.Component {
         });
 
         return (
-
-            <div>
+            //TODO add id for business here
+            <div key={1}>
                 <hr />
                 <h3> Upcoming bookings </h3>
                 <ul>

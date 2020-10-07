@@ -16,7 +16,7 @@ class BusinessCard extends React.Component {
     showView() {
         if (this.state.businessView === "") {
             this.setState({
-                businessView: <BusinessView/>
+                businessView: <BusinessView />
             });
         }
         else {
@@ -31,8 +31,9 @@ class BusinessCard extends React.Component {
         var busView = this.state.businessView
 
         return (
-            <a className="w-75 text-dark" role="button" onClick={() => { this.showView() }}>
-                <Card className="p-4 align-middle" id="business-1">
+
+            <Card className="w-75 text-dark" id="business-1">
+                <a className="p-4 align-middle" role="button" onClick={() => { this.showView() }}>
                     <Card.Title className="text-left m-0">
                         <div className="row">
                             <div className="col-sm-6">
@@ -46,9 +47,10 @@ class BusinessCard extends React.Component {
                             </div>
                         </div>
                     </Card.Title>
-                    {busView}
-                </Card>
-            </a>
+                </a>
+                { busView}
+            </Card >
+
         )
     }
 }
