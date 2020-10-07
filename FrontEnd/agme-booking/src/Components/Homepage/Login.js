@@ -10,7 +10,15 @@ class Login extends React.Component {
         function handleLogin() {
           AuthService.login(document.getElementById("formLoginEmail"), document.getElementById("formLoginPassword")).then(
             () => {
-                console.log(AuthService.getCurrentUser())
+                if (JSON.parse(localStorage.getItem('user')).accountType === "CUSTOMER"){
+                    window.location.href = "/dashboard"
+                }
+                if (JSON.parse(localStorage.getItem('user')).accountType === "WORKER"){
+                    window.location.href = "/worker"
+                }
+                if (JSON.parse(localStorage.getItem('user')).accountType === "ADMIN"){
+                    window.location.href = "/admin"
+                }
             });
         }
 
