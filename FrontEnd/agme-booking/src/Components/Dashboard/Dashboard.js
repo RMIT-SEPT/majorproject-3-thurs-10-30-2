@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import BusinessForm from './Admin/Business/BusinessForm';
+import BookingBusiness from './User/BookingBusiness'
 import BookingForm from './User/BookingForm'
 import CreateBookingButton from './User/CreateBookingButton';
 import {
@@ -7,14 +9,14 @@ import {
     Route
 } from "react-router-dom"
 import BusinessIndex from './Admin/Business/BusinessIndex';
-
-
+// import BookingForm from './User/BookingForm';
 function Dashboard() {
 
-    const [bookingForm, setForm] = useState(0);
+    const [bookingBusiness, setForm] = useState(0);
     const forms = [
         <CreateBookingButton setForm={setForm} />,
-        <BookingForm setForm={setForm} />
+        <BookingBusiness setForm={setForm} />,
+        <BusinessForm setForm={setForm} />
     ];
 
     return (
@@ -28,8 +30,11 @@ function Dashboard() {
                         <Switch>
                             <Route exact path="/dashboard">
                                 {
-                                    forms[bookingForm]
+                                    forms[bookingBusiness]
                                 }
+                            </Route>
+                            <Route path="/dashboard/bookingform">
+                                <BookingForm/>
                             </Route>
                             <Route path="/dashboard/businesses">
                                 <BusinessIndex/>
