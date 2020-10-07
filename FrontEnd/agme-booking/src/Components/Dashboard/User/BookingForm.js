@@ -18,6 +18,7 @@ class BookingForm extends React.Component {
             startTime: '',
             endTime: ''
         }
+        //GET: should be changed to getting the list of workers for a business
         axios.get('http://localhost:8080/api/user')
             .then((response) => {
                 this.setState({ worker: response.data })
@@ -75,7 +76,9 @@ class BookingForm extends React.Component {
         });
         console.log(timeEnd);
     }
-    /*need to replace some text with variables*/
+    /*need to replace some text with variables
+    * should redirect to a list of bookings for the user(getBookings() currently not working).
+    */
     handleSubmit() {
         axios({
             method: "POST",
@@ -128,7 +131,8 @@ class BookingForm extends React.Component {
         // const employees = Object.keys(times).map(key =>
         //     <option key={key} value={key}>{key}</option>);
 
-        const workers = [];//only contains the names
+        /*Used for displaying workers in the dropdown box*/
+        const workers = [];
         this.state.worker.forEach(element => {
             workers.push(
                 <option>{element.name}</option>
@@ -142,14 +146,16 @@ class BookingForm extends React.Component {
         // else {
         //     slots.push(<AvailabilityCard empName={this.state.employee} times={times[this.state.employee]} />)
         // }
+
+        /*Used to set the name of business selected*/
         var name;
         this.select = this.state.businesses.map((select) => {
             console.log(select.id);
             if (this.state.businessId === select.id.toString()) {
                 name = select.name.toString();
             }
-
         })
+
         return (
             <div id="booking-form">
                 <h2>{name}</h2>
