@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import BusinessForm from './Business/BusinessForm';
+import BusinessForm from './Admin/Business/BusinessForm';
 import BookingBusiness from './User/BookingBusiness'
 import BookingForm from './User/BookingForm'
 import CreateBookingButton from './User/CreateBookingButton';
@@ -9,7 +9,7 @@ import {
     Route
 } from "react-router-dom"
 import BusinessIndex from './Admin/Business/BusinessIndex';
-import BookingForm from './User/BookingForm';
+// import BookingForm from './User/BookingForm';
 function Dashboard() {
 
     const [bookingBusiness, setForm] = useState(0);
