@@ -5,11 +5,11 @@ class AuthService {
     async login(username, password) {
         const response = await axios({
             method: "POST",
-            url: 'http://localhost:3000/api/users/login',
+            url: 'http://localhost:8080/api/users/login',
             headers: {},
             data: {
-                "username": document.getElementById("formLoginEmail").value,
-                "password": document.getElementById("formLoginPassword").value
+                "username": username,
+                "password": password
             }
         });
         console.log(response);
@@ -25,11 +25,20 @@ class AuthService {
         localStorage.removeItem("user");
     }
 
-    register(username, password) {
-        return axios.post("http://localhost:3000/api/users/register", {
-            username,
-            password
+    async register(fname, username, password, passwordConfirm, type) {
+        const response = await axios({
+            method: "POST",
+            url: "http://localhost:8080/api/users/register", 
+            headers: {},
+            data: {
+                "username": username,
+                "fullName": fname,
+                "password": password,
+                "confirmPassword": passwordConfirm,
+                "accountType": type
+            }
         });
+        console.log(response)
     }
 }
 
