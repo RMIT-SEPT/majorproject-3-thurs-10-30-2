@@ -4,11 +4,12 @@ import {
     Form, Button, Col,
 } from 'react-bootstrap'
 import Calendar from 'react-calendar'
-import AvailabilityCard from './AvailabilityCard'
 class BookingForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            businessId: window.location.href.split("/").pop(),
+            businesses: [],
             date: new Date(),
             duration: '',
             customer: '',
@@ -21,6 +22,10 @@ class BookingForm extends React.Component {
             .then((response) => {
                 this.setState({ worker: response.data })
             });
+        axios.get('http://localhost:8080/api/Business')
+            .then((response) => {
+                this.setState({ businesses: response.data })
+            });
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     onChange = date => {
@@ -28,7 +33,7 @@ class BookingForm extends React.Component {
         var dateform = date.toString();
         var datesplit = dateform.split(' ');
         var dateString = datesplit[3] + "-" + this.monthCheck(date.getMonth() + 1) + "-" + this.dayCheck(date.getDate()) + "-";
-        this.setState({ ...this.state.startTime, dateString});
+        this.setState({ ...this.state.startTime, dateString });
         console.log(dateString);
     }
     monthCheck(month) {
@@ -48,12 +53,12 @@ class BookingForm extends React.Component {
     handleChange(event) {
         var choice = event.target.value;
         var selectedWorker;
-        this.employee = this.state.worker.map((employee)=>{
-        if(choice === employee.name){
-            selectedWorker = employee;
-        }
-    });
-        this.setState({ ...this.state.worker, selectedWorker});
+        this.employee = this.state.worker.map((employee) => {
+            if (choice === employee.name) {
+                selectedWorker = employee;
+            }
+        });
+        this.setState({ ...this.state.worker, selectedWorker });
         console.log(selectedWorker.name);
     }
     handleStartTime(event) {
@@ -70,7 +75,6 @@ class BookingForm extends React.Component {
         });
         console.log(timeEnd);
     }
-
     /*need to replace some text with variables*/
     handleSubmit() {
         axios({
@@ -138,9 +142,17 @@ class BookingForm extends React.Component {
         // else {
         //     slots.push(<AvailabilityCard empName={this.state.employee} times={times[this.state.employee]} />)
         // }
+        var name;
+        this.select = this.state.businesses.map((select) => {
+            console.log(select.id);
+            if (this.state.businessId === select.id.toString()) {
+                name = select.name.toString();
+            }
+
+        })
         return (
             <div id="booking-form">
-                business Name
+                <h2>{name}</h2>
                 <Calendar
                     onChange={this.onChange}
                     value={this.state.date}

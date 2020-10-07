@@ -37,7 +37,7 @@ class BookingBusiness extends React.Component {
                 slots.push(
                     <Card>
                         <Card.Body>{select.name}{" "}
-                            <Link to={`/dashboard/bookingform/${select.name}`}>Book</Link></Card.Body>
+                            <Link to={`/dashboard/bookingform/${select.id}`}>Book</Link></Card.Body>
                     </Card>
                 )
             } else {
@@ -45,7 +45,7 @@ class BookingBusiness extends React.Component {
                     slots.push(
                         <Card>
                             <Card.Body>{select.name}{" "}
-                                <Link to={`/dashboard/bookingform/${select.name}`}>Book</Link></Card.Body>
+                                <Link to={`/dashboard/bookingform/${select.id}`}>Book</Link></Card.Body>
                         </Card>
                     )
                 }
