@@ -8,7 +8,6 @@ class SignUp extends React.Component {
 
     render() {
         function handleSignup() {
-            console.log(document.getElementById("formSignupType").options[document.getElementById("formSignupType").selectedIndex].value)
             AuthService.register(
                 document.getElementById("formSignupEmail").value,
                 document.getElementById("formName").value,

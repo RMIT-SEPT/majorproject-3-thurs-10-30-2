@@ -25,7 +25,7 @@ class AuthService {
         localStorage.removeItem("user");
     }
 
-    async register(fname, username, password, passwordConfirm, type) {
+    async register(username, fname, password, passwordConfirm, type) {
         const response = await axios({
             method: "POST",
             url: "http://localhost:8080/api/users/register", 
@@ -38,7 +38,7 @@ class AuthService {
                 "accountType": type
             }
         });
-        console.log(response)
+        return this.login(username, password);
     }
 }
 
