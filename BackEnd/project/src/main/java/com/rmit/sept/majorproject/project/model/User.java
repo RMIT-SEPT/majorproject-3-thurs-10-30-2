@@ -43,10 +43,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date created_At;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date updated_At;
 
     @OneToMany(
