@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
@@ -92,6 +91,10 @@ public class User implements UserDetails {
     public String getConfirmPassword() { return confirmPassword; }
 
     public void setConfirmPassword(String confirmPassword) { this.confirmPassword = confirmPassword; }
+
+    public Set<Booking> getBookingsAsCustomer() { return bookingsAsCustomer; }
+
+    public Set<Booking> getBookingsAsWorker() { return bookingsAsWorker; }
 
     public Date getCreated_At() {
         return created_At;
