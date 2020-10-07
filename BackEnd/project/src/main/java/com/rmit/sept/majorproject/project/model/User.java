@@ -2,6 +2,7 @@ package com.rmit.sept.majorproject.project.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,9 +14,10 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "bookingsAsCustomer", "bookingsAsWorker"})
 public class User implements UserDetails {
 
-    enum AccountType{
+    public enum AccountType {
         ADMIN,
         CUSTOMER,
         WORKER }

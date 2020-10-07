@@ -1,6 +1,7 @@
 package com.rmit.sept.majorproject.project.web;
 
 
+import com.rmit.sept.majorproject.project.model.Booking;
 import com.rmit.sept.majorproject.project.model.User;
 import com.rmit.sept.majorproject.project.payload.JWTLoginSucessReponse;
 import com.rmit.sept.majorproject.project.payload.LoginRequest;
@@ -18,10 +19,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import javax.validation.Valid;
-
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.rmit.sept.majorproject.project.security.SecurityConstants.TOKEN_PREFIX;
 
@@ -47,6 +48,29 @@ public class UserController {
         if (user.isPresent()) {
             user.get().setPassword("");
             result = ResponseEntity.ok(user);
+        }
+
+        return result;
+    }
+
+    @GetMapping("{id}/bookings")
+    public ResponseEntity<?> getUserBookings(@PathVariable Long id) {
+        ResponseEntity<?> result;
+        Optional<User> user = userService.get(id);
+
+        if (user.isPresent()) {
+            User.AccountType accountType = user.get().getAccountType();
+            Set<Booking> bookings = new HashSet<>();
+
+            if (accountType == User.AccountType.CUSTOMER) {
+                bookings = user.get().getBookingsAsCustomer();
+            } else if (accountType == User.AccountType.WORKER) {
+                bookings = user.get().getBookingsAsWorker();
+            }
+
+            result = ResponseEntity.ok(bookings);
+        } else {
+            result = new ResponseEntity<>("User not found.", HttpStatus.NOT_FOUND);
         }
 
         return result;
