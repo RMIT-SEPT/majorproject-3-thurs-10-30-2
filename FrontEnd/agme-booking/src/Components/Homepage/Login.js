@@ -1,31 +1,18 @@
 import React from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import axios from 'axios';
-import jwt_decode from "jwt-decode";
+import AuthService from '../../services/auth.service';
 
 class Login extends React.Component {
 
     render() {
 
-        function login() {
-            axios({
-                method: "POST",
-                url: 'http://localhost:3000/api/users/login',
-                headers: {},
-                data: {
-                    "username": document.getElementById("formLoginEmail").value,
-                    "password": document.getElementById("formLoginEmail").value
-                }
-            }).then(function (response) {
-                if (response.status === 201) {
-                    var data = jwt_decode(response.token.split(" ")[1])
-                    console.log(data)
-                }
-                console.log(response);
+        function handleLogin() {
+          AuthService.login(document.getElementById("formLoginEmail"), document.getElementById("formLoginPassword")).then(
+            () => {
+                console.log(AuthService.getCurrentUser())
             });
         }
-
 
         return (
             <div className="overlay-form">
@@ -46,7 +33,7 @@ class Login extends React.Component {
                         <Form.Check type="checkbox" label="Remember me" />
                     </Form.Group>
                 </Form>
-                <Button variant="primary" type="submit" onClick={() => login()}>
+                <Button variant="primary" type="submit" onClick={() => handleLogin()}>
                     Submit
                 </Button>
                 <Button variant="light" onClick={() => this.props.setForm(0)}>Back</Button>{' '}
