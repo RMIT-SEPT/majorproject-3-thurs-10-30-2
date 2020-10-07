@@ -25,6 +25,7 @@ import java.util.Optional;
 
 import static com.rmit.sept.majorproject.project.security.SecurityConstants.TOKEN_PREFIX;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -44,6 +45,7 @@ public class UserController {
         Optional<User> user = userService.get(id);
 
         if (user.isPresent()) {
+            user.get().setPassword("");
             result = ResponseEntity.ok(user);
         }
 
