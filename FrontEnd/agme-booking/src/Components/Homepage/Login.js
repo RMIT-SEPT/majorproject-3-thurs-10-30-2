@@ -8,7 +8,7 @@ class Login extends React.Component {
     render() {
 
         function handleLogin() {
-          AuthService.login(document.getElementById("formLoginEmail"), document.getElementById("formLoginPassword")).then(
+          AuthService.login(document.getElementById("formLoginEmail").value, document.getElementById("formLoginPassword").value).then(
             () => {
                 if (JSON.parse(localStorage.getItem('user')).accountType === "CUSTOMER"){
                     window.location.href = "/dashboard"
