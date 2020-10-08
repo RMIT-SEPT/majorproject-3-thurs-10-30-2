@@ -2,19 +2,12 @@ import React, { useState } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import BusinessForm from '../Dashboard/Admin/Business/BusinessForm'
-import { useTransition, animated } from 'react-spring'
 import axios from 'axios'
 import authService from '../../services/auth.service'
 
 
 function Register({ setForm }) {
     const [busFormIndex, setBusForm] = useState(0);
-
-    const transitions = useTransition(busFormIndex, p => p, {
-        from: { position: 'absolute', opacity: 0 },
-        enter: { opacity: 1, transform: 'translateX(0%)' },
-        leave: { opacity: 0, transform: 'translateX(-50%)' },
-    })
 
     const busForms = [
         <div className="overlay-form">

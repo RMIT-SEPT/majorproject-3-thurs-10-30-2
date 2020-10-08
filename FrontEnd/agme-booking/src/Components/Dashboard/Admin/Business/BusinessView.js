@@ -19,17 +19,40 @@ class BusinessCard extends React.Component {
     render() {
 
         var employeeCards = []
-
         this.state.employees.forEach(element => {
             employeeCards.push(
                 <EmployeeCard employee={element} />
             )
         });
 
+        var dayRows = [];
+        this.props.business.businessHours.forEach(element => {
+            dayRows.push(
+                <tr key={element.dayOfWeek}>
+                    <td className="text-left">{element.dayOfWeek}</td>
+                    <td className="text-right">{element.startTime} - {element.endTime}</td>
+                </tr>
+            )
+        });
+
         return (
             //TODO add id for business here
-            <div key={1}>
+            <div key={this.props.business.id}>
                 <hr />
+                <h3> Opening Hours </h3>
+                <div className="d-flex justify-content-center my-4">
+                    <table className="w-75">
+                        <thead>
+                            <tr>
+                                <th className="text-left">Day</th>
+                                <th className="text-right">Opening hours</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {dayRows}
+                        </tbody>
+                    </table>
+                </div>
                 <h3> Upcoming bookings </h3>
                 <ul>
                 </ul>

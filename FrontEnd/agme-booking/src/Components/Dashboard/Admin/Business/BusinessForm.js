@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button } from 'react-bootstrap';
 import OpeningHours from './OpeningHours';
-import axios from 'axios';
 
 class BusinessForm extends React.Component {
     constructor(props) {

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Card, Modal } from 'react-bootstrap';
 import OpeningHours from '../Business/OpeningHours';
-import EditEmployee from '../Employees/EditEmployee'
 
 function EmployeeCard({ employee }) {
 

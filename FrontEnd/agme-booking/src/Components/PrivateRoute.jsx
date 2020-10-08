@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 // from: https://jasonwatmore.com/post/2019/04/06/react-jwt-authentication-tutorial-example
-export const PrivateRoute = ({ component: Component, userType: userType, ...rest }) => (
+export const PrivateRoute = ({ component: Component, userType, ...rest }) => (
     <Route {...rest} render={props => {
         const currentUser = JSON.parse(localStorage.user);
         if (!currentUser || currentUser.accountType !== userType) {

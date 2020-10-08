@@ -16,7 +16,7 @@ class BusinessCard extends React.Component {
     showView() {
         if (this.state.businessView === "") {
             this.setState({
-                businessView: <BusinessView />
+                businessView: <BusinessView business={this.props.business}/>
             });
         }
         else {
@@ -33,11 +33,11 @@ class BusinessCard extends React.Component {
         return (
 
             <Card className="w-75 text-dark" id="business-1">
-                <a className="p-4 align-middle" role="button" onClick={() => { this.showView() }}>
+                <div className="p-4 align-middle" role="button" onClick={() => { this.showView() }}>
                     <Card.Title className="text-left m-0">
                         <div className="row">
                             <div className="col-sm-6">
-                                Business Name
+                                {this.props.business.name}
                             </div>
                             <div className="col-sm-6 text-right">
                                 <FontAwesomeIcon icon={faUser} className="mr-2" />
@@ -47,7 +47,7 @@ class BusinessCard extends React.Component {
                             </div>
                         </div>
                     </Card.Title>
-                </a>
+                </div>
                 { busView}
             </Card >
 

@@ -27,7 +27,7 @@ class AuthService {
     }
 
     async register(username, fname, password, passwordConfirm, type) {
-        const response = await axios({
+        await axios({
             method: "POST",
             url: "http://localhost:8080/api/users/register", 
             headers: {},
