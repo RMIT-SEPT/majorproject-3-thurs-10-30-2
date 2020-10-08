@@ -5,8 +5,6 @@ import com.rmit.sept.majorproject.project.model.User;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.expression.spel.ast.ValueRef;
 
 
 import java.text.ParseException;
@@ -40,13 +38,13 @@ public class BookingServiceTest {
         customer = new User();
         worker = new User();
 
-        customer.setName("Bob");
-        customer.setEmail("bob@bob.com");
+        customer.setFullName("Bob");
+        customer.setUsername("bob@bob.com");
         customer.setPassword("fwedsf34gf34fge");
         userService.saveOrUpdateUser(customer);
 
-        worker.setName("Alice");
-        worker.setEmail("alice@alice.com");
+        worker.setFullName("Alice");
+        worker.setUsername("alice@alice.com");
         worker.setPassword("fwedsf34gf34fge");
         userService.saveOrUpdateUser(worker);
     }

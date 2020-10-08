@@ -5,6 +5,7 @@ import Header from './Components/Header'
 import Hero from './Components/Homepage/Hero';
 import Dashboard from './Components/Dashboard/Dashboard';
 import AdminView from './Components/Dashboard/AdminView';
+import { PrivateRoute } from './Components/PrivateRoute';
 
 
 import {
@@ -22,12 +23,8 @@ function App() {
           <Route exact path="/">
             <Hero />
           </Route>
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
-          <Route path="/admin">
-            <AdminView />
-          </Route>
+          <PrivateRoute path="/dashboard" component={<Dashboard />} userType="CUSTOMER"/>
+          <PrivateRoute path="/admin" component={<AdminView />} userType="ADMIN"/>
         </Switch>
       </Router>
     </div>

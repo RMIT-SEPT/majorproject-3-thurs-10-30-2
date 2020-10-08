@@ -43,25 +43,8 @@ class BusinessForm extends React.Component {
     }
 
     handleSubmit() {
-        if (this.state.name !== "" && this.state.opening_hours.length > 0) {
-            axios({
-                method: "POST",
-                url: 'http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/Business',
-                headers: {},
-                data: {
-                    "business": {
-                        "name": this.state.name
-                    },
-                    "businessHours": this.state.opening_hours
-                }
-            }).then(function (response) {
-                if (response.status === 201) {
-                    window.location.href = '/dashboard/businesses';
-                }
-                console.log(response);
-            });
-        }
-        else {
+        if (!this.props.saveBusiness(this.state.name, this.state.opening_hours))
+        {
             if (this.state.name === "") {
                 alert("Business name missing")
             }
@@ -118,7 +101,7 @@ class BusinessForm extends React.Component {
                 <Button variant="success" onClick={this.handleSubmit}>
                     Submit
                 </Button>
-                <Button variant="danger" type="submit" onClick={() => this.props.setForm(0)}>
+                <Button variant="danger" type="submit" onClick={() => this.props.setBusForm(0)}>
                     <h4 className="mb-0">Cancel</h4>
                 </Button>
             </div>
