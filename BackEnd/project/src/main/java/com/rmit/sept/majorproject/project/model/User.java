@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "bookingsAsCustomer", "bookingsAsWorker", })
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "bookingsAsCustomer", "bookingsAsWorker", "business"})
 public class User implements UserDetails {
 
     public enum AccountType {
