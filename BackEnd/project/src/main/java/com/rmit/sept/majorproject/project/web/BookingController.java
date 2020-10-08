@@ -2,7 +2,9 @@ package com.rmit.sept.majorproject.project.web;
 
 
 import com.rmit.sept.majorproject.project.model.Booking;
+import com.rmit.sept.majorproject.project.model.User;
 import com.rmit.sept.majorproject.project.services.BookingService;
+import com.rmit.sept.majorproject.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 /*
 POST REQUEST FORMAT
@@ -42,6 +45,9 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getBooking(@PathVariable Long id){
         if(bookingService.findBookingById(id) != null){
@@ -63,7 +69,22 @@ public class BookingController {
     }
     @PostMapping("")
     public ResponseEntity<?> createBooking(@Valid @RequestBody Booking booking){
-        return new ResponseEntity<>(bookingService.createBooking(booking), HttpStatus.CREATED);
+        ResponseEntity<?> result;
+
+        // Need to retrieve more details about the users, as only the id is passed in
+        Optional<User> customer = userService.get(booking.getCustomer().getId());
+        Optional<User> worker = userService.get(booking.getWorker().getId());
+
+        if (customer.isPresent() && worker.isPresent()) {
+            booking.setCustomer(customer.get());
+            booking.setWorker(worker.get());
+
+            result = new ResponseEntity<>(bookingService.createBooking(booking), HttpStatus.CREATED);
+        } else {
+            result = new ResponseEntity<>("One or more users not found.", HttpStatus.NOT_FOUND);
+        }
+
+        return result;
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> cancelBooking(@PathVariable Long id){
