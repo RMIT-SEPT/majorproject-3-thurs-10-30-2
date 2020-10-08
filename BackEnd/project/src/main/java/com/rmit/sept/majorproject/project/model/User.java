@@ -62,6 +62,9 @@ public class User implements UserDetails {
     )
     private Set<Booking> bookingsAsWorker;
 
+    @OneToOne(mappedBy = "admin", fetch = FetchType.LAZY)
+    private Business business;
+
     public User() {
     }
 
@@ -98,6 +101,10 @@ public class User implements UserDetails {
     public Set<Booking> getBookingsAsCustomer() { return bookingsAsCustomer; }
 
     public Set<Booking> getBookingsAsWorker() { return bookingsAsWorker; }
+
+    public Business getBusiness() { return business; }
+
+    public void setBusiness(Business business) { this.business = business; }
 
     public Date getCreated_At() {
         return created_At;

@@ -24,6 +24,11 @@ public class Business {
     @JoinColumn(name = "business_id")
     private List<BusinessHours> businessHours = new ArrayList<>();
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "admin_id")
+    @NotNull(message = "Admin cannot be null.")
+    private User admin;
+
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }
@@ -39,6 +44,10 @@ public class Business {
     public void setBusinessHours(BusinessHours businessHours) {
         this.businessHours.add(businessHours);
     }
+
+    public User getAdmin() { return admin; }
+
+    public void setAdmin(User admin) { this.admin = admin; }
 
     public void removeAllBusinessHours() {
         this.businessHours.clear();
