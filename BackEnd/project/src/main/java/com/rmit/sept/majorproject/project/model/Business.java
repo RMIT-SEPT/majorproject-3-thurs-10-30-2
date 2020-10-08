@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "admin"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Business {
 
     @Id
