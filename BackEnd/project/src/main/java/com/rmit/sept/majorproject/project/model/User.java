@@ -1,8 +1,6 @@
 package com.rmit.sept.majorproject.project.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -63,6 +61,7 @@ public class User implements UserDetails {
     private Set<Booking> bookingsAsWorker;
 
     @OneToOne(mappedBy = "admin", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Business business;
 
     public User() {
