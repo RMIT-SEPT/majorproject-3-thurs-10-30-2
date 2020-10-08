@@ -31,7 +31,7 @@ public class BookingServiceTest {
         createDummyUsers();
 
         booking.setCustomer(customer);
-        booking.setWorkerId(worker);
+        booking.setWorker(worker);
     }
 
     private void createDummyUsers() {
