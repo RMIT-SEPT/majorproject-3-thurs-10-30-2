@@ -8,7 +8,6 @@ function WorkerDash() {
     const [currentWorker, setCurrentWorker] = useState([]);
     const [workerHours, setWorkerHours] = useState([]);
 
-
     axios.get('http://localhost:8080/api/User/worker/1')
         .then((response) => {
             //this.setState({ currentWorker: response.data })
@@ -34,6 +33,24 @@ function WorkerDash() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const [dow, setDow] = useState([{"MONDAY":false,
+    "TUESDAY":false,
+    "WEDNESDAY":false,
+    "THURSDAY":false,
+    "FRIDAY":false,
+    "SATURDAY":false,
+    "SUNDAY":false}]);
+
+    const handleChange = day => e => {
+        setDow({day: e.target.value});
+    }
+
+    const handleSubmit = e=> {
+        
+        console.log(dow);
+        setShow(false);
+    }
+
     return (
         <div className="header-spacer container">
             <h1>Hello {currentWorker.name}</h1>
@@ -48,21 +65,48 @@ function WorkerDash() {
                     <Modal.Title>Edit Your Availability</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form>
-                        <label>
-                            Monday
-                            <input
-                                name="Monday"
-                                type="checkbox"
-                                checked={setDow} />
-                        </label>
-                    </form>
+                <form onSubmit={handleSubmit}>
+                    <label>
+                        <input type="checkbox" checked={dow.MONDAY} onChange={handleChange("MONDAY")} />
+                        Monday
+                    </label>
+                    <br />
+                    <label>
+                        <input type="checkbox" checked={dow.TUESDAY} onChange={handleChange("TUESDAY")} />
+                        Tuesday
+                    </label>
+                    <br />
+                    <label>
+                        <input type="checkbox" checked={dow.WEDNESDAY} onChange={handleChange("WEDNESDAY")} />
+                        Wednesday
+                    </label>
+                    <br />
+                    <label>
+                        <input type="checkbox" checked={dow.THURSDAY} onChange={handleChange("THURSDAY")} />
+                        Thursday
+                    </label>
+                    <br />
+                    <label>
+                        <input type="checkbox" checked={dow.FRIDAY} onChange={handleChange("FRIDAY")} />
+                        Friday
+                    </label>
+                    <br />
+                    <label>
+                        <input type="checkbox" checked={dow.SATURDAY} onChange={handleChange("SATURDAY")} />
+                        Saturday
+                    </label>
+                    <br />
+                    <label>
+                        <input type="checkbox" checked={dow.SUNDAY} onChange={handleChange("SUNDAY")} />
+                        Sunday
+                    </label>
+                </form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                        Close
+                        Cancel
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button variant="primary" onClick={handleSubmit}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
