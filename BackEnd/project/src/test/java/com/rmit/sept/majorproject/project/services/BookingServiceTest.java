@@ -41,11 +41,13 @@ public class BookingServiceTest {
         customer.setFullName("Bob");
         customer.setUsername("bob@bob.com");
         customer.setPassword("fwedsf34gf34fge");
+        customer.setAccountType(User.AccountType.CUSTOMER);
         userService.saveOrUpdateUser(customer);
 
         worker.setFullName("Alice");
         worker.setUsername("alice@alice.com");
         worker.setPassword("fwedsf34gf34fge");
+        worker.setAccountType(User.AccountType.WORKER);
         userService.saveOrUpdateUser(worker);
     }
 
