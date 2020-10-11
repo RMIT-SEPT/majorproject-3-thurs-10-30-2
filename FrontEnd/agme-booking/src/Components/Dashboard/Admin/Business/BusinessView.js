@@ -36,7 +36,6 @@ class BusinessCard extends React.Component {
         });
 
         return (
-            //TODO add id for business here
             <div key={this.props.business.id}>
                 <hr />
                 <h3> Opening Hours </h3>
