@@ -10,8 +10,9 @@ class BusinessIndex extends React.Component {
         this.state = {
             businesses: []
         }
-
-        axios.get('http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/Business')
+        
+        // axios.get('http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/Business')
+        axios.get('http://localhost:8080/api/Business')
             .then((response) => {
                 this.setState({ businesses: response.data })
             });

@@ -8,6 +8,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
+
 
 
 @Service
@@ -37,4 +40,25 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public User findById(Long id) {
+
+        User user;
+
+        if (userRepository.findById(id).isPresent()) {
+            user = userRepository.findById(id).get();
+        } else {
+            user = null;
+        }
+        return user;
+    }
+    public List<User> getAll(){
+
+        List<User> users = new ArrayList<>();
+        Iterable<User> iterable = userRepository.findAll();
+
+        for(User u : iterable){
+            users.add(u);
+        }
+        return users;
+    }
 }

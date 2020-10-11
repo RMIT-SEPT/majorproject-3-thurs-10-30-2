@@ -27,10 +27,12 @@ public class Booking {
     @NotNull(message = "Worker cannot be null.")
     private User worker;
 
-    @JsonFormat(pattern = "yyyy-MM-dd:HH-mm")
+    @JsonFormat(pattern = "yyyy-MM-dd-HH:mm")
+    @NotNull
     private Date startTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd:HH-mm")
+    @JsonFormat(pattern = "yyyy-MM-dd-HH:mm")
+    @NotNull
     private Date endTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
