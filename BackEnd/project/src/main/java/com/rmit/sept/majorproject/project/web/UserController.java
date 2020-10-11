@@ -1,6 +1,11 @@
 package com.rmit.sept.majorproject.project.web;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.rmit.sept.majorproject.project.model.Booking;
 import com.rmit.sept.majorproject.project.model.User;
 import com.rmit.sept.majorproject.project.payload.JWTLoginSucessReponse;
@@ -31,6 +36,7 @@ import static com.rmit.sept.majorproject.project.security.SecurityConstants.TOKE
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
@@ -139,10 +145,28 @@ public class UserController {
         return result;
     }
 
+    @PatchMapping(path = "{id}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchUser(@PathVariable Long id, @RequestBody JsonPatch patch) {
+        try {
+            User user = userService.findById(id);
+            User userPatched = applyPatchToUser(patch, user);
+            userService.saveOrUpdateUser(userPatched);
+            return ResponseEntity.ok(userPatched);
+        } catch (JsonPatchException | JsonProcessingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         // TODO: Implement security checks before proceeding with deletion.
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    private User applyPatchToUser(JsonPatch patch, User targetUser) throws JsonPatchException, JsonProcessingException {
+        JsonNode patched = patch.apply(objectMapper.convertValue(targetUser, JsonNode.class));
+        return objectMapper.treeToValue(patched, User.class);
+    }
+
 }

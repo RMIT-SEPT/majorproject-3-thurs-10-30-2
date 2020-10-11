@@ -65,7 +65,7 @@ function BusinessCard(business) {
                         <Modal.Title>Add employee</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <AddEmployee/>
+                        <AddEmployee business={business}/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="danger" onClick={handleClose}>

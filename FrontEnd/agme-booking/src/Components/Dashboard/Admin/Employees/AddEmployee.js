@@ -2,7 +2,7 @@ import React from 'react'
 import Search from '../../../Search'
 
 
-function addEmployee() {
+function addEmployee(business) {
     
     var workers = [
         {"id": 1},
@@ -15,7 +15,7 @@ function addEmployee() {
 
     return (
         <div>
-            <Search/>
+            <Search business={business.business}/>
         </div>
     )
 }

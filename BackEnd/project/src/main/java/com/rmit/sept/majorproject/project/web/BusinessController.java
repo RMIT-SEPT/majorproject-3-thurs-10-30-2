@@ -1,8 +1,14 @@
 package com.rmit.sept.majorproject.project.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.rmit.sept.majorproject.project.model.Business;
 import com.rmit.sept.majorproject.project.model.BusinessHolder;
 import com.rmit.sept.majorproject.project.model.BusinessHours;
+import com.rmit.sept.majorproject.project.model.User;
 import com.rmit.sept.majorproject.project.services.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +42,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/Business")
 public class BusinessController {
+
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private BusinessService businessService;
@@ -86,11 +94,28 @@ public class BusinessController {
         return new ResponseEntity<>(business1, HttpStatus.CREATED);
     }
 
+    @PatchMapping(path = "{id}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchBusiness(@PathVariable Long id, @RequestBody JsonPatch patch) {
+        try {
+            Business business = businessService.findById(id);
+            Business businessPatched = applyPatchToBusiness(patch, business);
+            businessService.saveOrUpdateBusiness(businessPatched);
+            return ResponseEntity.ok(businessPatched);
+        } catch (JsonPatchException | JsonProcessingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         // TODO: Implement security checks before proceeding with deletion.
         businessService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private Business applyPatchToBusiness(JsonPatch patch, Business targetBusiness) throws JsonPatchException, JsonProcessingException {
+        JsonNode patched = patch.apply(objectMapper.convertValue(targetBusiness, JsonNode.class));
+        return objectMapper.treeToValue(patched, Business.class);
     }
 
 }
