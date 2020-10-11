@@ -28,6 +28,10 @@ public class Business {
     @JoinColumn(name = "business_id")
     private List<BusinessHours> businessHours = new ArrayList<>();
 
+    @OneToMany( cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @JoinColumn(name = "employer_id")
+    private List<User> employees = new ArrayList<>();
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id")
     @NotNull(message = "Admin cannot be null.")

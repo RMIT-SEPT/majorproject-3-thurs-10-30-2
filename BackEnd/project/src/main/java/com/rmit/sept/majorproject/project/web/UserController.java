@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -52,6 +53,19 @@ public class UserController {
 
         return result;
     }
+
+    @GetMapping("search/{name}")
+    public ResponseEntity<?> getUser(@PathVariable String name) {
+        ResponseEntity<?> result = new ResponseEntity<>("No users found", HttpStatus.NOT_FOUND);
+        List<User> users = userService.get(name);
+
+        if (users.size() > 0) {
+            result = ResponseEntity.ok(users);
+        }
+
+        return result;
+    }
+
 
     @GetMapping("{id}/bookings")
     public ResponseEntity<?> getUserBookings(@PathVariable Long id) {
