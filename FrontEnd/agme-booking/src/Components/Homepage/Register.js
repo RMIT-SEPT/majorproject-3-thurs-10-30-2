@@ -64,7 +64,10 @@ function Register({ setForm }) {
                     },
                     data: {
                         "business": {
-                            "name": name
+                            "name": name,
+                            "admin": {
+                                "id": JSON.parse(localStorage.user).id
+                            }
                         },
                         "businessHours": hours
                     }
