@@ -11,7 +11,7 @@ function WorkerDash() {
     // Add request for getting bookings for current worker
     useEffect(() => {
 
-        axios.get('http://localhost:8080/api/User/worker/1')
+        axios.get('http://localhost:8080/api/users/worker/'+JSON.parse(localStorage.user).id)
         .then((response) => {
             setCurrentWorker(response.data)
             setWorkerHours(response.data.workerHours)
@@ -22,7 +22,7 @@ function WorkerDash() {
     var workingHours = [];
     workerHours.forEach(element => {
         workingHours.push(
-            <h4>{element.dayOfWeek}</h4>
+            <h4>{element.dayOfWeek}</h4> 
         )
         workingHours.push(
             <p>{element.startTime} - {element.endTime}</p>
@@ -80,7 +80,7 @@ function WorkerDash() {
 
     return (
         <div className="header-spacer container">
-            <h1>Hello {currentWorker.name}</h1>
+            <h1>Hello {currentWorker.fullName}</h1>
             <h2>Your Working Hours</h2>
             {workingHours}
             <Button variant="success" onClick={handleShow}>

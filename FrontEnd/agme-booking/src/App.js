@@ -26,6 +26,7 @@ function App() {
           </Route>
           <PrivateRoute path="/dashboard" component={<Dashboard />} userType="CUSTOMER"/>
           <PrivateRoute path="/admin" component={<AdminView />} userType="ADMIN"/>
+          <PrivateRoute path="/worker" component={<WorkerDash />} userType="WORKER"/>
         </Switch>
       </Router>
     </div>
