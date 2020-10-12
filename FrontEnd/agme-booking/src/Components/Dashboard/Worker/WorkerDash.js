@@ -6,39 +6,52 @@ import { Button, Modal } from 'react-bootstrap';
 function WorkerDash() {
 
     // const [currentWorker, setCurrentWorker] = useState([]);
-    var currentWorker = [];
-    var workingHours = [];
-    // const [workerHours, setWorkerHours] = useState([]);
-    // Add request for getting bookings for current worker
+    const [currentWorker, setWorker] = useState([]);
+    const [workingHours, setWorkingHours] = useState([]);
+    // const [workerHours, setWorkerHours] = useState([]); handleClose()
 
-    var dow = 
+    const [dow, setDow]  = useState(
     {
-    "MONDAY":false,
-    "TUESDAY":false,
-    "WEDNESDAY":false,
-    "THURSDAY":false,
-    "FRIDAY":false,
-    "SATURDAY":false,
-    "SUNDAY":false
-    };
+        "MONDAY": false,
+        "TUESDAY": false,
+        "WEDNESDAY": false,
+        "THURSDAY": false,
+        "FRIDAY": false,
+        "SATURDAY": false,
+        "SUNDAY": false
+    });
 
     useEffect(() => {
-
-        axios.get('http://localhost:8080/api/users/worker/'+JSON.parse(localStorage.user).id)
-        .then((response) => {
-            currentWorker = response.data
-            console.log(currentWorker);
-            currentWorker.workerHours.forEach(element => {
-                dow[element.dayOfWeek] = true;
-                workingHours.push(
-                    <h4>{element.dayOfWeek}</h4> 
-                )
-                workingHours.push(
-                    <p>{element.startTime} - {element.endTime}</p>
-                )
-            });
-        });
-
+        if (currentWorker.length === 0) {
+            axios.get('http://localhost:8080/api/users/worker/' + JSON.parse(localStorage.user).id)
+                .then((response) => {
+                    var tempWorker = response.data
+                    var tempWorkingHours = []
+                    var tempDow = {}
+                    tempWorker.workerHours.forEach(element => {
+                        tempDow[element.dayOfWeek] = true;
+                        var li = ""
+                        if (element.startTime === null) {
+                            li =
+                                <li>
+                                    <h4>{element.dayOfWeek}</h4>
+                                    <p>Not assigned yet</p>
+                                </li >
+                        } else {
+                            li =
+                                <li>
+                                    <h4>{element.dayOfWeek}</h4>
+                                    <p>{element.startTime} - {element.endTime}</p>
+                                </li >
+                        }
+                        tempWorkingHours.push(li)
+                    });
+                    console.log(workingHours)
+                    setWorker(tempWorker)
+                    setWorkingHours(tempWorkingHours)
+                    setDow(tempDow)
+                });
+        }
     });
 
     const [show, setShow] = useState(false);
@@ -58,7 +71,7 @@ function WorkerDash() {
         var tempWorkerHours = [];
         for (var key in dow) {
             currentWorker.workerHours.forEach(element => {
-                if(element.dayOfWeek === key){
+                if (element.dayOfWeek === key && dow[key] === true) {
                     dow[key] = false
                     tempWorkerHours.push(element)
                     console.log(element)
@@ -77,19 +90,25 @@ function WorkerDash() {
         }
         console.log(tempWorkerHours)
         currentWorker.workerHours = tempWorkerHours
+        console.log(currentWorker)
 
-        axios.put('http://localhost:8080/api/users/worker/'+JSON.parse(localStorage.user).id, {
-            currentWorker
-          });
+        axios.post('http://localhost:8080/api/users/worker/' + currentWorker.id, {
+            "workerHours": currentWorker.workerHours
+        }).then((response) => {
+            setWorker([]);
+            handleClose()
+        });
     }
 
     return (
         <div className="header-spacer container">
             <h1>Hello {currentWorker.fullName}</h1>
             <h2>Your Working Hours</h2>
-            {workingHours}
+            <ul className="list-unstyled">
+                {workingHours}
+            </ul>
             <Button variant="success" onClick={handleShow}>
-                    Edit
+                Edit
             </Button>
 
             <Modal show={show} onHide={handleClose}>
@@ -97,42 +116,42 @@ function WorkerDash() {
                     <Modal.Title>Edit Your Availability</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <form>
-                    <label>
-                        <input type="checkbox" defaultChecked={dow.MONDAY} onChange={handleChange("MONDAY")} />
+                    <form>
+                        <label>
+                            <input type="checkbox" defaultChecked={dow.MONDAY} onChange={handleChange("MONDAY")} />
                         Monday
                     </label>
-                    <br />
-                    <label>
-                        <input type="checkbox" defaultChecked={dow.TUESDAY} onChange={handleChange("TUESDAY")} />
+                        <br />
+                        <label>
+                            <input type="checkbox" defaultChecked={dow.TUESDAY} onChange={handleChange("TUESDAY")} />
                         Tuesday
                     </label>
-                    <br />
-                    <label>
-                        <input type="checkbox" defaultChecked={dow.WEDNESDAY} onChange={handleChange("WEDNESDAY")} />
+                        <br />
+                        <label>
+                            <input type="checkbox" defaultChecked={dow.WEDNESDAY} onChange={handleChange("WEDNESDAY")} />
                         Wednesday
                     </label>
-                    <br />
-                    <label>
-                        <input type="checkbox" defaultChecked={dow.THURSDAY} onChange={handleChange("THURSDAY")} />
+                        <br />
+                        <label>
+                            <input type="checkbox" defaultChecked={dow.THURSDAY} onChange={handleChange("THURSDAY")} />
                         Thursday
                     </label>
-                    <br />
-                    <label>
-                        <input type="checkbox" defaultChecked={dow.FRIDAY} onChange={handleChange("FRIDAY")} />
+                        <br />
+                        <label>
+                            <input type="checkbox" defaultChecked={dow.FRIDAY} onChange={handleChange("FRIDAY")} />
                         Friday
                     </label>
-                    <br />
-                    <label>
-                        <input type="checkbox" defaultChecked={dow.SATURDAY} onChange={handleChange("SATURDAY")} />
+                        <br />
+                        <label>
+                            <input type="checkbox" defaultChecked={dow.SATURDAY} onChange={handleChange("SATURDAY")} />
                         Saturday
                     </label>
-                    <br />
-                    <label>
-                        <input type="checkbox" defaultChecked={dow.SUNDAY} onChange={handleChange("SUNDAY")} />
+                        <br />
+                        <label>
+                            <input type="checkbox" defaultChecked={dow.SUNDAY} onChange={handleChange("SUNDAY")} />
                         Sunday
                     </label>
-                </form>
+                    </form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
@@ -144,9 +163,9 @@ function WorkerDash() {
                 </Modal.Footer>
             </Modal>
         </div>
-        
+
     ) // Display bookings for worker below availability
 
-    }
+}
 
 export default WorkerDash
