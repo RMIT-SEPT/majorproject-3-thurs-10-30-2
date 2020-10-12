@@ -1,7 +1,6 @@
 package com.rmit.sept.majorproject.project.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -27,10 +26,12 @@ public class Booking {
     @NotNull(message = "Worker cannot be null.")
     private User worker;
 
-    @JsonFormat(pattern = "yyyy-MM-dd:HH-mm")
+    @JsonFormat(pattern = "yyyy-MM-dd-HH:mm")
+    @NotNull
     private Date startTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd:HH-mm")
+    @JsonFormat(pattern = "yyyy-MM-dd-HH:mm")
+    @NotNull
     private Date endTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -70,7 +71,7 @@ public class Booking {
         return worker;
     }
 
-    public void setWorkerId(User worker) {
+    public void setWorker(User worker) {
         this.worker = worker;
     }
 

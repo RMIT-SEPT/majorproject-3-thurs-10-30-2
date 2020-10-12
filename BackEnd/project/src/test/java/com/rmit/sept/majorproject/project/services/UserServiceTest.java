@@ -8,14 +8,14 @@ import org.springframework.dao.EmptyResultDataAccessException;
 
 import javax.validation.ConstraintViolationException;
 
+import static com.rmit.sept.majorproject.project.sharedtestdata.TestingConstants.*;
+
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserServiceTest {
 
-    private final String GOOD_USER_NAME = "test user";
-    private final String GOOD_USER_EMAIL = "test@email.com";
-    private final String GOOD_PASSWORD = "$tr0NgPa$SWoRD";
+
 
     @Autowired
     private UserService userService;
@@ -23,10 +23,17 @@ public class UserServiceTest {
 
     @BeforeEach
     void beforeTestSetup(){
+        // Delete user if it has been saved by a test
+        try {
+            userService.delete(user.getId());
+        } catch (Exception e) {
+            // Do nothing, we just want to delete this user in the event it had been previously saved.
+        }
+
         // Create a user with valid data
         user = new User();
-        user.setName(GOOD_USER_NAME);
-        user.setEmail(GOOD_USER_EMAIL);
+        user.setFullName(GOOD_FULL_NAME);
+        user.setUsername(GOOD_USERNAME);
         user.setPassword(GOOD_PASSWORD);
     }
 
@@ -49,14 +56,14 @@ public class UserServiceTest {
     @Test
     void saveOrUpdateUser_Succeeds_IfAllDataIsValid() {
         User newUser = userService.saveOrUpdateUser(user);
-        Assertions.assertTrue(newUser.getName().equals(GOOD_USER_NAME) &&
-                        newUser.getEmail().equals(GOOD_USER_EMAIL),
+        Assertions.assertTrue(newUser.getUsername().equals(GOOD_USERNAME) &&
+                newUser.getFullName().equals(GOOD_FULL_NAME),
                 "Returned user data should match what was saved.");
     }
 
     @Test
     void saveOrUpdateUser_ThrowsException_IfNameIsTooShort() {
-        user.setName("12");     // Current constraint min is 3
+        user.setUsername("12");     // Current constraint min is 3
 
         Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
                 "User name with length 2 is too short, javax.validation.ConstraintViolationException should be thrown.");
@@ -64,7 +71,7 @@ public class UserServiceTest {
 
     @Test
     void saveOrUpdateUser_ThrowsException_IfNameIsTooLong() {
-        user.setName("1234567890123456");   // Current constraint max is 15
+        user.setUsername("1234567890123456");   // Current constraint max is 15
 
         Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
                 "User name with length 16 is too long, javax.validation.ConstraintViolationException should be thrown.");
@@ -72,32 +79,24 @@ public class UserServiceTest {
 
     @Test
     void saveOrUpdateUser_ThrowsException_IfNameIsBlank() {
-        user.setName("");
+        user.setUsername("");
 
         Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
                 "Blank name for user should throw javax.validation.ConstraintViolationException.");
     }
 
     @Test
-    void updateUser_returnsUpdatedUser_UserExists() {
+    void saveOrUpdateUser_returnsUpdatedUser_IfUserExists() {
+        String newName = "New Fullname";
+
+        // Save current
         userService.saveOrUpdateUser(user);
-        user.setName("updated");
-        Assertions.assertNotNull(userService.saveOrUpdateUser(user));
+
+        // Change name and update
+        user.setFullName(newName);
+        userService.saveOrUpdateUser(user);
+
+        Assertions.assertEquals(user.getFullName(), newName);
     }
 
-    @Test
-    void saveOrUpdateUser_ThrowsException_IfEmailIsInvalid(){
-        user.setEmail("email.com");
-        // Fails as user must have an @ symbol in their email address
-        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
-                "Invalid email should throw javax.validation.ConstraintViolationException.");
-    }
-
-    @Test
-    void saveOrUpdateUser_ThrowsException_IfPasswordIsInvalidLength(){
-        user.setPassword("12345");
-        // Fails as user have a password 6 or more characters.
-        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
-                "Short password should throw javax.validation.ConstraintViolationException.");
-    }
 }

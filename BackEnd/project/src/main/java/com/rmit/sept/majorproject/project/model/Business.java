@@ -1,6 +1,9 @@
 package com.rmit.sept.majorproject.project.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Business {
 
     @Id
@@ -23,6 +27,12 @@ public class Business {
     @OneToMany( cascade = {CascadeType.ALL}, orphanRemoval = true)
     @JoinColumn(name = "business_id")
     private List<BusinessHours> businessHours = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "admin_id")
+    @NotNull(message = "Admin cannot be null.")
+    @JsonBackReference
+    private User admin;
 
     public Long getId() { return id; }
 
@@ -39,6 +49,10 @@ public class Business {
     public void setBusinessHours(BusinessHours businessHours) {
         this.businessHours.add(businessHours);
     }
+
+    public User getAdmin() { return admin; }
+
+    public void setAdmin(User admin) { this.admin = admin; }
 
     public void removeAllBusinessHours() {
         this.businessHours.clear();

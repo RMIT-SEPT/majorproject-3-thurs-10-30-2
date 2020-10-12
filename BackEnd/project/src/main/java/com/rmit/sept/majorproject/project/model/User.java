@@ -1,21 +1,22 @@
 package com.rmit.sept.majorproject.project.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Set;
 
 @Entity
-public class User {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "bookingsAsCustomer", "bookingsAsWorker"})
+public class User implements UserDetails {
 
-    enum AccountType{
+    public enum AccountType {
         ADMIN,
         CUSTOMER,
         WORKER }
@@ -23,6 +24,29 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Please enter your full name")
+    private String fullName;
+
+    @Email(message = "Username needs to be a valid email")
+    @NotBlank(message = "Username is required")
+    @Column(unique = true)
+    private String username;
+
+    @NotBlank(message = "Password is required")
+    private String password;
+
+    @Transient
+    private String confirmPassword;
+
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date created_At;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date updated_At;
 
     @OneToMany(
             mappedBy = "customer",
@@ -58,6 +82,9 @@ public class User {
     private Date created_At;
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date updated_At;
+    @OneToOne(mappedBy = "admin", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Business business;
 
     public User() {
     }
@@ -70,21 +97,15 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() { return fullName; }
+
+    public void setFullName(String fullName) { this.fullName = fullName; }
+
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setUsername(String username) { this.username = username; }
 
     public String getPassword() {
         return password;
@@ -93,6 +114,18 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getConfirmPassword() { return confirmPassword; }
+
+    public void setConfirmPassword(String confirmPassword) { this.confirmPassword = confirmPassword; }
+
+    public Set<Booking> getBookingsAsCustomer() { return bookingsAsCustomer; }
+
+    public Set<Booking> getBookingsAsWorker() { return bookingsAsWorker; }
+
+    public Business getBusiness() { return business; }
+
+    public void setBusiness(Business business) { this.business = business; }
 
     public Date getCreated_At() {
         return created_At;
@@ -137,5 +170,35 @@ public class User {
     }
 
 
+    // UserDetails interface methods
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isEnabled() {
+        return true;
+    }
 
 }
