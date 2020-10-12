@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { Button, Modal } from 'react-bootstrap';
 
@@ -8,16 +8,17 @@ function WorkerDash() {
     const [currentWorker, setCurrentWorker] = useState([]);
     const [workerHours, setWorkerHours] = useState([]);
 
-    axios.get('http://localhost:8080/api/User/worker/1')
+    // Add request for getting bookings for current worker
+    useEffect(() => {
+
+        axios.get('http://localhost:8080/api/User/worker/1')
         .then((response) => {
-            //this.setState({ currentWorker: response.data })
             setCurrentWorker(response.data)
-            //console.log(this.state.currentWorker)
-            //this.setState({ workerHours: response.data.workerHours })
             setWorkerHours(response.data.workerHours)
-            //console.log(this.state.workerHours)
         });
 
+    });
+    
     var workingHours = [];
     workerHours.forEach(element => {
         workingHours.push(
@@ -47,8 +48,34 @@ function WorkerDash() {
 
     const handleSubmit = e=> {
         
+        dow.forEach(element => {
+            console.log(element)
+        })
         console.log(dow);
         setShow(false);
+    }
+
+    const handlePost = e=>{
+
+        axios.put("http://localhost:8080/api/User/{currentWorker.id}", {
+            {
+                "workerHours": [
+                    // Loop if dow == true, if initial was true and dow is true no change
+                    // For any new days StartTime/EndTime == NULL
+                    {
+                        "dayOfWeek": "MONDAY",
+                        "startTime": "09:00",
+                        "endTime": "17:00"
+                    },
+                    {
+                        "dayOfWeek": "TUESDAY",
+                        "startTime": "09:00",
+                        "endTime": "17:00"
+                    }
+                ],
+            }
+          });
+
     }
 
     return (
@@ -113,7 +140,7 @@ function WorkerDash() {
             </Modal>
         </div>
         
-    )
+    ) // Display bookings for worker below availability
 
     }
 
