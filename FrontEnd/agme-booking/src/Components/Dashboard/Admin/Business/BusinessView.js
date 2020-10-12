@@ -11,11 +11,12 @@ function BusinessCard(business) {
     const handleShow = () => setShow(true);
 
     var employeeCards = []
-    // this.state.employees.forEach(element => {
-    //     employeeCards.push(
-    //         <EmployeeCard employee={element} />
-    //     )
-    // });
+    console.log(business)
+    business.business.employees.forEach(element => {
+        employeeCards.push(
+            <EmployeeCard employee={element} />
+        )
+    });
 
     var dayRows = [];
     console.log(business.business)

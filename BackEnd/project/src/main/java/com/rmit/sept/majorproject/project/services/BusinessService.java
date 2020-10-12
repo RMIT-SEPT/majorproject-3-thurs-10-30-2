@@ -16,7 +16,7 @@ public class BusinessService {
 
     public Business saveOrUpdateBusiness(Business business){
 
-        if(!(business.getName().isEmpty()) && hoursCheck(business) && dupe_Name(business)){
+        if(!(business.getName().isEmpty()) && hoursCheck(business)){
             return businessRepository.save(business);
         }
         return null;

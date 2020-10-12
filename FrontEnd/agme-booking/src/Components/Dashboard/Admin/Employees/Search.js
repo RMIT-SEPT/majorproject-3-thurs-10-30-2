@@ -13,7 +13,7 @@ function Search(business) {
 
     const search = (query) => {
         var tempEmployees = []
-        Axios.get('http://localhost:8080/api/users/search/' + query)
+        Axios.get('http://localhost:8080/api/users/search/WORKER/' + query)
             .then((response) => {
                 response.data.forEach(element => {
                     console.log(element)
@@ -46,36 +46,35 @@ function Search(business) {
     }
 
     const saveEmployee = (id) => {
-        var user = {} 
-        Axios.get('http://localhost:8080/api/users/' + id)
-        .then((response) => {
-            user = response.data
-            user.employer_id = business.business.business.id
-            
-        })
+        Axios.put('http://localhost:8080/api/Business/' + business.business.business.id + "/add_employee/" + id, {}, {
+        headers: {
+           Authorization: localStorage.token
+        }}).then((response) => {
+                window.location.href("/admin")
+            })
     }
 
-console.log(employees)
-return (
-    <div className="container">
-        <div className="search-bar">
-            <FontAwesomeIcon icon={faSearch} />
-            <input
-                autocomplete="off"
-                type="text"
-                id="search-input"
-                placeholder="Search"
-                onChange={e => search(e.target.value)}
-            />
+    console.log(employees)
+    return (
+        <div className="container">
+            <div className="search-bar">
+                <FontAwesomeIcon icon={faSearch} />
+                <input
+                    autocomplete="off"
+                    type="text"
+                    id="search-input"
+                    placeholder="Search"
+                    onChange={e => search(e.target.value)}
+                />
+            </div>
+            <ul className="search-results">
+                {employees}
+            </ul>
+            <div>
+                {employee}
+            </div>
         </div>
-        <ul className="search-results">
-            {employees}
-        </ul>
-        <div>
-            {employee}
-        </div>
-    </div>
-)
+    )
 }
 
 export default Search

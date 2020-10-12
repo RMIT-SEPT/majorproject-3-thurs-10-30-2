@@ -60,10 +60,10 @@ public class UserController {
         return result;
     }
 
-    @GetMapping("search/{name}")
-    public ResponseEntity<?> getUser(@PathVariable String name) {
+    @GetMapping("search/{accountType}/{name}")
+    public ResponseEntity<?> getUser(@PathVariable String name, @PathVariable User.AccountType accountType) {
         ResponseEntity<?> result = new ResponseEntity<>("No users found", HttpStatus.NOT_FOUND);
-        List<User> users = userService.get(name);
+        List<User> users = userService.get(name, accountType);
 
         if (users.size() > 0) {
             result = ResponseEntity.ok(users);

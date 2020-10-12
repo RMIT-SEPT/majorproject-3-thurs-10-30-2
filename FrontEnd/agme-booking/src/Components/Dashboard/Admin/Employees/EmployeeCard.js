@@ -10,13 +10,15 @@ function EmployeeCard({ employee }) {
     const handleShow = () => setShow(true);
 
     var dayRows = []
-    employee.hours.forEach(element => {
-        dayRows.push(
-            <tr key={element.dayOfWeek}>
-                <td>{element.dayOfWeek}</td>
-                <td>{element.startTime} - {element.endTime}</td>
-            </tr>)
-    });
+    if (employee.hours) {
+        employee.hours.forEach(element => {
+            dayRows.push(
+                <tr key={element.dayOfWeek}>
+                    <td>{element.dayOfWeek}</td>
+                    <td>{element.startTime} - {element.endTime}</td>
+                </tr>)
+        });
+    }
 
     const addOpeningHours = (hours) => {
         var day = hours.dayOfWeek;
@@ -26,12 +28,12 @@ function EmployeeCard({ employee }) {
     }
 
     return (
-        <li className="w-75 my-1" key={employee.name + employee.id}>
-            <Card className="p-1" id={employee.name + employee.id}>
+        <li className="w-75 my-1" key={employee.fullName + employee.id}>
+            <Card className="p-1" id={employee.fullName + employee.id}>
                 <Card.Title className="pl-4 m-0 text-left align-middle">
                     <div className="row">
                         <div className="col-sm-6 d.flex">
-                            {employee.name}
+                            {employee.fullName}
                         </div>
                         <div className="col-sm-6 text-right">
                             <Button variant="info" className="mr-2" onClick={handleShow}>Edit</Button>
@@ -47,7 +49,7 @@ function EmployeeCard({ employee }) {
                 keyboard={false}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit {employee.name}</Modal.Title>
+                    <Modal.Title>Edit {employee.fullName}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="business-form">
@@ -63,7 +65,7 @@ function EmployeeCard({ employee }) {
                             </tbody>
                         </table>
                         <div className="employeeHours">
-                        <OpeningHours addOpeningHours={addOpeningHours} days={employee.days} />
+                            <OpeningHours addOpeningHours={addOpeningHours} days={employee.days} />
                         </div>
                     </div>
                 </Modal.Body>

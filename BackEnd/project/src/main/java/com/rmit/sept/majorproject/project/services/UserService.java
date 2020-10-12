@@ -26,9 +26,9 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public List<User> get(String name) {
+    public List<User> get(String name, User.AccountType type) {
         List<User> results;
-        results = userRepository.findByFullNameContainingIgnoreCase(name);
+        results = userRepository.findByFullNameContainingIgnoreCaseAndAccountType(name, type);
         return results;
     }
 
