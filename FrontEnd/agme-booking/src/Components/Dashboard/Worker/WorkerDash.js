@@ -94,37 +94,37 @@ function WorkerDash() {
                 <Modal.Body>
                 <form onSubmit={handleSubmit}>
                     <label>
-                        <input type="checkbox" checked={dow.MONDAY} onChange={handleChange("MONDAY")} />
+                        <input type="checkbox" checked={dow.MONDAY} onChange={()=>handleChange("MONDAY")} />
                         Monday
                     </label>
                     <br />
                     <label>
-                        <input type="checkbox" checked={dow.TUESDAY} onChange={handleChange("TUESDAY")} />
+                        <input type="checkbox" checked={dow.TUESDAY} onChange={()=>handleChange("TUESDAY")} />
                         Tuesday
                     </label>
                     <br />
                     <label>
-                        <input type="checkbox" checked={dow.WEDNESDAY} onChange={handleChange("WEDNESDAY")} />
+                        <input type="checkbox" checked={dow.WEDNESDAY} onChange={()=>handleChange("WEDNESDAY")} />
                         Wednesday
                     </label>
                     <br />
                     <label>
-                        <input type="checkbox" checked={dow.THURSDAY} onChange={handleChange("THURSDAY")} />
+                        <input type="checkbox" checked={dow.THURSDAY} onChange={()=>handleChange("THURSDAY")} />
                         Thursday
                     </label>
                     <br />
                     <label>
-                        <input type="checkbox" checked={dow.FRIDAY} onChange={handleChange("FRIDAY")} />
+                        <input type="checkbox" checked={dow.FRIDAY} onChange={()=>handleChange("FRIDAY")} />
                         Friday
                     </label>
                     <br />
                     <label>
-                        <input type="checkbox" checked={dow.SATURDAY} onChange={handleChange("SATURDAY")} />
+                        <input type="checkbox" checked={dow.SATURDAY} onChange={()=>handleChange("SATURDAY")} />
                         Saturday
                     </label>
                     <br />
                     <label>
-                        <input type="checkbox" checked={dow.SUNDAY} onChange={handleChange("SUNDAY")} />
+                        <input type="checkbox" checked={dow.SUNDAY} onChange={()=>handleChange("SUNDAY")} />
                         Sunday
                     </label>
                 </form>
