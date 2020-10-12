@@ -3,6 +3,8 @@ package com.rmit.sept.majorproject.project.web;
 
 import com.rmit.sept.majorproject.project.model.Booking;
 import com.rmit.sept.majorproject.project.model.User;
+import com.rmit.sept.majorproject.project.model.WorkerHolder;
+import com.rmit.sept.majorproject.project.model.WorkerHours;
 import com.rmit.sept.majorproject.project.payload.JWTLoginSucessReponse;
 import com.rmit.sept.majorproject.project.payload.LoginRequest;
 import com.rmit.sept.majorproject.project.security.JwtTokenProvider;

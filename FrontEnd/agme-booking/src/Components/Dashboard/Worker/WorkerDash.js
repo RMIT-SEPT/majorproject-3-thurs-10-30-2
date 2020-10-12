@@ -55,28 +55,28 @@ function WorkerDash() {
         setShow(false);
     }
 
-    const handlePost = e=>{
+    // const handlePost = e=>{
 
-        axios.put("http://localhost:8080/api/User/{currentWorker.id}", {
-            {
-                "workerHours": [
-                    // Loop if dow == true, if initial was true and dow is true no change
-                    // For any new days StartTime/EndTime == NULL
-                    {
-                        "dayOfWeek": "MONDAY",
-                        "startTime": "09:00",
-                        "endTime": "17:00"
-                    },
-                    {
-                        "dayOfWeek": "TUESDAY",
-                        "startTime": "09:00",
-                        "endTime": "17:00"
-                    }
-                ],
-            }
-          });
+    //     axios.put("http://localhost:8080/api/User/{currentWorker.id}", {
+    //         {
+    //             "workerHours": [
+    //                 // Loop if dow == true, if initial was true and dow is true no change
+    //                 // For any new days StartTime/EndTime == NULL
+    //                 {
+    //                     "dayOfWeek": "MONDAY",
+    //                     "startTime": "09:00",
+    //                     "endTime": "17:00"
+    //                 },
+    //                 {
+    //                     "dayOfWeek": "TUESDAY",
+    //                     "startTime": "09:00",
+    //                     "endTime": "17:00"
+    //                 }
+    //             ],
+    //         }
+    //       });
 
-    }
+    // }
 
     return (
         <div className="header-spacer container">
