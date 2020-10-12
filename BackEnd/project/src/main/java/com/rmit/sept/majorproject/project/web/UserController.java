@@ -127,12 +127,18 @@ public class UserController {
         return result;
     }
 
-    @PostMapping("/worker")
-    public ResponseEntity<?> createNewUser(@RequestBody WorkerHolder holder, BindingResult result){
-        for (WorkerHours hours: holder.getWorkerHours()) {
-            holder.getUser().setWorkerHours(hours);
+    @PostMapping("/worker/{id}")
+    public ResponseEntity<?> createNewUser(@PathVariable Long id, @RequestBody WorkerHolder holder, BindingResult result){
+//        for (WorkerHours hours: holder.getWorkerHours()) {
+//            holder.getUser().setWorkerHours(hours);
+//        }
+        User tempUser = userService.findById(id);
+        tempUser.removeAllBusinessHours();
+        for (WorkerHours myHours: holder.getWorkerHours()) {
+            tempUser.setWorkerHours(myHours);
         }
-        User user1 = userService.saveOrUpdateUser(holder.getUser()); //tmp user
+        //User user1 = userService.saveOrUpdateUser(holder.getUser()); //tmp user
+        User user1 = userService.saveOrUpdateUser(tempUser); //tmp user
 
         return new ResponseEntity<>(user1, HttpStatus.CREATED);
     }
