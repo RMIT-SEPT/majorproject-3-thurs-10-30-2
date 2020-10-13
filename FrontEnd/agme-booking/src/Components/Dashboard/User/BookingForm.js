@@ -10,6 +10,7 @@ class BookingForm extends React.Component {
         this.state = {
             businessId: window.location.href.split("/").pop(),
             businesses: [],
+            bName:'',
             date: new Date(),
             duration: '',
             customer: '',
@@ -19,15 +20,33 @@ class BookingForm extends React.Component {
             endTime: ''
         }
         //GET: should be changed to getting the list of workers for a business
-        axios.get('http://localhost:8080/api/user')
+        axios.get('http://localhost:8080/api/users',{
+            headers: {
+                "Authorization": localStorage.token
+            }
+        })
             .then((response) => {
                 this.setState({ worker: response.data })
             });
-        axios.get('http://localhost:8080/api/Business')
+        axios.get('http://localhost:8080/api/Business', {
+            headers: {
+                "Authorization": localStorage.token
+            }
+        })
             .then((response) => {
                 this.setState({ businesses: response.data })
             });
+        // this.businessNameset = this.businessNameset.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    businessNameset() {
+        this.select = this.state.businesses.map((select) => {
+            if (this.state.businessId === select.id.toString()) {
+                var name = select.name.toString();
+                this.setState({ ...this.state.bName, name });
+                console.log(name);
+            }
+        })
     }
     onChange = date => {
         this.setState({ date });
@@ -80,13 +99,17 @@ class BookingForm extends React.Component {
     * should redirect to a list of bookings for the user(getBookings() currently not working).
     */
     handleSubmit() {
+        //sets the businessName for bookings.
+        this.businessNameset();
         axios({
             method: "POST",
             // url: 'http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/bookings',
             url: 'http://localhost:8080/api/bookings',
-            headers: {},
+            headers: {
+                "Authorization": localStorage.token
+            },
             data: {
-                "duration": 2,
+                "businessName": this.state.name,
                 "customer": {
                     "id": 1,
                     "name": "customer",
@@ -114,7 +137,7 @@ class BookingForm extends React.Component {
         });
     }
     render() {
-
+        // this.businessNameset();
         // const times = {
         //     Donna: [
         //         { startTime: 10, endTime: 11 },
@@ -150,12 +173,10 @@ class BookingForm extends React.Component {
         /*Used to set the name of business selected*/
         var name;
         this.select = this.state.businesses.map((select) => {
-            console.log(select.id);
             if (this.state.businessId === select.id.toString()) {
                 name = select.name.toString();
             }
         })
-
         return (
             <div id="booking-form">
                 <h2>{name}</h2>

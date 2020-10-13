@@ -11,19 +11,23 @@ class BookingIndex extends React.Component {
             bookings: [],
         }
         // axios.get('http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/Business')
-        axios.get('http://localhost:8080/api/bookings')
+        axios.get('http://localhost:8080/api/bookings',{
+            headers: {
+                "Authorization": localStorage.token
+            }
+        })
             .then((response) => {
                 this.setState({ bookings: response.data })
             });   
-        this.selectedBusiness = this.selectedBusiness.bind(this);  
+        this.selectedBooking = this.selectedBooking.bind(this);  
     }
-    selectedBusiness(event){
+    selectedBooking(event){
         console.log(event);
     }
     
     render() {
         var allBookings = [];
-        this.state.businesses.forEach(element => {
+        this.state.bookings.forEach(element => {
             allBookings.push(
                 <Card>
                     {element.name}
