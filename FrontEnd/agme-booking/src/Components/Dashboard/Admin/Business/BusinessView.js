@@ -3,7 +3,7 @@ import { Button, Card, Modal } from 'react-bootstrap';
 import AddEmployee from '../Employees/AddEmployee';
 import EmployeeCard from '../Employees/EmployeeCard'
 
-function BusinessCard(business) {
+function BusinessView(business) {
 
     const [show, setShow] = useState(false);
 
@@ -11,7 +11,6 @@ function BusinessCard(business) {
     const handleShow = () => setShow(true);
 
     var employeeCards = []
-    console.log(business)
     business.business.employees.forEach(element => {
         employeeCards.push(
             <EmployeeCard employee={element} />
@@ -81,4 +80,4 @@ function BusinessCard(business) {
     )
 }
 
-export default BusinessCard
+export default BusinessView

@@ -156,6 +156,9 @@ public class UserController {
             return ResponseEntity.ok(userPatched);
         } catch (JsonPatchException | JsonProcessingException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PostMapping("/worker")
     public ResponseEntity<?> createNewUser(@RequestBody WorkerHolder holder, BindingResult result){
         for (WorkerHours hours: holder.getWorkerHours()) {

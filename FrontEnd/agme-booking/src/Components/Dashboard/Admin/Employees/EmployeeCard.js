@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Button, Card, Modal } from 'react-bootstrap';
-import EditHours from "./EditHours";
+import axios from 'axios';
 
-function EmployeeCard({ employee }) {
+
+function EmployeeCard(employee) {
 
     const [show, setShow] = useState(false);
 
@@ -10,8 +11,8 @@ function EmployeeCard({ employee }) {
     const handleShow = () => setShow(true);
 
     var dayRows = []
-    if (employee.workingHours) {
-        employee.workingHours.forEach(element => {
+    if (employee.employee.workerHours) {
+        employee.employee.workerHours.forEach(element => {
             dayRows.push(
                 <tr key={element.dayOfWeek}>
                     <td>{element.dayOfWeek}</td>
@@ -20,20 +21,45 @@ function EmployeeCard({ employee }) {
         });
     }
 
-    const addOpeningHours = (hours) => {
-        var day = hours.dayOfWeek;
-        var index = this.state.days.indexOf(day);
-        this.setState({ days: this.state.days.filter((_, i) => i !== index) });
-        this.setState({ opening_hours: [...this.state.opening_hours, hours] });
+    const [hours, setHours] = useState(employee.employee.workerHours)
+
+    const handleHoursUpdate = key => e => {
+        hours.forEach(element => {
+            if (element.dayOfWeek == key) {
+                element[e.target.name] = e.target.value;
+            }
+        });
+    };
+
+    var shifts = []
+    employee.employee.workerHours.forEach(element => {
+        shifts.push(
+            <div>
+                <span className="mr-4">
+                    {element.dayOfWeek}
+                </span>
+                <input name="startTime" placeholder="Start time" onChange={handleHoursUpdate(element.dayOfWeek)} pattern="[0-9][0-9]:[0-9][0-9]" defaultValue={element.startTime} className="w-25">
+                </input>
+                <input name="endTime" placeholder="End time" pattern="[0-9][0-9]:[0-9][0-9]" defaultValue={element.endTime} className="w-25">
+                </input>
+            </div>
+        )
+    });
+
+    function updateHours() {
+        var updatedEmployee = employee.employee
+        updatedEmployee.workerHours = hours
+        axios.put('http://localhost:8080/api/users/worker/' + updatedEmployee.id, updatedEmployee);
+        handleClose();
     }
 
     return (
-        <li className="w-75 my-1" key={employee.fullName + employee.id}>
-            <Card className="p-1" id={employee.fullName + employee.id}>
+        <li className="w-75 my-1" key={employee.employee.fullName + employee.id}>
+            <Card className="p-1" id={employee.employee.fullName + employee.id}>
                 <Card.Title className="pl-4 m-0 text-left align-middle">
                     <div className="row">
                         <div className="col-sm-6 d.flex">
-                            {employee.fullName}
+                            {employee.employee.fullName}
                         </div>
                         <div className="col-sm-6 text-right">
                             <Button variant="info" className="mr-2" onClick={handleShow}>Edit</Button>
@@ -49,16 +75,22 @@ function EmployeeCard({ employee }) {
                 keyboard={false}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit {employee.fullName}</Modal.Title>
+                    <Modal.Title>Edit {employee.employee.fullName}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    < EditHours employee={employee} />
+                    <div>
+                        <form id="opening-hours-form">
+                            <div className="add-hours">
+                                {shifts}
+                            </div>
+                        </form>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="danger" onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button variant="success">Save</Button>
+                    <Button variant="success" onClick={() => updateHours()}>Save</Button>
                 </Modal.Footer>
             </Modal>
         </li>
