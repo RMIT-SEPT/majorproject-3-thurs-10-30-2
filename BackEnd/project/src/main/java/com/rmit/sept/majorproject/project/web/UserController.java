@@ -147,24 +147,18 @@ public class UserController {
         return result;
     }
 
-    @PatchMapping(path = "{id}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchUser(@PathVariable Long id, @RequestBody JsonPatch patch) {
-        try {
-            User user = userService.findById(id);
-            User userPatched = applyPatchToUser(patch, user);
-            userService.saveOrUpdateUser(userPatched);
-            return ResponseEntity.ok(userPatched);
-        } catch (JsonPatchException | JsonProcessingException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    @PostMapping("/worker/{id}")
+    public ResponseEntity<?> createNewUser(@PathVariable Long id, @RequestBody WorkerHolder holder, BindingResult result){
+//        for (WorkerHours hours: holder.getWorkerHours()) {
+//            holder.getUser().setWorkerHours(hours);
+//        }
+        User tempUser = userService.findById(id);
+        tempUser.removeAllBusinessHours();
+        for (WorkerHours myHours: holder.getWorkerHours()) {
+            tempUser.setWorkerHours(myHours);
         }
-    }
-
-    @PostMapping("/worker")
-    public ResponseEntity<?> createNewUser(@RequestBody WorkerHolder holder, BindingResult result){
-        for (WorkerHours hours: holder.getWorkerHours()) {
-            holder.getUser().setWorkerHours(hours);
-        }
-        User user1 = userService.saveOrUpdateUser(holder.getUser()); //tmp user
+        //User user1 = userService.saveOrUpdateUser(holder.getUser()); //tmp user
+        User user1 = userService.saveOrUpdateUser(tempUser); //tmp user
 
         return new ResponseEntity<>(user1, HttpStatus.CREATED);
     }
