@@ -8,6 +8,8 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.rmit.sept.majorproject.project.model.Booking;
 import com.rmit.sept.majorproject.project.model.User;
+import com.rmit.sept.majorproject.project.model.WorkerHolder;
+import com.rmit.sept.majorproject.project.model.WorkerHours;
 import com.rmit.sept.majorproject.project.payload.JWTLoginSucessReponse;
 import com.rmit.sept.majorproject.project.payload.LoginRequest;
 import com.rmit.sept.majorproject.project.security.JwtTokenProvider;
@@ -154,6 +156,24 @@ public class UserController {
             return ResponseEntity.ok(userPatched);
         } catch (JsonPatchException | JsonProcessingException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    @PostMapping("/worker")
+    public ResponseEntity<?> createNewUser(@RequestBody WorkerHolder holder, BindingResult result){
+        for (WorkerHours hours: holder.getWorkerHours()) {
+            holder.getUser().setWorkerHours(hours);
+        }
+        User user1 = userService.saveOrUpdateUser(holder.getUser()); //tmp user
+
+        return new ResponseEntity<>(user1, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/worker/{id}")
+    ResponseEntity<?> one(@PathVariable Long id) {
+
+        if(userService.findById(id) != null){
+            return new ResponseEntity<>(userService.findById(id),HttpStatus.ACCEPTED);
+        }
+        else{
+            return new ResponseEntity<>("ID Does Not Exist",HttpStatus.NOT_FOUND);
         }
     }
 

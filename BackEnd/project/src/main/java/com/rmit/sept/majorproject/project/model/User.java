@@ -8,9 +8,9 @@ import javax.persistence.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Set;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.*;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "bookingsAsCustomer", "bookingsAsWorker"})
@@ -26,7 +26,8 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Please enter your full name")
+    @Size(min = 3, max = 15, message = "Please enter 3-15 characters")
+    @NotBlank(message = "User name is required")
     private String fullName;
 
     @Email(message = "Username needs to be a valid email")
@@ -34,20 +35,8 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String username;
 
-    @NotBlank(message = "Password is required")
-    private String password;
-
     @Transient
     private String confirmPassword;
-
-    @Enumerated(EnumType.STRING)
-    private AccountType accountType;
-
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date created_At;
-
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date updated_At;
 
     @OneToMany(
             mappedBy = "customer",
@@ -61,6 +50,21 @@ public class User implements UserDetails {
     )
     private Set<Booking> bookingsAsWorker;
 
+    @OneToMany( cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<WorkerHours> workerHours = new ArrayList<>();
+
+    @Size(min = 6, message = "Please enter a minimum of 6 characters")
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private AccountType accountType;
+
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date created_At;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date updated_At;
     @OneToOne(mappedBy = "admin", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Business business;
@@ -159,6 +163,18 @@ public class User implements UserDetails {
 
     public Business getEmployer(){
         return this.employer;
+    }
+
+    public List<WorkerHours> getWorkerHours() {
+        return workerHours;
+    }
+
+    public void setWorkerHours(WorkerHours workerHours) {
+        this.workerHours.add(workerHours);
+    }
+
+    public void removeAllBusinessHours() {
+        this.workerHours.clear();
     }
 
     @PrePersist
