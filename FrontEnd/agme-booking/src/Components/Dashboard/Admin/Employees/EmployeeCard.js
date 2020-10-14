@@ -40,7 +40,7 @@ function EmployeeCard(employee) {
                 </span>
                 <input name="startTime" placeholder="Start time" onChange={handleHoursUpdate(element.dayOfWeek)} pattern="[0-9][0-9]:[0-9][0-9]" defaultValue={element.startTime} className="w-25">
                 </input>
-                <input name="endTime" placeholder="End time" pattern="[0-9][0-9]:[0-9][0-9]" defaultValue={element.endTime} className="w-25">
+                <input name="endTime" placeholder="End time" onChange={handleHoursUpdate(element.dayOfWeek)} pattern="[0-9][0-9]:[0-9][0-9]" defaultValue={element.endTime} className="w-25">
                 </input>
             </div>
         )
