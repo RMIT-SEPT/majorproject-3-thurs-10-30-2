@@ -49,8 +49,12 @@ function EmployeeCard(employee) {
     function updateHours() {
         var updatedEmployee = employee.employee
         updatedEmployee.workerHours = hours
-        axios.put('http://localhost:8080/api/users/worker/' + updatedEmployee.id, updatedEmployee);
-        handleClose();
+
+        axios.post('http://localhost:8080/api/users/worker/' + updatedEmployee.id, {
+            "workerHours": updatedEmployee.workerHours
+        }).then((response) => {
+            handleClose()
+        });
     }
 
     return (
