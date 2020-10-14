@@ -4,6 +4,7 @@ import com.rmit.sept.majorproject.project.Repositories.UserRepository;
 import com.rmit.sept.majorproject.project.exceptions.UsernameAlreadyExistsException;
 import com.rmit.sept.majorproject.project.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,12 @@ public class UserService {
 
     public Optional<User> get(Long id) {
         return userRepository.findById(id);
+    }
+
+    public List<User> get(String name, User.AccountType type) {
+        List<User> results;
+        results = userRepository.findByFullNameContainingIgnoreCaseAndAccountType(name, type);
+        return results;
     }
 
     public User saveOrUpdateUser(User user) {

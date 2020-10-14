@@ -28,6 +28,11 @@ public class Business {
     @JoinColumn(name = "business_id")
     private List<BusinessHours> businessHours = new ArrayList<>();
 
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "employer_id")
+    @JsonManagedReference()
+    private List<User> employees = new ArrayList<>();
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id")
     @NotNull(message = "Admin cannot be null.")
@@ -56,6 +61,14 @@ public class Business {
 
     public void removeAllBusinessHours() {
         this.businessHours.clear();
+    }
+
+    public void addEmployee(User user){
+        employees.add(user);
+    }
+
+    public void removeEmployee(User user){
+        employees.remove(user);
     }
 
     @PrePersist

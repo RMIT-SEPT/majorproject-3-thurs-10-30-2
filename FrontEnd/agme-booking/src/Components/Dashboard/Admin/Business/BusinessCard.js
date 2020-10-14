@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faUser,
@@ -7,52 +7,41 @@ import {
 import { Card } from 'react-bootstrap';
 import BusinessView from './BusinessView'
 
-class BusinessCard extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { businessView: "" };
-    }
+function BusinessCard(business) {
 
-    showView() {
-        if (this.state.businessView === "") {
-            this.setState({
-                businessView: <BusinessView business={this.props.business}/>
-            });
+    const [view, setView] = useState("");
+
+    const showView = () => {
+        if (view === "") {
+               setView(<BusinessView business={business.business} />)
         }
         else {
-            this.setState({
-                businessView: ""
-            });
+            setView("")
         }
     }
-
-    render() {
-
-        var busView = this.state.businessView
-
-        return (
-
-            <Card className="w-75 text-dark" id="business-1">
-                <div className="p-4 align-middle" role="button" onClick={() => { this.showView() }}>
-                    <Card.Title className="text-left m-0">
-                        <div className="row">
-                            <div className="col-sm-6">
-                                {this.props.business.name}
-                            </div>
-                            <div className="col-sm-6 text-right">
-                                <FontAwesomeIcon icon={faUser} className="mr-2" />
-                                <span className="mr-4">99</span>
-                                <FontAwesomeIcon icon={faCalendarWeek} className="mr-2" />
-                                <span>99</span>
-                            </div>
+    return (
+        
+        <Card className="w-75 text-dark" id="business-1">
+            <div className="p-4 align-middle" role="button" onClick={() => { showView() }}>
+                <Card.Title className="text-left m-0">
+                    <div className="row">
+                        <div className="col-sm-6">
+                            {business.business.name}
                         </div>
-                    </Card.Title>
-                </div>
-                { busView}
-            </Card >
+                        <div className="col-sm-6 text-right">
+                            <FontAwesomeIcon icon={faUser} className="mr-2" />
+                            <span className="mr-4">99</span>
+                            <FontAwesomeIcon icon={faCalendarWeek} className="mr-2" />
+                            <span>99</span>
+                        </div>
+                    </div>
+                </Card.Title>
+            </div>
+            {view}
+        </Card >
 
-        )
-    }
+    )
 }
+
 
 export default BusinessCard

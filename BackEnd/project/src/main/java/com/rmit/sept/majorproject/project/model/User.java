@@ -8,9 +8,9 @@ import javax.persistence.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Set;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.*;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "bookingsAsCustomer", "bookingsAsWorker"})
@@ -19,13 +19,15 @@ public class User implements UserDetails {
     public enum AccountType {
         ADMIN,
         CUSTOMER,
-        WORKER }
+        WORKER
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Please enter your full name")
+    @Size(min = 3, max = 15, message = "Please enter 3-15 characters")
+    @NotBlank(message = "User name is required")
     private String fullName;
 
     @Email(message = "Username needs to be a valid email")
@@ -33,20 +35,8 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String username;
 
-    @NotBlank(message = "Password is required")
-    private String password;
-
     @Transient
     private String confirmPassword;
-
-    @Enumerated(EnumType.STRING)
-    private AccountType accountType;
-
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date created_At;
-
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date updated_At;
 
     @OneToMany(
             mappedBy = "customer",
@@ -60,9 +50,29 @@ public class User implements UserDetails {
     )
     private Set<Booking> bookingsAsWorker;
 
+    @OneToMany( cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<WorkerHours> workerHours = new ArrayList<>();
+
+    @Size(min = 6, message = "Please enter a minimum of 6 characters")
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private AccountType accountType;
+
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date created_At;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date updated_At;
     @OneToOne(mappedBy = "admin", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Business business;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employer_id")
+    @JsonBackReference
+    private Business employer;
 
     public User() {
     }
@@ -75,15 +85,21 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getFullName() { return fullName; }
+    public String getFullName() {
+        return fullName;
+    }
 
-    public void setFullName(String fullName) { this.fullName = fullName; }
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) { this.username = username; }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getPassword() {
         return password;
@@ -93,17 +109,29 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getConfirmPassword() { return confirmPassword; }
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
 
-    public void setConfirmPassword(String confirmPassword) { this.confirmPassword = confirmPassword; }
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
 
-    public Set<Booking> getBookingsAsCustomer() { return bookingsAsCustomer; }
+    public Set<Booking> getBookingsAsCustomer() {
+        return bookingsAsCustomer;
+    }
 
-    public Set<Booking> getBookingsAsWorker() { return bookingsAsWorker; }
+    public Set<Booking> getBookingsAsWorker() {
+        return bookingsAsWorker;
+    }
 
-    public Business getBusiness() { return business; }
+    public Business getBusiness() {
+        return business;
+    }
 
-    public void setBusiness(Business business) { this.business = business; }
+    public void setBusiness(Business business) {
+        this.business = business;
+    }
 
     public Date getCreated_At() {
         return created_At;
@@ -121,17 +149,41 @@ public class User implements UserDetails {
         this.updated_At = updated_At;
     }
 
-    public AccountType getAccountType(){ return accountType; }
+    public AccountType getAccountType() {
+        return accountType;
+    }
 
-    public void setAccountType(AccountType accountType) { this.accountType = accountType; }
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    public void setEmployer(Business employer) {
+        this.employer = employer;
+    }
+
+    public Business getEmployer(){
+        return this.employer;
+    }
+
+    public List<WorkerHours> getWorkerHours() {
+        return workerHours;
+    }
+
+    public void setWorkerHours(WorkerHours workerHours) {
+        this.workerHours.add(workerHours);
+    }
+
+    public void removeAllBusinessHours() {
+        this.workerHours.clear();
+    }
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         this.created_At = new Date();
     }
 
     @PreUpdate
-    protected void onUpdate(){
+    protected void onUpdate() {
         this.updated_At = new Date();
     }
 

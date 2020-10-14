@@ -1,8 +1,15 @@
 package com.rmit.sept.majorproject.project.web;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.rmit.sept.majorproject.project.model.Booking;
 import com.rmit.sept.majorproject.project.model.User;
+import com.rmit.sept.majorproject.project.model.WorkerHolder;
+import com.rmit.sept.majorproject.project.model.WorkerHours;
 import com.rmit.sept.majorproject.project.payload.JWTLoginSucessReponse;
 import com.rmit.sept.majorproject.project.payload.LoginRequest;
 import com.rmit.sept.majorproject.project.security.JwtTokenProvider;
@@ -21,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -30,6 +38,7 @@ import static com.rmit.sept.majorproject.project.security.SecurityConstants.TOKE
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
@@ -52,6 +61,19 @@ public class UserController {
 
         return result;
     }
+
+    @GetMapping("search/{accountType}/{name}")
+    public ResponseEntity<?> getUser(@PathVariable String name, @PathVariable User.AccountType accountType) {
+        ResponseEntity<?> result = new ResponseEntity<>("No users found", HttpStatus.NOT_FOUND);
+        List<User> users = userService.get(name, accountType);
+
+        if (users.size() > 0) {
+            result = ResponseEntity.ok(users);
+        }
+
+        return result;
+    }
+
 
     @GetMapping("{id}/bookings")
     public ResponseEntity<?> getUserBookings(@PathVariable Long id) {
@@ -125,10 +147,43 @@ public class UserController {
         return result;
     }
 
+    @PostMapping("/worker/{id}")
+    public ResponseEntity<?> createNewUser(@PathVariable Long id, @RequestBody WorkerHolder holder, BindingResult result){
+//        for (WorkerHours hours: holder.getWorkerHours()) {
+//            holder.getUser().setWorkerHours(hours);
+//        }
+        User tempUser = userService.findById(id);
+        tempUser.removeAllBusinessHours();
+        for (WorkerHours myHours: holder.getWorkerHours()) {
+            tempUser.setWorkerHours(myHours);
+        }
+        //User user1 = userService.saveOrUpdateUser(holder.getUser()); //tmp user
+        User user1 = userService.saveOrUpdateUser(tempUser); //tmp user
+
+        return new ResponseEntity<>(user1, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/worker/{id}")
+    ResponseEntity<?> one(@PathVariable Long id) {
+
+        if(userService.findById(id) != null){
+            return new ResponseEntity<>(userService.findById(id),HttpStatus.ACCEPTED);
+        }
+        else{
+            return new ResponseEntity<>("ID Does Not Exist",HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         // TODO: Implement security checks before proceeding with deletion.
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    private User applyPatchToUser(JsonPatch patch, User targetUser) throws JsonPatchException, JsonProcessingException {
+        JsonNode patched = patch.apply(objectMapper.convertValue(targetUser, JsonNode.class));
+        return objectMapper.treeToValue(patched, User.class);
+    }
+
 }
