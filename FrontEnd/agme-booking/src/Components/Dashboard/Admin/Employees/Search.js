@@ -50,7 +50,7 @@ function Search(business) {
         headers: {
            Authorization: localStorage.token
         }}).then((response) => {
-                window.location.href("/admin")
+                window.location.href = "/admin"
             })
     }
 

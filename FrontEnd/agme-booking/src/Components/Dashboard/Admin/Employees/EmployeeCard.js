@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Card, Modal } from 'react-bootstrap';
-import OpeningHours from '../Business/OpeningHours';
+import EditHours from "./EditHours";
 
 function EmployeeCard({ employee }) {
 
@@ -10,8 +10,8 @@ function EmployeeCard({ employee }) {
     const handleShow = () => setShow(true);
 
     var dayRows = []
-    if (employee.hours) {
-        employee.hours.forEach(element => {
+    if (employee.workingHours) {
+        employee.workingHours.forEach(element => {
             dayRows.push(
                 <tr key={element.dayOfWeek}>
                     <td>{element.dayOfWeek}</td>
@@ -52,22 +52,7 @@ function EmployeeCard({ employee }) {
                     <Modal.Title>Edit {employee.fullName}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="business-form">
-                        <table className="w-100">
-                            <thead>
-                                <tr>
-                                    <th>Day</th>
-                                    <th>Hours</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {dayRows}
-                            </tbody>
-                        </table>
-                        <div className="employeeHours">
-                            <OpeningHours addOpeningHours={addOpeningHours} days={employee.days} />
-                        </div>
-                    </div>
+                    < EditHours employee={employee} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="danger" onClick={handleClose}>
