@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 /*
    Post requests should be of the format
@@ -109,7 +110,11 @@ public class BusinessController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
-
+    @GetMapping("{businessId}/employees")
+    public ResponseEntity<?> getEmployees(@PathVariable Long businessId){
+        Business business = businessService.findById(businessId);
+            return new ResponseEntity<>(business.getEmployees(), HttpStatus.ACCEPTED);
+    }
     @PatchMapping(path = "{id}", consumes = "application/json-patch+json")
     public ResponseEntity<?> patchBusiness(@PathVariable Long id, @RequestBody JsonPatch patch) {
         try {
