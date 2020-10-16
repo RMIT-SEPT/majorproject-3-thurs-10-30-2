@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Card, Modal } from 'react-bootstrap';
 
 
 function WorkerDash() {
@@ -8,6 +8,8 @@ function WorkerDash() {
     // const [currentWorker, setCurrentWorker] = useState([]);
     const [currentWorker, setWorker] = useState([]);
     const [workingHours, setWorkingHours] = useState([]);
+
+    const [workerBookings, setWorkerBookings] = useState([]);
     // const [workerHours, setWorkerHours] = useState([]); handleClose()
 
     const [dow, setDow]  = useState(
@@ -51,6 +53,22 @@ function WorkerDash() {
                     setWorkingHours(tempWorkingHours)
                     setDow(tempDow)
                 });
+            axios.get('http://localhost:8080/api/users/' + JSON.parse(localStorage.user).id + '/bookings')
+                .then((response) => {
+                    var tempWorkerList = []
+                    var tempWorkerBookings = response.data
+                    tempWorkerBookings.forEach(element => {
+                        var li =
+                        <li>
+                            <h4>Booking ID: {element.id}</h4>
+                            <p>Customer Name: {element.customer}</p>
+                            <p>{element.startTime} - {element.endTime}</p>
+                        </li>
+                        tempWorkerList.push(li)
+                    })
+                    setWorkerBookings(tempWorkerList)
+                });
+                
         }
     });
 
@@ -103,13 +121,30 @@ function WorkerDash() {
     return (
         <div className="header-spacer container">
             <h1>Hello {currentWorker.fullName}</h1>
-            <h2>Your Working Hours</h2>
-            <ul className="list-unstyled">
-                {workingHours}
-            </ul>
-            <Button variant="success" onClick={handleShow}>
-                Edit
-            </Button>
+            <Card>
+                <Card.Body>
+                    <Card.Title>
+                        <h2>Your Working Hours</h2>
+                    </Card.Title>
+                    <ul className="list-unstyled">
+                        {workingHours}
+                    </ul>
+                    <Button variant="success" onClick={handleShow}>
+                        Edit
+                    </Button>
+                </Card.Body>
+            </Card>
+
+            <Card>
+                <Card.Body>
+                    <Card.Title>
+                        <h2>Your Bookings</h2>
+                    </Card.Title>
+                    <ul className="list-unstyled">
+                        {workerBookings}
+                    </ul>
+                </Card.Body>
+            </Card>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
