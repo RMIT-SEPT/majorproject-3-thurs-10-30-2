@@ -13,30 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-
-/*
-POST REQUEST FORMAT
-*only works if there are existing users (at least 2)
-{
-    "duration": 2,
-    "customer": {
-        "id": 1,
-        "name": "customer",
-        "email": "customer@hotmail.com",
-        "password": "231asdsd12x",
-        "accountType": "CUSTOMER"
-    },
-    "worker": {
-        "id": 2,
-        "name": "worker",
-        "email": "workerer@hotmail.com",
-        "password": "231asds2x",
-        "accountType": "WORKER"
-    },
-    "startTime": "2020-12-08-04:20",
-    "endTime": "2020-12-08-04:50"
-}
- */
 @CrossOrigin
 @RestController
 @RequestMapping("/api/bookings")

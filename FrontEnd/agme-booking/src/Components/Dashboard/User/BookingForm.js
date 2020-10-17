@@ -10,6 +10,7 @@ class BookingForm extends React.Component {
         this.state = {
             businessId: window.location.href.split("/").pop(),
             businesses: [],
+            bName:'',
             date: new Date(),
             duration: '',
             customer: '',
@@ -19,15 +20,33 @@ class BookingForm extends React.Component {
             endTime: ''
         }
         //GET: should be changed to getting the list of workers for a business
-        axios.get('http://localhost:8080/api/user')
+        axios.get('http://localhost:8080/api/Business/'+ window.location.href.split("/").pop()+ '/employees',{
+            headers: {
+                "Authorization": localStorage.token
+            }
+        })
             .then((response) => {
                 this.setState({ worker: response.data })
             });
-        axios.get('http://localhost:8080/api/Business')
+        axios.get('http://localhost:8080/api/Business', {
+            headers: {
+                "Authorization": localStorage.token
+            }
+        })
             .then((response) => {
                 this.setState({ businesses: response.data })
             });
+        // this.businessNameset = this.businessNameset.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    businessNameset() {
+        this.select = this.state.businesses.map((select) => {
+            if (this.state.businessId === select.id.toString()) {
+                var name = select.name.toString();
+                this.setState({ ...this.state.bName, name });
+                console.log(name);
+            }
+        })
     }
     onChange = date => {
         this.setState({ date });
@@ -55,12 +74,12 @@ class BookingForm extends React.Component {
         var choice = event.target.value;
         var selectedWorker;
         this.employee = this.state.worker.map((employee) => {
-            if (choice === employee.name) {
+            if (choice === employee.fullName) {
                 selectedWorker = employee;
             }
         });
         this.setState({ ...this.state.worker, selectedWorker });
-        console.log(selectedWorker.name);
+        console.log(selectedWorker.username);
     }
     handleStartTime(event) {
         var timeStart = event.target.value;
@@ -80,25 +99,27 @@ class BookingForm extends React.Component {
     * should redirect to a list of bookings for the user(getBookings() currently not working).
     */
     handleSubmit() {
+        //sets the businessName for bookings.
+        this.businessNameset();
         axios({
             method: "POST",
             // url: 'http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/bookings',
             url: 'http://localhost:8080/api/bookings',
-            headers: {},
+            headers: {
+                "Authorization": localStorage.token
+            },
             data: {
-                "duration": 2,
+                "businessName": this.state.name,
                 "customer": {
-                    "id": 1,
-                    "name": "customer",
-                    "email": "customer@hotmail.com",
-                    "password": "231asdsd12x",
-                    "accountType": "CUSTOMER"
+                    "id": JSON.parse(localStorage.user).id,
+                    "fullName": JSON.parse(localStorage.user).fullName,
+                    "email": JSON.parse(localStorage.user).email,
+                    "accountType": JSON.parse(localStorage.user).accountType,
                 },
                 "worker": {
                     "id": this.state.selectedWorker.id,
-                    "name": this.state.selectedWorker.name,
+                    "fullName": this.state.selectedWorker.fullName,
                     "email": this.state.selectedWorker.email,
-                    "password": this.state.selectedWorker.password,
                     "accountType": this.state.selectedWorker.accountType
                 },
                 "startTime": this.state.dateString + this.state.timeStart,
@@ -113,49 +134,21 @@ class BookingForm extends React.Component {
             console.log(response);
         });
     }
-    render() {
-
-        // const times = {
-        //     Donna: [
-        //         { startTime: 10, endTime: 11 },
-        //         { startTime: 12, endTime: 13 },
-        //         { startTime: 15, endTime: 16 }
-        //     ],
-        //     Anna: [
-        //         { startTime: 10, endTime: 11 },
-        //         { startTime: 12, endTime: 13 },
-        //         { startTime: 15, endTime: 16 }
-        //     ]
-        // };
-
-        // const employees = Object.keys(times).map(key =>
-        //     <option key={key} value={key}>{key}</option>);
-
-        /*Used for displaying workers in the dropdown box*/
+    render() {      
+        /*populates workers array with workers under the business selected for dropbox */
         const workers = [];
-        this.state.worker.forEach(element => {
+        this.selectWorker = this.state.worker.map((selectWorker) => {
             workers.push(
-                <option>{element.name}</option>
+                <option>{selectWorker.fullName}</option>
             )
-        });
-        // const slots = []
-        // if (this.state.employee === 'Any') {
-        //     Object.keys(times).map(key =>
-        //         slots.push(<AvailabilityCard empName={key} times={times[key]} />))
-        // }
-        // else {
-        //     slots.push(<AvailabilityCard empName={this.state.employee} times={times[this.state.employee]} />)
-        // }
-
+        }) 
         /*Used to set the name of business selected*/
         var name;
         this.select = this.state.businesses.map((select) => {
-            console.log(select.id);
             if (this.state.businessId === select.id.toString()) {
                 name = select.name.toString();
             }
         })
-
         return (
             <div id="booking-form">
                 <h2>{name}</h2>

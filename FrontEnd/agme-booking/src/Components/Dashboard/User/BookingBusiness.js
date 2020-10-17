@@ -13,7 +13,11 @@ class BookingBusiness extends React.Component {
             businesses: [],
         }
         // axios.get('http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/Business')
-        axios.get('http://localhost:8080/api/Business')
+        axios.get('http://localhost:8080/api/Business',{
+            headers: {
+                "Authorization": localStorage.token
+            }
+        })
             .then((response) => {
                 this.setState({ businesses: response.data })
             });

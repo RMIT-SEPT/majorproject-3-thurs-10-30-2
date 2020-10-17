@@ -9,13 +9,14 @@ import {
     Route
 } from "react-router-dom"
 import BusinessIndex from './Admin/Business/BusinessIndex';
-// import BookingForm from './User/BookingForm';
+import BookingIndex from './User/BookingIndex';
 function Dashboard() {
 
     const [bookingBusiness, setForm] = useState(0);
     const forms = [
         <CreateBookingButton setForm={setForm} />,
         <BookingBusiness setForm={setForm} />,
+        <BookingIndex setForm = {setForm}/>,
         <BusinessForm setForm={setForm} />
     ];
 
@@ -35,6 +36,9 @@ function Dashboard() {
                             </Route>
                             <Route path="/dashboard/bookingform">
                                 <BookingForm/>
+                            </Route>
+                            <Route path ="/dashboard/bookings">
+                                <BookingIndex/>
                             </Route>
                             <Route path="/dashboard/businesses">
                                 <BusinessIndex/>

@@ -56,7 +56,6 @@ public class BookingServiceTest {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd:HH-mm");
         booking.setStartTime(format.parse("2020-12-12:13-30"));
         booking.setEndTime(format.parse("2020-12-12:14-30"));
-        booking.setDuration(1);
     }
 
     @Test
@@ -89,11 +88,11 @@ public class BookingServiceTest {
         Assertions.assertNotNull(test,"Booking has been added successfully");
     }
 
-    @Test
-    void updateDuration_changesDuration_IfBookingExist(){
-        booking.setDuration(2);
-        Booking test = bookingService.updateBooking(booking);
-        Assertions.assertEquals(booking.getDuration(), test.getDuration());
-    }
+//    @Test
+//    void updateDuration_changesDuration_IfBookingExist(){
+//        booking.setDuration(2);
+//        Booking test = bookingService.updateBooking(booking);
+//        Assertions.assertEquals(booking.getDuration(), test.getDuration());
+//    }
 
 }

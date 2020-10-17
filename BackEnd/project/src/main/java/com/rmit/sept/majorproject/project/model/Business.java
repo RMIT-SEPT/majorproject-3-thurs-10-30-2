@@ -66,6 +66,9 @@ public class Business {
     public void addEmployee(User user){
         employees.add(user);
     }
+    public List<User> getEmployees(){
+        return employees;
+    }
 
     public void removeEmployee(User user){
         employees.remove(user);

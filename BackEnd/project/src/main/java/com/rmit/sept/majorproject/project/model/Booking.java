@@ -13,8 +13,10 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Duration cannot be null.")
-    private int duration;
+//    @NotNull(message = "Duration cannot be null.")
+//    private int duration;
+    @NotNull(message = "Business Name cannot be null")
+    private String businessName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
@@ -51,13 +53,15 @@ public class Booking {
         this.id = id;
     }
 
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
+//    public int getDuration() {
+//        return duration;
+//    }
+//
+//    public void setDuration(int duration) {
+//        this.duration = duration;
+//    }
+    public String getBusinessName(){return businessName;}
+    public void setBusinessName(String businessName){this.businessName = businessName;}
 
     public User getCustomer() {
         return customer;
