@@ -129,7 +129,7 @@ class BookingForm extends React.Component {
         }).then(function (response) {
             if (response.status === 201) {
                 console.log("booking created");
-                window.location.href = '/dashboard/bookings';
+                window.location.href = '/dashboard';
             }
             console.log(response);
         });
