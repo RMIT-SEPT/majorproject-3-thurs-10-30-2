@@ -49,17 +49,20 @@ class OpeningHours extends React.Component {
         return (
             <div>
                 <form id="opening-hours-form">
-                    <select name="dayOfWeek" defaultValue="placeholder" onChange={this.handleTimeChange.bind(this)}>
+                    <div className="add-hours">
+                    <select required name="dayOfWeek" defaultValue="placeholder" onChange={this.handleTimeChange.bind(this)}>
                         <option value="placeholder" disabled={true}>
                             Select day
                     </option>
                         {dayOpts}
                     </select>
-                    <input name="startTime" onChange={this.handleTimeChange.bind(this)}>
+                    <input name="startTime" required onChange={this.handleTimeChange.bind(this)} placeholder="Start time" pattern="[0-9][0-9]:[0-9][0-9]">
                     </input>
-                    <input name="endTime" onChange={this.handleTimeChange.bind(this)}>
+                    <input name="endTime" required onChange={this.handleTimeChange.bind(this)} placeholder="End time" pattern="[0-9][0-9]:[0-9][0-9]">
                     </input>
+                    </div>
                     {addButton}
+                    <hr/>
                 </form>
             </div>
         )

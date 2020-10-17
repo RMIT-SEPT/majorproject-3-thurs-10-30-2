@@ -5,8 +5,6 @@ import com.rmit.sept.majorproject.project.model.User;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.expression.spel.ast.ValueRef;
 
 
 import java.text.ParseException;
@@ -32,23 +30,26 @@ public class BookingServiceTest {
 
         createDummyUsers();
 
+        booking.setBusinessName("Test Business");
         booking.setCustomer(customer);
-        booking.setWorkerId(worker);
+        booking.setWorker(worker);
     }
 
     private void createDummyUsers() {
         customer = new User();
         worker = new User();
 
-        customer.setName("Bob");
-        customer.setEmail("bob@bob.com");
+        customer.setFullName("Bob");
+        customer.setUsername("bob@bob.com");
         customer.setPassword("fwedsf34gf34fge");
-        userService.saveOrUpdateUser(customer);
+        customer.setAccountType(User.AccountType.CUSTOMER);
+        userService.create(customer);
 
-        worker.setName("Alice");
-        worker.setEmail("alice@alice.com");
+        worker.setFullName("Alice");
+        worker.setUsername("alice@alice.com");
         worker.setPassword("fwedsf34gf34fge");
-        userService.saveOrUpdateUser(worker);
+        worker.setAccountType(User.AccountType.WORKER);
+        userService.create(worker);
     }
 
     @BeforeEach
@@ -56,7 +57,6 @@ public class BookingServiceTest {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd:HH-mm");
         booking.setStartTime(format.parse("2020-12-12:13-30"));
         booking.setEndTime(format.parse("2020-12-12:14-30"));
-        booking.setDuration(1);
     }
 
     @Test
@@ -89,11 +89,11 @@ public class BookingServiceTest {
         Assertions.assertNotNull(test,"Booking has been added successfully");
     }
 
-    @Test
-    void updateDuration_changesDuration_IfBookingExist(){
-        booking.setDuration(2);
-        Booking test = bookingService.updateBooking(booking);
-        Assertions.assertEquals(booking.getDuration(), test.getDuration());
-    }
+//    @Test
+//    void updateDuration_changesDuration_IfBookingExist(){
+//        booking.setDuration(2);
+//        Booking test = bookingService.updateBooking(booking);
+//        Assertions.assertEquals(booking.getDuration(), test.getDuration());
+//    }
 
 }

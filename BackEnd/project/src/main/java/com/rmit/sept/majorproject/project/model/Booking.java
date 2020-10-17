@@ -1,7 +1,6 @@
 package com.rmit.sept.majorproject.project.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,8 +13,10 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Duration cannot be null.")
-    private int duration;
+//    @NotNull(message = "Duration cannot be null.")
+//    private int duration;
+    @NotNull(message = "Business Name cannot be null")
+    private String businessName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
@@ -27,10 +28,12 @@ public class Booking {
     @NotNull(message = "Worker cannot be null.")
     private User worker;
 
-    @JsonFormat(pattern = "yyyy-MM-dd:HH-mm")
+    @JsonFormat(pattern = "yyyy-MM-dd-HH:mm")
+    @NotNull
     private Date startTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd:HH-mm")
+    @JsonFormat(pattern = "yyyy-MM-dd-HH:mm")
+    @NotNull
     private Date endTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -50,13 +53,15 @@ public class Booking {
         this.id = id;
     }
 
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
+//    public int getDuration() {
+//        return duration;
+//    }
+//
+//    public void setDuration(int duration) {
+//        this.duration = duration;
+//    }
+    public String getBusinessName(){return businessName;}
+    public void setBusinessName(String businessName){this.businessName = businessName;}
 
     public User getCustomer() {
         return customer;
@@ -70,7 +75,7 @@ public class Booking {
         return worker;
     }
 
-    public void setWorkerId(User worker) {
+    public void setWorker(User worker) {
         this.worker = worker;
     }
 

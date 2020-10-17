@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button } from 'react-bootstrap';
 import OpeningHours from './OpeningHours';
-import axios from 'axios';
 
 class BusinessForm extends React.Component {
     constructor(props) {
@@ -43,22 +42,15 @@ class BusinessForm extends React.Component {
     }
 
     handleSubmit() {
-        axios({
-            method: "POST",
-            url: 'http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/Business',
-            headers: {},
-            data: {
-                "business": {
-                    "name": this.state.name
-                },
-                "businessHours": this.state.opening_hours
+        if (!this.props.saveBusiness(this.state.name, this.state.opening_hours))
+        {
+            if (this.state.name === "") {
+                alert("Business name missing")
             }
-        }).then(function (response) {
-            if (response.status === 201) {
-                window.location.href = '/dashboard/businesses';
+            else {
+                alert("Please add business hours")
             }
-            console.log(response);
-        });
+        }
     }
 
     newOpeningHours(day) {
@@ -88,9 +80,11 @@ class BusinessForm extends React.Component {
         };
 
         return (
-            <div>
+            <div className="business-form">
                 <h1>Register new business</h1>
-                <input type="text" name="name" onChange={this.handleInputChange}></input>
+                <label>Business Name</label>
+                <br />
+                <input required type="text" name="name" onChange={this.handleInputChange}></input>
                 <table>
                     <thead>
                         <tr>
@@ -106,7 +100,7 @@ class BusinessForm extends React.Component {
                 <Button variant="success" onClick={this.handleSubmit}>
                     Submit
                 </Button>
-                <Button variant="danger" type="submit" onClick={() => this.props.setForm(0)}>
+                <Button variant="danger" type="submit" onClick={() => this.props.setBusForm(0)}>
                     <h4 className="mb-0">Cancel</h4>
                 </Button>
             </div>
