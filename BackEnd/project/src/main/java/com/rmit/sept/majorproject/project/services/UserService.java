@@ -32,7 +32,7 @@ public class UserService {
         return results;
     }
 
-    public User saveOrUpdateUser(User user) {
+    public User create(User user) {
         try {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             user.setConfirmPassword("");
@@ -40,7 +40,10 @@ public class UserService {
         } catch (Exception e) {
             throw new UsernameAlreadyExistsException("Username " + user.getUsername() + " already exists.");
         }
+    }
 
+    public User update(User user) {
+        return userRepository.save(user);
     }
 
     public void delete(Long id) {

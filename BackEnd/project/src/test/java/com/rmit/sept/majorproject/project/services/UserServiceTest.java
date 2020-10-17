@@ -39,14 +39,14 @@ public class UserServiceTest {
 
     @Test
     void delete_DoesNotThrow_IfUserExists() {
-        User newUser = userService.saveOrUpdateUser(user);
+        User newUser = userService.create(user);
         Assertions.assertDoesNotThrow(() -> userService.delete(newUser.getId()),
                 "Deleting an existing user should succeed.");
     }
 
     @Test
     void delete_ThrowsException_IfUserDoesNotExist(){
-        User newUser = userService.saveOrUpdateUser(user);
+        User newUser = userService.create(user);
         userService.delete(newUser.getId());    // This delete should succeed
 
         Assertions.assertThrows(EmptyResultDataAccessException.class, () -> userService.delete(newUser.getId()),
@@ -54,47 +54,47 @@ public class UserServiceTest {
     }
 
     @Test
-    void saveOrUpdateUser_Succeeds_IfAllDataIsValid() {
-        User newUser = userService.saveOrUpdateUser(user);
+    void create_Succeeds_IfAllDataIsValid() {
+        User newUser = userService.create(user);
         Assertions.assertTrue(newUser.getUsername().equals(GOOD_USERNAME) &&
                 newUser.getFullName().equals(GOOD_FULL_NAME),
                 "Returned user data should match what was saved.");
     }
 
     @Test
-    void saveOrUpdateUser_ThrowsException_IfNameIsTooShort() {
+    void create_ThrowsException_IfNameIsTooShort() {
         user.setUsername("12");     // Current constraint min is 3
 
-        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
+        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.create(user),
                 "User name with length 2 is too short, javax.validation.ConstraintViolationException should be thrown.");
     }
 
     @Test
-    void saveOrUpdateUser_ThrowsException_IfNameIsTooLong() {
+    void create_ThrowsException_IfNameIsTooLong() {
         user.setUsername("1234567890123456");   // Current constraint max is 15
 
-        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
+        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.create(user),
                 "User name with length 16 is too long, javax.validation.ConstraintViolationException should be thrown.");
     }
 
     @Test
-    void saveOrUpdateUser_ThrowsException_IfNameIsBlank() {
+    void create_ThrowsException_IfNameIsBlank() {
         user.setUsername("");
 
-        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.saveOrUpdateUser(user),
+        Assertions.assertThrows(ConstraintViolationException.class, () -> userService.create(user),
                 "Blank name for user should throw javax.validation.ConstraintViolationException.");
     }
 
     @Test
-    void saveOrUpdateUser_returnsUpdatedUser_IfUserExists() {
+    void create_returnsUpdatedUser_IfUserExists() {
         String newName = "New Fullname";
 
         // Save current
-        userService.saveOrUpdateUser(user);
+        userService.create(user);
 
         // Change name and update
         user.setFullName(newName);
-        userService.saveOrUpdateUser(user);
+        userService.create(user);
 
         Assertions.assertEquals(user.getFullName(), newName);
     }

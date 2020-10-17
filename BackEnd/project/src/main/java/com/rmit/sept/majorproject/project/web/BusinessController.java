@@ -103,7 +103,7 @@ public class BusinessController {
         User employee = userService.findById(empId);
         if (employee.getAccountType() == User.AccountType.WORKER) {
             employee.setEmployer(business);
-            User updatedEmployee = userService.saveOrUpdateUser(employee);
+            User updatedEmployee = userService.update(employee);
             business.addEmployee(updatedEmployee);
             Business updatedBusiness = businessService.saveOrUpdateBusiness(business);
             return ResponseEntity.ok(updatedBusiness);
