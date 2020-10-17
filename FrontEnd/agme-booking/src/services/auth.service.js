@@ -24,6 +24,7 @@ class AuthService {
 
     logout() {
         localStorage.removeItem("user");
+        window.location.href = "/"
     }
 
     async register(username, fname, password, passwordConfirm, type) {
