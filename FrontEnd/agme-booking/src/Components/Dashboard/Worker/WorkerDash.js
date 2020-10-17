@@ -57,12 +57,17 @@ function WorkerDash() {
                 .then((response) => {
                     var tempWorkerList = []
                     var tempWorkerBookings = response.data
+                    console.log(tempWorkerBookings)
                     tempWorkerBookings.forEach(element => {
                         var li =
                         <li>
                             <h4>Booking ID: {element.id}</h4>
-                            <p>Customer Name: {element.customer}</p>
-                            <p>{element.startTime} - {element.endTime}</p>
+                            <h6>Business: {element.businessName}</h6>
+                            <h6>Date: {element.startTime.substring(0,10)}</h6>
+                            <h4>Customer Details</h4>
+                            <p>Name: {element.customer.fullName}</p>
+                            <p>Email: {element.customer.username}</p>
+                            <p>{element.startTime.substring(11,16)} - {element.endTime.substring(11,16)}</p>
                         </li>
                         tempWorkerList.push(li)
                     })
