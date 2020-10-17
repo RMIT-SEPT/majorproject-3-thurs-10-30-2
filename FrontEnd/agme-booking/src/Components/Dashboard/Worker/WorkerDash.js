@@ -25,7 +25,10 @@ function WorkerDash() {
 
     useEffect(() => {
         if (currentWorker.length === 0) {
-            axios.get('http://localhost:8080/api/users/worker/' + JSON.parse(localStorage.user).id)
+            axios.get('http://localhost:8080/api/users/worker/' + JSON.parse(localStorage.user).id,{headers: {
+                    "Authorization": localStorage.token
+                    }
+                })
                 .then((response) => {
                     var tempWorker = response.data
                     var tempWorkingHours = []
@@ -53,7 +56,10 @@ function WorkerDash() {
                     setWorkingHours(tempWorkingHours)
                     setDow(tempDow)
                 });
-            axios.get('http://localhost:8080/api/users/' + JSON.parse(localStorage.user).id + '/bookings')
+            axios.get('http://localhost:8080/api/users/' + JSON.parse(localStorage.user).id + '/bookings',{headers: {
+                        "Authorization": localStorage.token
+                    }
+                })
                 .then((response) => {
                     var tempWorkerList = []
                     var tempWorkerBookings = response.data
