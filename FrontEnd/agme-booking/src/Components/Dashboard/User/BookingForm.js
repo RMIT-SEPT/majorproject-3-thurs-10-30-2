@@ -71,6 +71,7 @@ class BookingForm extends React.Component {
         return day;
     }
     handleChange(event) {
+        this.businessNameset();
         var choice = event.target.value;
         var selectedWorker;
         this.employee = this.state.worker.map((employee) => {
@@ -100,7 +101,6 @@ class BookingForm extends React.Component {
     */
     handleSubmit() {
         //sets the businessName for bookings.
-        this.businessNameset();
         axios({
             method: "POST",
             // url: 'http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/bookings',
