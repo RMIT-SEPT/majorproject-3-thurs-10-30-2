@@ -11,8 +11,7 @@ class BookingIndex extends React.Component {
             bookings: [],
         }
         // axios.get('http://agmeapi-env.eba-aw96pwjm.us-east-1.elasticbeanstalk.com/api/Business')
-        axios.get('http://localhost:8080/api/users/'+JSON.parse(localStorage.user).id+'/bookings',{
-            headers: {
+        axios.get('http://localhost:8080/api/users/'+JSON.parse(localStorage.user).id+'/bookings',{headers: {
                 "Authorization": localStorage.token
             }
         })
