@@ -33,13 +33,9 @@ public class UserService {
     }
 
     public User create(User user) {
-        try {
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            user.setConfirmPassword("");
-            return userRepository.save(user);
-        } catch (Exception e) {
-            throw new UsernameAlreadyExistsException("Username " + user.getUsername() + " already exists.");
-        }
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setConfirmPassword("");
+        return userRepository.save(user);
     }
 
     public User update(User user) {

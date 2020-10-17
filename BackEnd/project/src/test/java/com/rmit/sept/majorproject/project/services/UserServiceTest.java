@@ -35,6 +35,7 @@ public class UserServiceTest {
         user.setFullName(GOOD_FULL_NAME);
         user.setUsername(GOOD_USERNAME);
         user.setPassword(GOOD_PASSWORD);
+        user.setAccountType(User.AccountType.CUSTOMER);
     }
 
     @Test
