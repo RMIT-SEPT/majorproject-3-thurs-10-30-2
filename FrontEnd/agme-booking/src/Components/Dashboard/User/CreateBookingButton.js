@@ -12,6 +12,13 @@ class CreateBookingButton extends React.Component {
                         Create booking
                     </h3>
                 </Button>
+                <br></br>
+                <br></br>
+                <Button variant="success" type="submit" onClick={() => this.props.setForm(2)}>
+                    <h3 className="m-0">
+                        View Booking
+                    </h3>   
+                </Button>
             </div>
         )
     }
