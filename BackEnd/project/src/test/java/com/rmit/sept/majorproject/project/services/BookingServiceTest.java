@@ -30,6 +30,7 @@ public class BookingServiceTest {
 
         createDummyUsers();
 
+        booking.setBusinessName("Test Business");
         booking.setCustomer(customer);
         booking.setWorker(worker);
     }

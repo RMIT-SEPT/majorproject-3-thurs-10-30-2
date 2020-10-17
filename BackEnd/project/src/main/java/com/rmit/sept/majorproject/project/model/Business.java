@@ -18,7 +18,9 @@ public class Business {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotNull
+    @Column(unique = true)
     private String name;
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date created_At;
