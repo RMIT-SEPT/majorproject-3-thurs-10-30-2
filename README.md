@@ -18,5 +18,7 @@
 
 
 ## Code documentation
-
-[Quick Start](/docs/README.md) in `docs` folder
+# Quick Start
+run 'docker-compose build' in project root
+run 'docker-compose up' in project root
+access react application on http://localhost:3000
